@@ -40,14 +40,14 @@ public class respawn : MonoBehaviour
             timeRemaining -= Time.deltaTime * 2;
         else
         {
-            timeRemaining = Random.Range(2, 6); 
+            timeRemaining = Random.Range(2, 5); 
             respawnObject();
         }
     }
 
     void OnTriggerEnter2D(Collider2D collision)
     {
-        Debug.Log("Hola");
+        if(collision.gameObject.tag == "respawn")
         direction =! direction;
     }
 
@@ -57,4 +57,6 @@ public class respawn : MonoBehaviour
         int number = Random.Range(1, 4);
         Instantiate(Objects[number],this.transform.position,Quaternion.identity);
     }
+
+    
 }
