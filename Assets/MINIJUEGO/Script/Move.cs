@@ -15,13 +15,19 @@ public class Move : MonoBehaviour
     [SerializeField] public LayerMask groundLayer;
 
 
-
+    private void Start()
+    {
+        rb = GetComponent<Rigidbody2D>();
+    }
     // Update is called once per frame
     void Update()
     {
+        if (horizontal != 0)
+            Debug.Log("Error");
         horizontal = Input.GetAxis("Horizontal");
         if (Input.GetButtonDown("Jump") && IsGrounded())
         {
+            Debug.Log("Hola");
             rb.velocity = new Vector2(rb.velocity.x, jumpingPower);
         }
         if (Input.GetButtonUp("Jump") && rb.velocity.y > 0f)
@@ -53,7 +59,7 @@ public class Move : MonoBehaviour
                 
                 
                 
-                }  
+    }  
      
     
       
