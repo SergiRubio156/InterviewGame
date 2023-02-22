@@ -5,6 +5,7 @@ using UnityEngine;
 
 public class Move : MonoBehaviour
 {
+    bool time = false;
     public float horizontal;
     public float speed = 8f;
     public float jumpingPower = 16f;
@@ -15,10 +16,23 @@ public class Move : MonoBehaviour
     [SerializeField] public LayerMask groundLayer;
 
 
-
+    private void Start()
+    {
+        rb = GetComponent<Rigidbody2D>();
+    }
     // Update is called once per frame
     void Update()
     {
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            time = !time;
+        }
+        if (time)
+            Time.timeScale = 0;
+        else
+            Time.timeScale = 1;
+
+
         horizontal = Input.GetAxis("Horizontal");
         if (Input.GetButtonDown("Jump") && IsGrounded())
         {
@@ -53,7 +67,7 @@ public class Move : MonoBehaviour
                 
                 
                 
-                }  
+    }  
      
     
       

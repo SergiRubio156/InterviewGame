@@ -2,22 +2,31 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
+using UnityEngine.UI;
 
 public class Score : MonoBehaviour
 {
+    public AudioClip[] audioClip;
+    public AudioSource audioSource;
+    private int puntos;
+    bool m_Play;
+    bool m_ToggleChange;
+    public Sprite[] sprites;
 
-    private float puntos;
-
-    public TextMeshProUGUI textMesh;
-
+    public Image image;
 
     void Start()
     {
+        image.sprite = sprites[0];
+        audioSource = GetComponent<AudioSource>();
+
+        m_Play = true;
+
     }
 
     private void Update()
     {
-        textMesh.text = puntos.ToString("0");
+        image.sprite = sprites[puntos];
     }
 
     // Update is called once per frame
@@ -25,11 +34,16 @@ public class Score : MonoBehaviour
     {
         if(collision.gameObject.tag == "GoodObjects")
         {
-            ++puntos; 
+            ++puntos;
+            audioSource.PlayOneShot(audioClip[0]);
+            DestroyObject(collision.gameObject);
         }
         else if (collision.gameObject.tag == "BadObjects")
         {
+            audioSource.PlayOneShot(audioClip[1]); 
+            if (puntos != 0)
             --puntos;
+            DestroyObject(collision.gameObject);
         }
     }
 }

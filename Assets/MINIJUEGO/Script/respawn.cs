@@ -28,19 +28,19 @@ public class respawn : MonoBehaviour
         {
             positionX += speed * Time.deltaTime;
 
-            this.transform.position = new Vector2(positionX, 0);
+            this.transform.position = new Vector2(positionX, 11.61f);
         }
         else if(!direction)
         {
             positionX -= speed * Time.deltaTime;
 
-            this.transform.position = new Vector2(positionX, 0);
+            this.transform.position = new Vector2(positionX, 11.61f);
         }
         if (timeRemaining > 0)
             timeRemaining -= Time.deltaTime * 2;
         else
         {
-            timeRemaining = Random.Range(2, 5); 
+            timeRemaining = Random.Range(1, 3); 
             respawnObject();
         }
     }
