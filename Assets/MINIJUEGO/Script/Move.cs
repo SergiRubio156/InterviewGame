@@ -5,6 +5,7 @@ using UnityEngine;
 
 public class Move : MonoBehaviour
 {
+    bool time = false;
     public float horizontal;
     public float speed = 8f;
     public float jumpingPower = 16f;
@@ -22,12 +23,19 @@ public class Move : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (horizontal != 0)
-            Debug.Log("Error");
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            time = !time;
+        }
+        if (time)
+            Time.timeScale = 0;
+        else
+            Time.timeScale = 1;
+
+
         horizontal = Input.GetAxis("Horizontal");
         if (Input.GetButtonDown("Jump") && IsGrounded())
         {
-            Debug.Log("Hola");
             rb.velocity = new Vector2(rb.velocity.x, jumpingPower);
         }
         if (Input.GetButtonUp("Jump") && rb.velocity.y > 0f)

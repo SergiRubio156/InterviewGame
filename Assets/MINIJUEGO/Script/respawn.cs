@@ -40,7 +40,7 @@ public class respawn : MonoBehaviour
             timeRemaining -= Time.deltaTime * 2;
         else
         {
-            timeRemaining = Random.Range(2, 5); 
+            timeRemaining = Random.Range(1, 3); 
             respawnObject();
         }
     }
