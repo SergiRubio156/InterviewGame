@@ -54,8 +54,8 @@ public class respawn : MonoBehaviour
 
     public void respawnObject()
     {
-        int number = Random.Range(1, 4);
-        Instantiate(Objects[number],this.transform.position,Quaternion.identity);
+        int number = Random.Range(0, 4);
+        Instantiate(Objects[0],this.transform.position,Quaternion.identity);
     }
 
     
