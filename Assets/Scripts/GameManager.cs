@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System;
+using UnityEngine.SceneManagement;
 
 //Vamos a crear un Script Manager donde podremos coordinar todos los script 
 
@@ -31,6 +32,11 @@ public class GameManager : MonoBehaviour
 
     GameState State;
 
+    private int NumScene = 1;
+
+
+
+
     //Una funcion statica, es una funcion que nos permite llamar al codigo sin necesidad de una instancia, en palabras pa tontos
     //El script GameManager con todas sus variables y funciones (que aparezcan en public) apareceran en todos los scripts, eso nos
     //permitira llamarlos quando sea necesario.
@@ -55,7 +61,7 @@ public class GameManager : MonoBehaviour
 
     void Start() //Solo se entra una vez, pero si el script esta desactivado no entra
     {
-        UpdateGameState(GameState.Menu);//Entro en la funcion UpdateGameState, y ponemos como referencia el GameState.Menu porque es el stado que queremos
+        UpdateGameState(GameState.Lasers);//Entro en la funcion UpdateGameState, y ponemos como referencia el GameState.Menu porque es el stado que queremos
     }
 
     // Update is called once per frame
@@ -92,16 +98,28 @@ public class GameManager : MonoBehaviour
 
     private void HandlePlayerLasers()
     {
+        if (NumScene != 1)
+        {
+            NumScene = 1;
+            SceneManager.LoadScene("Lasers");
 
+        }
     }
 
     private void HandleSelectButton()
     {
-
+        Cursor.visible = true;
+        if (NumScene != 0)
+        {
+            NumScene = 0;
+            SceneManager.LoadScene("Menu");
+        }
     }
 
     private void HandleSettings()
     {
-
+        
     }
+
+
 }

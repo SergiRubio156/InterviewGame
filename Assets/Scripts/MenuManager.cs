@@ -6,7 +6,6 @@ using UnityEngine.UI;
 public class MenuManager : MonoBehaviour
 {
 
-    public GameObject panelMenu;
     public GameObject settingsMenu;
 
     void Awake()
@@ -21,24 +20,24 @@ public class MenuManager : MonoBehaviour
 
     private void GameManager_OnGameStateChanged(GameState state)    //Esta funcion depende del Awake del evento, Como he explicado antes nso permite comparar entre Script y GameObjects
     {
-        panelMenu.SetActive(state == GameState.Menu);   //Si el GameState es Menu se activa este panel
+        //panelMenu.SetActive(state == GameState.Menu);   //Si el GameState es Menu se activa este panel
 
         settingsMenu.SetActive(state == GameState.Settings);        //Si el GameState es Settings se activa este panel
 
     }
 
 
-    public void StartGame(GameObject panel) //Esta funcion se llama cuando le damos click al botton del Menu
+    public void StartGame() //Esta funcion se llama cuando le damos click al botton del Menu
     {
-        panel.SetActive(false);//Se desactiva el panel
-
         GameManager.Instance.UpdateGameState(GameState.Lasers);//Utilizando la instancia del GameManager, entramos a la funcion UpdateGameState, y cambiamos el State a Lasers
     }
-    public void SettingsGame(GameObject panel)//Esta funcion se llama cuando le damos click al botton del Settings
+
+    public void StartSettings() //Esta funcion se llama cuando le damos click al botton del Menu
     {
-        panel.SetActive(false);//Se desactiva el panel
-
-        GameManager.Instance.UpdateGameState(GameState.Lasers);//Utilizando la instancia del GameManager, entramos a la funcion UpdateGameState, y cambiamos el State a Lasers
-
+        GameManager.Instance.UpdateGameState(GameState.Settings);//Utilizando la instancia del GameManager, entramos a la funcion UpdateGameState, y cambiamos el State a Lasers
+    }
+    public void StartMenu() //Esta funcion se llama cuando le damos click al botton del Menu
+    {
+        GameManager.Instance.UpdateGameState(GameState.Menu);//Utilizando la instancia del GameManager, entramos a la funcion UpdateGameState, y cambiamos el State a Lasers
     }
 }                                                                                                                                                                                                                                                                                    
