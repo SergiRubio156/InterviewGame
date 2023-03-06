@@ -9,14 +9,15 @@ namespace StarterAssets
         //private StarterAssetsInputs controls;
         public Camera mainCamera;
         public GameObject ObjectMove;
-        public GameObject Mirror;
 
-
+        //Raycast
         float maxRayDistance = 100.0f;
 
+        //Mouse
         bool sceneSettings;
         Vector3 worldPosition;
-
+        bool objectSelect;
+        private float xRotation = 30;
 
         private Vector3 screenPoint;
         private Vector3 offset;
@@ -33,6 +34,8 @@ namespace StarterAssets
         }
         private void Start()
         {
+            objectSelect = false;
+            Cursor.lockState = CursorLockMode.Confined;
             Cursor.visible = true;
         }
 
@@ -46,58 +49,59 @@ namespace StarterAssets
         // Update is called once per frame
         void Update()
         {
-
-            RaycastDetectObject();
+            MoveMouse();
             if (Input.GetKeyDown(KeyCode.Escape)) //Cuando le damos click al Escape entra a esta funcion
             {
                 if (sceneSettings) GameManager.Instance.UpdateGameState(GameState.Lasers);
                 else GameManager.Instance.UpdateGameState(GameState.Settings);
             }
+            if (objectSelect)
+                MoveObject();
         }
 
-        void RaycastDetectObject()
+
+
+        void MoveMouse()
         {
+            worldPosition = Input.mousePosition;
+            worldPosition.z = 10.0f;
+            Vector3 curScreenPoint = new Vector3(Input.mousePosition.x, Input.mousePosition.y, worldPosition.z);
+            curScreenPoint = Camera.main.ScreenToWorldPoint(curScreenPoint);
+
+            //if (curScreenPoint.y <= 0)
+            //curScreenPoint.y = 0.02f;
+            transform.position = curScreenPoint;
             if (Input.GetMouseButtonDown(0))
-            {
+                RayObject();
+        }
+
+
+        void RayObject()
+        { 
+                Debug.Log("1");
                 RaycastHit hit;
                 Ray ray = mainCamera.ScreenPointToRay(Input.mousePosition);
-                if (Physics.Raycast(ray, out hit, maxRayDistance))
+                if (Physics.Raycast(ray, out hit, maxRayDistance) && !objectSelect)
                 {
+                    Debug.Log("2");
                     Debug.DrawRay(worldPosition, Vector3.forward, Color.red, maxRayDistance);
-                    if(hit.collider.CompareTag("Interactable"))
+                    if (hit.collider.CompareTag("Interactable"))
                     {
+                        Debug.Log("3");
                         ObjectMove = hit.collider.gameObject;
-                        //MoveObject();
+                        objectSelect = true;
                     }
                 }
-            }
+                else if(objectSelect)
+                {
+                    ObjectMove = null;
+                    objectSelect = false;
+                }
         }
 
         void MoveObject()
         {
-            Debug.Log("Entra");
-            worldPosition = Input.mousePosition;
-            worldPosition.z = 10.0f;
-
-            Vector3 curScreenPoint = new Vector3(Input.mousePosition.x, Input.mousePosition.y, worldPosition.z);
-            curScreenPoint = Camera.main.ScreenToWorldPoint(curScreenPoint) + offset;
-            if (curScreenPoint.y <= 0)
-                curScreenPoint.y = 0.02f;
-            ObjectMove.transform.position = curScreenPoint;
-        }
-
-
-        private void OnMouseDrag()
-        {
-            Debug.Log("Entra");
-            worldPosition = Input.mousePosition;
-            worldPosition.z = 10.0f;
-
-            Vector3 curScreenPoint = new Vector3(Input.mousePosition.x, Input.mousePosition.y, worldPosition.z);
-            curScreenPoint = Camera.main.ScreenToWorldPoint(curScreenPoint) + offset;
-            if (curScreenPoint.y <= 0)
-                curScreenPoint.y = 0.02f;
-            ObjectMove.transform.position = curScreenPoint;
+            ObjectMove.transform.position = transform.position;
         }
 
     }
