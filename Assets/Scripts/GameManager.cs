@@ -24,6 +24,7 @@ public class GameManager : MonoBehaviour
 {
     public static GameManager _instance; //Creamos una variable en Static para que todos los otros scripts puedan utilizar este script
 
+    public GameObject[] managers =  new GameObject[2];
 
 
     //un evento static esta disponible para todos los scripts en cualquier momento, incluso si no existe ninguna instancia de la clase
@@ -44,7 +45,6 @@ public class GameManager : MonoBehaviour
     {
         get
         {
-
             if (_instance == null)
                 Debug.LogError("GameManager is Null!!!!"); //Si sale esto es que el GameManager no funciona
             return _instance;
@@ -55,13 +55,16 @@ public class GameManager : MonoBehaviour
 
     void Awake() //El awake se entra igualmente que el script esta desactivado
     {
-        _instance = this;
+        _instance = this;        
         DontDestroyOnLoad(this.gameObject); //Esto lo que hace es que no se destruya lobjeto quando se cambia de escena
     }
 
     void Start() //Solo se entra una vez, pero si el script esta desactivado no entra
     {
         UpdateGameState(GameState.Lasers);//Entro en la funcion UpdateGameState, y ponemos como referencia el GameState.Menu porque es el stado que queremos
+        //managers = GameObject.FindGameObjectsWithTag("GameManager");
+        //if (managers[1] != null)
+           //DestroyObject(managers[0]); //!PREGUNTAR PROFESOR, PORK APARECEN GAMEMANAGER CADA VEZ QUE SE ENTRA A UNA SCENA NUEVA, Y KIERO ELIMINARLO, HE PODIDO ELIMINARLO PERO ME PONE GAMEMANAGER NULL PERO AUN ASI SIGUE FUNCIONANDO
     }
 
     // Update is called once per frame
