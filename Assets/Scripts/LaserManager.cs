@@ -35,7 +35,6 @@ namespace StarterAssets
         private void Start()
         {
             objectSelect = false;
-            Cursor.lockState = CursorLockMode.Confined;
             Cursor.visible = true;
         }
 
@@ -56,7 +55,7 @@ namespace StarterAssets
                 else GameManager.Instance.UpdateGameState(GameState.Settings);
             }
             if (objectSelect)
-                MoveObject();
+                CheckGround();
         }
 
 
@@ -74,35 +73,45 @@ namespace StarterAssets
             if (Input.GetMouseButtonDown(0))
                 RayObject();
         }
+        void CheckGround()
+        {
+            RaycastHit hit;
+            Ray ray = mainCamera.ScreenPointToRay(Input.mousePosition);
+            if (Physics.Raycast(ray, out hit, maxRayDistance,LayerMask.NameToLayer("NoInteractable")))
+            {
+                Vector3 newPosition = new Vector3(hit.point.x, hit.point.y + 1, hit.point.z);
+                ObjectMove.transform.position = newPosition;
+            }
 
-
+        }
         void RayObject()
-        { 
-                Debug.Log("1");
+        {
+                float positionIntial = 0f;
                 RaycastHit hit;
                 Ray ray = mainCamera.ScreenPointToRay(Input.mousePosition);
                 if (Physics.Raycast(ray, out hit, maxRayDistance) && !objectSelect)
                 {
-                    Debug.Log("2");
                     Debug.DrawRay(worldPosition, Vector3.forward, Color.red, maxRayDistance);
                     if (hit.collider.CompareTag("Interactable"))
                     {
-                        Debug.Log("3");
                         ObjectMove = hit.collider.gameObject;
+                        positionIntial = ObjectMove.transform.position.y;
                         objectSelect = true;
                     }
                 }
                 else if(objectSelect)
                 {
-                    ObjectMove = null;
+                Debug.Log("3");
+                ObjectMove.transform.position = new Vector3(ObjectMove.transform.position.x, positionIntial, ObjectMove.transform.position.z);
+                    StartCoroutine(Wait());
                     objectSelect = false;
                 }
         }
 
-        void MoveObject()
+        IEnumerator Wait()
         {
-            ObjectMove.transform.position = transform.position;
+            yield return new WaitForSeconds(.2f);
+            ObjectMove = null;
         }
-
     }
 }
