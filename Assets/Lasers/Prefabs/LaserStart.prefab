@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 893383965510151578}
   - component: {fileID: 893383965510151579}
   - component: {fileID: 893383965510151583}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: LaserStart
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -63,7 +63,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 68992a1c34a2f46498150ecc7ac41cc0, type: 2}
+  - {fileID: 2100000, guid: 3db2c112212f5a048b77c594c7a17f07, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -110,7 +110,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 952e9c632601bf54999351640ac3b059, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  inputRay: {fileID: 1179089408343564010, guid: 71326d580aebd5348b19753aab64f3ce,
+  inputRay: {fileID: 1179089408343564005, guid: 71326d580aebd5348b19753aab64f3ce,
     type: 3}
-  reflectiveRay: {fileID: 9183912009428086458, guid: 057e867f676664047a7af3c891e5cd87,
+  inputLine: {fileID: 1179089408343564010, guid: 71326d580aebd5348b19753aab64f3ce,
     type: 3}

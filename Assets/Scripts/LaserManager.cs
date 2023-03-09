@@ -2,10 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace StarterAssets
+
+public class LaserManager : MonoBehaviour
 {
-    public class LaserManager : MonoBehaviour
-    {
         //private StarterAssetsInputs controls;
         public Camera mainCamera;
         public GameObject ObjectMove;
@@ -17,16 +16,18 @@ namespace StarterAssets
         bool sceneSettings;
         Vector3 worldPosition;
         bool objectSelect;
-        private float xRotation = 30;
+        public float velocity = 5f;
+        //Rotacion 
+        public float rotationSpeed = 1f;
+        Quaternion currentRotation;
+        public float targetRotation = 45f;
 
-        private Vector3 screenPoint;
-        private Vector3 offset;
-        void Awake()
-        {
+    void Awake()
+    {
             GameManager.OnGameStateChanged += GameManager_OnGameStateChanged;   //Esto es el evento del script GameManager
             mainCamera = Camera.main;
             //controls = new StarterAssetsInputs();
-        }
+    }
 
         private void OnDestroy()
         {
@@ -34,8 +35,8 @@ namespace StarterAssets
         }
         private void Start()
         {
-            objectSelect = false;
             Cursor.visible = true;
+            objectSelect = false;
         }
 
         private void GameManager_OnGameStateChanged(GameState state)        //Esta funcion depende del Awake del evento, Como he explicado antes nso permite comparar entre Script y GameObjects
@@ -67,8 +68,6 @@ namespace StarterAssets
             Vector3 curScreenPoint = new Vector3(Input.mousePosition.x, Input.mousePosition.y, worldPosition.z);
             curScreenPoint = Camera.main.ScreenToWorldPoint(curScreenPoint);
 
-            //if (curScreenPoint.y <= 0)
-            //curScreenPoint.y = 0.02f;
             transform.position = curScreenPoint;
             if (Input.GetMouseButtonDown(0))
                 RayObject();
@@ -79,11 +78,31 @@ namespace StarterAssets
             Ray ray = mainCamera.ScreenPointToRay(Input.mousePosition);
             if (Physics.Raycast(ray, out hit, maxRayDistance,LayerMask.NameToLayer("NoInteractable")))
             {
-                Vector3 newPosition = new Vector3(hit.point.x, hit.point.y + 1, hit.point.z);
-                ObjectMove.transform.position = newPosition;
+                Vector3 newPosition = new Vector3(hit.point.x, hit.point.y + 0.8f, hit.point.z) - ObjectMove.transform.position;
+                ObjectMove.GetComponent<Rigidbody>().velocity = newPosition * velocity;
+                currentRotation = ObjectMove.transform.rotation;
+                Rotation();
             }
-
         }
+
+        void Rotation()
+        {
+            Quaternion targetQuaternion = Quaternion.Euler(0, targetRotation, 0) * currentRotation;
+
+            if (Input.GetKey(KeyCode.E))
+            {
+                targetQuaternion = Quaternion.Euler(0, targetRotation, 0) * currentRotation;
+                Quaternion newRotation = Quaternion.Lerp(currentRotation, targetQuaternion, Time.deltaTime * rotationSpeed);
+                ObjectMove.transform.rotation = newRotation;
+            }
+            if (Input.GetKey(KeyCode.Q))
+            {
+                targetQuaternion = Quaternion.Euler(0, -targetRotation, 0) * currentRotation;
+                Quaternion newRotation = Quaternion.Lerp(currentRotation, targetQuaternion, Time.deltaTime * rotationSpeed);
+                ObjectMove.transform.rotation = newRotation;
+            }
+        }
+
         void RayObject()
         {
                 float positionIntial = 0f;
@@ -101,8 +120,9 @@ namespace StarterAssets
                 }
                 else if(objectSelect)
                 {
-                Debug.Log("3");
-                ObjectMove.transform.position = new Vector3(ObjectMove.transform.position.x, positionIntial, ObjectMove.transform.position.z);
+                    Debug.Log("3");
+                    ObjectMove.transform.position = new Vector3(ObjectMove.transform.position.x, positionIntial, ObjectMove.transform.position.z);
+                    ObjectMove.GetComponent<Rigidbody>().velocity = ObjectMove.transform.position * 0f;
                     StartCoroutine(Wait());
                     objectSelect = false;
                 }
@@ -113,5 +133,5 @@ namespace StarterAssets
             yield return new WaitForSeconds(.2f);
             ObjectMove = null;
         }
-    }
+    
 }
