@@ -120,7 +120,6 @@ public class LaserManager : MonoBehaviour
                 }
                 else if(objectSelect)
                 {
-                    Debug.Log("3");
                     ObjectMove.transform.position = new Vector3(ObjectMove.transform.position.x, positionIntial, ObjectMove.transform.position.z);
                     ObjectMove.GetComponent<Rigidbody>().velocity = ObjectMove.transform.position * 0f;
                     StartCoroutine(Wait());

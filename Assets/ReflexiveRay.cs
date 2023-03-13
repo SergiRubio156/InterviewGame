@@ -8,36 +8,41 @@ public class ReflexiveRay : MonoBehaviour
     public LineRenderer inputLine;
     bool checking = false;
     public GameObject check;
+
+
     // Start is called before the first frame update
     void Start()
     {
-        inputLine.SetPosition(0, Vector3.zero);
-        inputLine.SetPosition(1, Vector3.zero);
+        ResetLaser();
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (checking)
-            Checks();
+        if (!checking)
+            ResetLaser();
     }
 
     public void ReceiveImpactPoint(Vector3 point,Vector3 reflectiveRayPoint)
     {
+        inputLine.gameObject.SetActive(true);
+        checking = true;
         inputLine.SetPosition(0, point);
         inputLine.SetPosition(1, reflectiveRayPoint * 3);
 
         if (Physics.Raycast(point, transform.forward, out hit, 100,8))
         {
-            Debug.Log(hit.transform.name);
+            //Debug.Log(hit.transform.name);
         }
-        //checking = false;
 
     }
 
-    public void Checks()
+    void ResetLaser()
     {
-        Debug.Log("hola");
-        check.GetComponent<CheckLaser>().CheckLasers();
+        inputLine.gameObject.SetActive(false);
+    }
+    public void Checks(bool _chek)
+    {
+        checking = _chek;
     }
 }

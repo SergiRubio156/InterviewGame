@@ -12,22 +12,26 @@ public class LaserRay : MonoBehaviour
     RaycastHit hit;
     Vector3 inputRayPoint = new Vector3(0,0,1000);
     Vector3 reflectiveRayPoint;
-
+    bool checkLaser = false;
+    public GameObject reflexive;
     void Start()
     {
-        inputLine.SetPosition(0, transform.position);
-        inputLine.SetPosition(1, inputRayPoint);
+        ResetLaser();
     }
     // See Order of Execution for Event Functions for information on FixedUpdate() and Update() related to physics queries
     void FixedUpdate()
     {
         DrawReflection();
+        if (!checkLaser)
+            ResetLaser();
     }
 
     void DrawReflection()
     {
-        if(Physics.Raycast (transform.position, transform.forward, out hit, 100))
+        checkLaser = false;
+        if (Physics.Raycast (transform.position, transform.forward, out hit, 100))
         {
+            checkLaser = true;
             Vector3 _hitPoint = hit.point;
             reflectiveRayPoint = Vector3.Reflect(_hitPoint - transform.position, hit.normal);
 
@@ -37,5 +41,13 @@ public class LaserRay : MonoBehaviour
             hit.transform.gameObject.GetComponent<ReflexiveRay>().ReceiveImpactPoint(_hitPoint, reflectiveRayPoint);
         }
     }
+    void ResetLaser()
+    {
+        Debug.Log("1");
+        reflexive.GetComponent<ReflexiveRay>().Checks(checkLaser);
+        inputLine.SetPosition(0, transform.position);
+        inputLine.SetPosition(1, inputRayPoint);
+    }
+
 
 }
