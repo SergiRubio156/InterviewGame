@@ -38,12 +38,17 @@ public class LaserRay : MonoBehaviour
             inputLine.SetPosition(0, transform.position);
             inputLine.SetPosition(1, _hitPoint);
 
-            hit.transform.gameObject.GetComponent<ReflexiveRay>().ReceiveImpactPoint(_hitPoint, reflectiveRayPoint);
+            //if(hit.transform.gameObject.name == "Mirror")
+            //hit.transform.gameObject.GetComponent<ReflexiveRay>().ReceiveImpactPoint(_hitPoint, reflectiveRayPoint);
+            //else
+            string name = hit.transform.gameObject.name;
+            if (hit.transform.gameObject.name == "1")
+                hit.transform.gameObject.GetComponent<TriangleScript>().CheckPlane(name);
+
         }
     }
     void ResetLaser()
     {
-        Debug.Log("1");
         reflexive.GetComponent<ReflexiveRay>().Checks(checkLaser);
         inputLine.SetPosition(0, transform.position);
         inputLine.SetPosition(1, inputRayPoint);

@@ -7,7 +7,7 @@ public class ReflexiveRay : MonoBehaviour
     RaycastHit hit;
     public LineRenderer inputLine;
     bool checking = false;
-    public GameObject check;
+
 
 
     // Start is called before the first frame update
@@ -30,9 +30,10 @@ public class ReflexiveRay : MonoBehaviour
         inputLine.SetPosition(0, point);
         inputLine.SetPosition(1, reflectiveRayPoint * 3);
 
-        if (Physics.Raycast(point, transform.forward, out hit, 100,8))
+        if (Physics.Raycast(point, -transform.forward, out hit, 100,8))
         {
-            //Debug.Log(hit.transform.name);
+            Debug.DrawRay(point, transform.forward, Color.green);
+            hit.transform.gameObject.GetComponent<CheckLaser>().CheckLasers();
         }
 
     }
