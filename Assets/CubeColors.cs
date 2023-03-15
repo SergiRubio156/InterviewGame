@@ -5,7 +5,9 @@ using UnityEngine;
 public class CubeColors : MonoBehaviour
 {
     public bool red, blue, yellow;
-    public int layerWalls = 1 << 9;
+    public int layerWalls;
+    public int layerObjects;
+
     RaycastHit hit;
     public LineRenderer inputLine;
     Vector3 reflectiveRayPoint;
@@ -21,6 +23,7 @@ public class CubeColors : MonoBehaviour
     void Update()
     {
         layerWalls = 1 << 9;
+        layerObjects = 1 << 7;
     }
 
 
@@ -50,10 +53,21 @@ public class CubeColors : MonoBehaviour
         }
         if (red && blue && yellow)
         {
-            if (Physics.Raycast(transform.position, transform.forward, out hit, 100, layerWalls))
+            if (Physics.Raycast(transform.position, transform.forward, out hit, 100, layerObjects))
             {
                 Vector3 _hitPoint = hit.point;
-                reflectiveRayPoint = Vector3.Reflect(_hitPoint - transform.position, hit.normal);
+
+                inputLine.SetPosition(0, transform.position);
+                inputLine.SetPosition(1, _hitPoint);
+
+                if (hit.transform.gameObject.name == "CubeFinal")
+                {
+                    hit.transform.gameObject.GetComponent<CheckLaser>().CheckLasers();
+                }
+            }
+            else if (Physics.Raycast(transform.position, transform.forward, out hit, 100, layerWalls))
+            {
+                Vector3 _hitPoint = hit.point;
 
                 inputLine.SetPosition(0, transform.position);
                 inputLine.SetPosition(1, _hitPoint);

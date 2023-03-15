@@ -6,7 +6,8 @@ public class ReflexiveRay : MonoBehaviour
 {
     RaycastHit hit;
     public LineRenderer inputLine;
-    public int layerObjects = 1 << 7;
+    int layerObjects;
+    int layerWalls;
     bool checkColor = false;
     public GameObject cubeColor;
 
@@ -20,6 +21,7 @@ public class ReflexiveRay : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        layerWalls = 1 << 9;
         layerObjects = 1 << 7;
     }
 
@@ -27,32 +29,38 @@ public class ReflexiveRay : MonoBehaviour
     {
         if (_bool)
         {
-            inputLine.material = mat;
-            inputLine.SetPosition(0, point);
-            inputLine.SetPosition(1, reflectiveRayPoint * 3);
- 
-            Debug.DrawRay(point, reflectiveRayPoint * 3 - point, Color.black);
+
             if (Physics.Raycast(point, reflectiveRayPoint * 3 - point, out hit, 100, layerObjects))
             {
+                inputLine.material = mat;
+                inputLine.SetPosition(0, point);
+                inputLine.SetPosition(1, hit.point);
+
                 if (hit.transform.gameObject.name == "Cylinder")
                 {
                     checkColor = true;
                     cubeColor = hit.transform.gameObject;
                     hit.transform.gameObject.GetComponent<CubeColors>().RecivedColors(inputLine.material.name, checkColor);
                 }
-                /*if (hit.transform.gameObject.name == "")
-                {
 
-                }*/
             }
-            else if (checkColor)
+            else if (Physics.Raycast(point, reflectiveRayPoint * 3 - point, out hit, 100, layerWalls))
             {
-                checkColor = false;
-                cubeColor.GetComponent<CubeColors>().RecivedColors(inputLine.material.name, checkColor);
+                inputLine.material = mat;
+                if (checkColor == true)
+                {
+                    checkColor = false;
+                    cubeColor.GetComponent<CubeColors>().RecivedColors(inputLine.material.name, checkColor);
+                }
+
+
+                inputLine.SetPosition(0, point);
+                inputLine.SetPosition(1, hit.point);
             }
         }
-        else
+        else if(!_bool)
         {
+            Debug.Log("entra");
             inputLine.SetPosition(0, Vector3.zero);
             inputLine.SetPosition(1, Vector3.zero);
         }

@@ -29,8 +29,9 @@ public class LaserRay : MonoBehaviour
     // See Order of Execution for Event Functions for information on FixedUpdate() and Update() related to physics queries
     void FixedUpdate()
     {
-        layerWalls = 1 << 9;
-        
+        layerWalls = 1 << 7;
+        layerWalls = ~layerWalls;
+
         layerObjects = 1 << 7;
 
         DrawReflection();
@@ -51,9 +52,14 @@ public class LaserRay : MonoBehaviour
                 reflexive = hit.transform.gameObject;
                 hit.transform.gameObject.GetComponent<ReflexiveRay>().ReceiveImpactPoint(_hitPoint, reflectiveRayPoint, checkMirror, inputLine.material);
             }
+            else if(checkMirror)
+            {
+                checkMirror = false;
+                reflexive.GetComponent<ReflexiveRay>().ReceiveImpactPoint(hit.point, reflectiveRayPoint, checkMirror, inputLine.material);
+            }
             //string name = hit.transform.gameObject.name;
             //if (hit.transform.gameObject.name == "1")
-                //hit.transform.gameObject.GetComponent<TriangleScript>().CheckPlane(name);
+            //hit.transform.gameObject.GetComponent<TriangleScript>().CheckPlane(name);
             if (hit.transform.gameObject.name == "Cylinder")
             {
                 checkColor = true;
