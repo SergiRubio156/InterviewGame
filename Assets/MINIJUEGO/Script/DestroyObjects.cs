@@ -8,6 +8,9 @@ public class DestroyObjects : MonoBehaviour
     void OnTriggerEnter2D(Collider2D collision)
     {
         if(collision.gameObject.layer != 9 && collision.gameObject.layer != 8)
-        DestroyObject(collision.gameObject);
+        {
+
+        }
+        //DestroyObject(collision.gameObject);
     }
 }

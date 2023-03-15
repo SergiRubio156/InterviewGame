@@ -9,7 +9,7 @@ public class Score : MonoBehaviour
     public AudioClip[] audioClip;
     public AudioSource audioSource;
     private int puntos;
-    bool m_Play;
+
     bool m_ToggleChange;
     public Sprite[] sprites;
 
@@ -19,8 +19,6 @@ public class Score : MonoBehaviour
     {
         image.sprite = sprites[0];
         audioSource = GetComponent<AudioSource>();
-
-        m_Play = true;
 
     }
 
@@ -36,14 +34,14 @@ public class Score : MonoBehaviour
         {
             ++puntos;
             audioSource.PlayOneShot(audioClip[0]);
-            DestroyObject(collision.gameObject);
+            //DestroyObject(collision.gameObject);
         }
         else if (collision.gameObject.tag == "BadObjects")
         {
             audioSource.PlayOneShot(audioClip[1]); 
             if (puntos != 0)
             --puntos;
-            DestroyObject(collision.gameObject);
+            //DestroyObject(collision.gameObject);
         }
     }
 }

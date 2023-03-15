@@ -6,44 +6,56 @@ public class ReflexiveRay : MonoBehaviour
 {
     RaycastHit hit;
     public LineRenderer inputLine;
-    bool checking = false;
-
+    public int layerObjects = 1 << 7;
+    bool checkColor = false;
+    public GameObject cubeColor;
 
 
     // Start is called before the first frame update
     void Start()
     {
-        ResetLaser();
+        inputLine = GetComponentInChildren<LineRenderer>();
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (!checking)
-            ResetLaser();
+        layerObjects = 1 << 7;
     }
 
-    public void ReceiveImpactPoint(Vector3 point,Vector3 reflectiveRayPoint)
+    public void ReceiveImpactPoint(Vector3 point,Vector3 reflectiveRayPoint, bool _bool,Material mat)
     {
-        inputLine.gameObject.SetActive(true);
-        checking = true;
-        inputLine.SetPosition(0, point);
-        inputLine.SetPosition(1, reflectiveRayPoint * 3);
-
-        if (Physics.Raycast(point, -transform.forward, out hit, 100,8))
+        if (_bool)
         {
-            Debug.DrawRay(point, transform.forward, Color.green);
-            hit.transform.gameObject.GetComponent<CheckLaser>().CheckLasers();
+            inputLine.material = mat;
+            inputLine.SetPosition(0, point);
+            inputLine.SetPosition(1, reflectiveRayPoint * 3);
+ 
+            Debug.DrawRay(point, reflectiveRayPoint * 3 - point, Color.black);
+            if (Physics.Raycast(point, reflectiveRayPoint * 3 - point, out hit, 100, layerObjects))
+            {
+                if (hit.transform.gameObject.name == "Cylinder")
+                {
+                    checkColor = true;
+                    cubeColor = hit.transform.gameObject;
+                    hit.transform.gameObject.GetComponent<CubeColors>().RecivedColors(inputLine.material.name, checkColor);
+                }
+                /*if (hit.transform.gameObject.name == "")
+                {
+
+                }*/
+            }
+            else if (checkColor)
+            {
+                checkColor = false;
+                cubeColor.GetComponent<CubeColors>().RecivedColors(inputLine.material.name, checkColor);
+            }
+        }
+        else
+        {
+            inputLine.SetPosition(0, Vector3.zero);
+            inputLine.SetPosition(1, Vector3.zero);
         }
 
-    }
-
-    void ResetLaser()
-    {
-        inputLine.gameObject.SetActive(false);
-    }
-    public void Checks(bool _chek)
-    {
-        checking = _chek;
     }
 }
