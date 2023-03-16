@@ -9,7 +9,9 @@ public class ReflexiveRay : MonoBehaviour
     int layerObjects;
     int layerWalls;
     bool checkColor = false;
+    bool checkMirror = false;
     public GameObject cubeColor;
+    Vector3 reflectiveRayPoint2;
 
 
     // Start is called before the first frame update
@@ -27,22 +29,33 @@ public class ReflexiveRay : MonoBehaviour
 
     public void ReceiveImpactPoint(Vector3 point,Vector3 reflectiveRayPoint, bool _bool,Material mat)
     {
+       
         if (_bool)
         {
 
             if (Physics.Raycast(point, reflectiveRayPoint * 3 - point, out hit, 100, layerObjects))
             {
-                inputLine.material = mat;
-                inputLine.SetPosition(0, point);
-                inputLine.SetPosition(1, hit.point);
-
+                if (!checkMirror)
+                {
+                    inputLine.material = mat;
+                    inputLine.SetPosition(0, point);
+                    inputLine.SetPosition(1, hit.point);
+                }
                 if (hit.transform.gameObject.name == "Cylinder")
                 {
                     checkColor = true;
                     cubeColor = hit.transform.gameObject;
                     hit.transform.gameObject.GetComponent<CubeColors>().RecivedColors(inputLine.material.name, checkColor);
                 }
+                if (hit.transform.gameObject.name == "Mirror(1)")
+                {
+                    Vector3 _hitPoint = hit.point;
+                    reflectiveRayPoint2 = Vector3.Reflect(_hitPoint - transform.position, hit.normal);
 
+                    Debug.Log(hit.transform.gameObject.name);
+                    checkMirror = true;
+                    ReflexiveMirror(_hitPoint, reflectiveRayPoint2, checkMirror, inputLine.material);
+                }
             }
             else if (Physics.Raycast(point, reflectiveRayPoint * 3 - point, out hit, 100, layerWalls))
             {
@@ -60,10 +73,19 @@ public class ReflexiveRay : MonoBehaviour
         }
         else if(!_bool)
         {
-            Debug.Log("entra");
             inputLine.SetPosition(0, Vector3.zero);
             inputLine.SetPosition(1, Vector3.zero);
         }
+    }
 
+    void ReflexiveMirror(Vector3 point, Vector3 reflectiveRayPoint, bool _bool, Material mat)
+    {
+        if (_bool)
+        {
+            Debug.Log("hola");
+            inputLine.material = mat;
+            inputLine.SetPosition(0, point);
+            inputLine.SetPosition(1, reflectiveRayPoint2 * 3);
+        }
     }
 }

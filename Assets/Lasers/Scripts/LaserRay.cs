@@ -66,7 +66,12 @@ public class LaserRay : MonoBehaviour
                 cubeColor = hit.transform.gameObject;
                 hit.transform.gameObject.GetComponent<CubeColors>().RecivedColors(inputLine.material.name, checkColor);
             }
-            
+            else if (checkColor)
+            {
+                checkColor = false;
+                cubeColor.GetComponent<CubeColors>().RecivedColors(inputLine.material.name, checkColor);
+            }
+
 
         }
         else if(Physics.Raycast(transform.position, transform.forward, out hit, 100, layerWalls))
