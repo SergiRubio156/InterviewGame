@@ -38,16 +38,25 @@ public class CubeColors : MonoBehaviour
             case "Red (Instance) (Instance)":
                 red = _bool;
                 break;
+            case "Red (Instance) (Instance) (Instance)":
+                red = _bool;
+                break;
             case "Blue (Instance)":
                 blue = _bool;
                 break;
             case "Blue (Instance) (Instance)":
                 blue = _bool;
                 break;
+            case "Blue (Instance) (Instance) (Instance)":
+                blue = _bool;
+                break;
             case "Yellow (Instance)":
                 yellow = _bool;
                 break;
             case "Yellow (Instance) (Instance)":
+                yellow = _bool;
+                break;
+            case "Yellow (Instance) (Instance) (Instance)":
                 yellow = _bool;
                 break;
         }

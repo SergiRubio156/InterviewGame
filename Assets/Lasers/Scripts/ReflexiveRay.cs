@@ -11,6 +11,7 @@ public class ReflexiveRay : MonoBehaviour
     bool checkColor = false;
     bool checkMirror = false;
     public GameObject cubeColor;
+    public GameObject reflexiveCube;
     Vector3 reflectiveRayPoint2;
 
 
@@ -23,7 +24,8 @@ public class ReflexiveRay : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        layerWalls = 1 << 9;
+        layerWalls = 1 << 7;
+        layerWalls = ~layerWalls;
         layerObjects = 1 << 7;
     }
 
@@ -35,42 +37,58 @@ public class ReflexiveRay : MonoBehaviour
 
             if (Physics.Raycast(point, reflectiveRayPoint * 3 - point, out hit, 100, layerObjects))
             {
-                if (!checkMirror)
-                {
-                    inputLine.material = mat;
-                    inputLine.SetPosition(0, point);
-                    inputLine.SetPosition(1, hit.point);
-                }
+                //POSICION Y MATERIAL DEL LINE RENDERER
+                inputLine.material = mat;
+                inputLine.SetPosition(0, point);
+                inputLine.SetPosition(1, hit.point);
+
+
+                //SI EL MIRROR XOCA CON UN CYLINDER
                 if (hit.transform.gameObject.name == "Cylinder")
                 {
                     checkColor = true;
                     cubeColor = hit.transform.gameObject;
                     hit.transform.gameObject.GetComponent<CubeColors>().RecivedColors(inputLine.material.name, checkColor);
                 }
-                if (hit.transform.gameObject.name == "Mirror(1)")
-                {
-                    Vector3 _hitPoint = hit.point;
-                    reflectiveRayPoint2 = Vector3.Reflect(_hitPoint - transform.position, hit.normal);
 
-                    Debug.Log(hit.transform.gameObject.name);
+                //SI EL MIRROR XOCA CON UN MIRROR
+                if (hit.transform.gameObject.name == "Mirror")
+                {
+
+                    reflectiveRayPoint2 = Vector3.Reflect(hit.point - point, hit.normal);
+
                     checkMirror = true;
-                    ReflexiveMirror(_hitPoint, reflectiveRayPoint2, checkMirror, inputLine.material);
+                    reflexiveCube = hit.transform.gameObject;
+                    hit.transform.gameObject.GetComponent<ReflexiveRay>().ReflexiveMirror(hit.point, reflectiveRayPoint2, checkMirror, inputLine.material);
                 }
+
+
+
             }
             else if (Physics.Raycast(point, reflectiveRayPoint * 3 - point, out hit, 100, layerWalls))
             {
+                //POSICION Y MATERIAL DEL LINE RENDERER
                 inputLine.material = mat;
-                if (checkColor == true)
+                inputLine.SetPosition(0, point);
+                inputLine.SetPosition(1, hit.point);
+
+                //SI EL MIRROR NO XOCA CON UN MIRROR
+                if (checkMirror)
+                {
+                    checkMirror = false;
+                    reflectiveRayPoint2 = Vector3.Reflect(hit.point - point, hit.normal);
+                    reflexiveCube.GetComponent<ReflexiveRay>().ReflexiveMirror(hit.point, reflectiveRayPoint2, checkMirror, inputLine.material);
+                }
+
+                //SI EL MIRROR NO XOCA CON UN CYLINDER
+                if (checkColor)
                 {
                     checkColor = false;
                     cubeColor.GetComponent<CubeColors>().RecivedColors(inputLine.material.name, checkColor);
                 }
 
-
-                inputLine.SetPosition(0, point);
-                inputLine.SetPosition(1, hit.point);
             }
-        }
+        }//RESETEAMOS EL LINE RENDERER A 0
         else if(!_bool)
         {
             inputLine.SetPosition(0, Vector3.zero);
@@ -78,14 +96,53 @@ public class ReflexiveRay : MonoBehaviour
         }
     }
 
-    void ReflexiveMirror(Vector3 point, Vector3 reflectiveRayPoint, bool _bool, Material mat)
+    public void ReflexiveMirror(Vector3 point, Vector3 reflectiveRayPoint, bool _bool, Material mat)
     {
-        if (_bool)
+        if (_bool) //ESTA FUNCION SOLO SE ENTRA SI UN MIRROR XOCA CON OTRO MIRROR
         {
-            Debug.Log("hola");
-            inputLine.material = mat;
-            inputLine.SetPosition(0, point);
-            inputLine.SetPosition(1, reflectiveRayPoint2 * 3);
+            if (Physics.Raycast(point, reflectiveRayPoint * 3 - point, out hit, 100, layerObjects))
+            {
+                //POSICION Y MATERIAL DEL LINE RENDERER
+                inputLine.material = mat;
+                inputLine.SetPosition(0, point);
+                inputLine.SetPosition(1, hit.point);
+
+                //SI EL MIRROR XOCA CON UN CYLINDER
+                if (hit.transform.gameObject.name == "Cylinder")
+                {
+                    checkColor = true;
+                    cubeColor = hit.transform.gameObject;
+                    hit.transform.gameObject.GetComponent<CubeColors>().RecivedColors(inputLine.material.name, checkColor);
+                }
+
+
+            }
+            else if (Physics.Raycast(point, reflectiveRayPoint * 3 - point, out hit, 100, layerWalls))
+            {
+                //POSICION Y MATERIAL DEL LINE RENDERER
+                inputLine.material = mat;
+                inputLine.SetPosition(0, point);
+                inputLine.SetPosition(1, hit.point);
+
+                //SI EL MIRROR NO XOCA CON UN CYLINDER
+                if (checkColor)
+                {
+                    checkColor = false;
+                    cubeColor.GetComponent<CubeColors>().RecivedColors(inputLine.material.name, checkColor);
+                }
+                if (checkMirror)
+                {
+                    checkMirror = false;
+                    reflectiveRayPoint2 = Vector3.Reflect(hit.point - point, hit.normal);
+                    reflexiveCube.GetComponent<ReflexiveRay>().ReflexiveMirror(hit.point, reflectiveRayPoint2, checkMirror, inputLine.material);
+                    reflexiveCube = null;
+                }
+            }
+        }
+        else if (!_bool)//RESETEAMOS EL LINE RENDERER QUE XOCA CON EL MIRROR A 0
+        {
+            inputLine.SetPosition(0, Vector3.zero);
+            inputLine.SetPosition(1, Vector3.zero);
         }
     }
 }

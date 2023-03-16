@@ -6,14 +6,14 @@ using UnityEngine;
 
 public class LaserRay : MonoBehaviour
 {
-    public int layerWalls = 1 << 9;
-    public int layerObjects = 1 << 7;
+    int layerWalls;
+    int layerObjects;
     public LineRenderer inputLine;
 
     //Booleans
     bool checkColor = false;
     bool checkMirror = false;
-
+    bool checkTriangle = false;
 
     RaycastHit hit;
     Vector3 reflectiveRayPoint;
@@ -21,6 +21,7 @@ public class LaserRay : MonoBehaviour
     //GameObjects
     public GameObject cubeColor = null;
     public GameObject reflexive = null;
+    public GameObject triangle = null;
 
     void Start()
     {
@@ -38,7 +39,7 @@ public class LaserRay : MonoBehaviour
     }
     void DrawReflection()
     {
-        if (Physics.Raycast (transform.position, transform.forward, out hit, Mathf.Infinity, layerObjects))
+        if (Physics.Raycast(transform.position, transform.forward, out hit, Mathf.Infinity, layerObjects))
         {
             Vector3 _hitPoint = hit.point;
             reflectiveRayPoint = Vector3.Reflect(_hitPoint - transform.position, hit.normal);
@@ -51,28 +52,42 @@ public class LaserRay : MonoBehaviour
                 checkMirror = true;
                 reflexive = hit.transform.gameObject;
                 hit.transform.gameObject.GetComponent<ReflexiveRay>().ReceiveImpactPoint(_hitPoint, reflectiveRayPoint, checkMirror, inputLine.material);
+                if (checkColor)
+                {
+                    checkColor = false;
+                    cubeColor.GetComponent<CubeColors>().RecivedColors(inputLine.material.name, checkColor);
+                }
             }
-            else if(checkMirror)
+            else if (checkMirror)
             {
                 checkMirror = false;
                 reflexive.GetComponent<ReflexiveRay>().ReceiveImpactPoint(hit.point, reflectiveRayPoint, checkMirror, inputLine.material);
             }
-            //string name = hit.transform.gameObject.name;
-            //if (hit.transform.gameObject.name == "1")
-            //hit.transform.gameObject.GetComponent<TriangleScript>().CheckPlane(name);
+
+            if ((hit.transform.gameObject.name == "1") || (hit.transform.gameObject.name == "2") || (hit.transform.gameObject.name == "3"))
+            {
+                checkTriangle = true;
+                triangle = hit.transform.gameObject;
+                hit.transform.gameObject.GetComponentInParent<TriangleScript>().CheckPlane(hit.point, hit.transform.gameObject.name, checkTriangle, inputLine.material);
+
+            }
+
             if (hit.transform.gameObject.name == "Cylinder")
             {
                 checkColor = true;
                 cubeColor = hit.transform.gameObject;
                 hit.transform.gameObject.GetComponent<CubeColors>().RecivedColors(inputLine.material.name, checkColor);
+                if (checkMirror)
+                {
+                    checkMirror = false;
+                    reflexive.GetComponent<ReflexiveRay>().ReceiveImpactPoint(hit.point, reflectiveRayPoint, checkMirror, inputLine.material);
+                }
             }
             else if (checkColor)
             {
                 checkColor = false;
                 cubeColor.GetComponent<CubeColors>().RecivedColors(inputLine.material.name, checkColor);
             }
-
-
         }
         else if(Physics.Raycast(transform.position, transform.forward, out hit, 100, layerWalls))
         {
@@ -80,13 +95,20 @@ public class LaserRay : MonoBehaviour
             {
                 checkColor = false;
                 cubeColor.GetComponent<CubeColors>().RecivedColors(inputLine.material.name, checkColor);
+                cubeColor = null;
             }
             if(checkMirror)
             {
                 checkMirror = false;
                 reflexive.GetComponent<ReflexiveRay>().ReceiveImpactPoint(hit.point, reflectiveRayPoint, checkMirror, inputLine.material);
+                reflexive = null;
             }
-
+            if (checkTriangle)
+            {
+                checkTriangle = false;
+                triangle.GetComponentInParent<TriangleScript>().CheckPlane(hit.point, triangle.name, checkMirror, inputLine.material);
+                triangle = null;
+            }
 
             inputLine.SetPosition(0, transform.position);
             inputLine.SetPosition(1, hit.point);
