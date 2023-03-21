@@ -22,6 +22,9 @@ public class LaserManager : MonoBehaviour
         Quaternion currentRotation;
         public float targetRotation = 45f;
 
+        //Rigidbody
+        Rigidbody rb = null;
+
     void Awake()
     {
             GameManager.OnGameStateChanged += GameManager_OnGameStateChanged;   //Esto es el evento del script GameManager
@@ -35,13 +38,12 @@ public class LaserManager : MonoBehaviour
         }
         private void Start()
         {
-            Cursor.visible = true;
             objectSelect = false;
         }
 
         private void GameManager_OnGameStateChanged(GameState state)        //Esta funcion depende del Awake del evento, Como he explicado antes nso permite comparar entre Script y GameObjects
         {
-            Cursor.visible = (state == GameState.Lasers && state == GameState.Settings);
+            Cursor.visible = (state == GameState.Settings || state == GameState.Lasers);
             sceneSettings = (state == GameState.Settings);
         }
 
@@ -89,18 +91,18 @@ public class LaserManager : MonoBehaviour
         {
             Quaternion targetQuaternion = Quaternion.Euler(0, targetRotation, 0) * currentRotation;
 
-            if (Input.GetKey(KeyCode.E))
-            {
-                targetQuaternion = Quaternion.Euler(0, targetRotation, 0) * currentRotation;
-                Quaternion newRotation = Quaternion.Lerp(currentRotation, targetQuaternion, Time.deltaTime * rotationSpeed);
-                ObjectMove.transform.rotation = newRotation;
-            }
-            if (Input.GetKey(KeyCode.Q))
-            {
-                targetQuaternion = Quaternion.Euler(0, -targetRotation, 0) * currentRotation;
-                Quaternion newRotation = Quaternion.Lerp(currentRotation, targetQuaternion, Time.deltaTime * rotationSpeed);
-                ObjectMove.transform.rotation = newRotation;
-            }
+                if (Input.GetKey(KeyCode.E))
+                {
+                    targetQuaternion = Quaternion.Euler(0, targetRotation, 0) * currentRotation;
+                    Quaternion newRotation = Quaternion.Lerp(currentRotation, targetQuaternion, Time.deltaTime * rotationSpeed);
+                    ObjectMove.transform.rotation = newRotation;
+                }
+                if (Input.GetKey(KeyCode.Q))
+                {
+                    targetQuaternion = Quaternion.Euler(0, -targetRotation, 0) * currentRotation;
+                    Quaternion newRotation = Quaternion.Lerp(currentRotation, targetQuaternion, Time.deltaTime * rotationSpeed);
+                    ObjectMove.transform.rotation = newRotation;
+                }
         }
 
         void RayObject()
@@ -110,10 +112,11 @@ public class LaserManager : MonoBehaviour
                 Ray ray = mainCamera.ScreenPointToRay(Input.mousePosition);
                 if (Physics.Raycast(ray, out hit, maxRayDistance) && !objectSelect)
                 {
-                    Debug.DrawRay(worldPosition, Vector3.forward, Color.red, maxRayDistance);
                     if (hit.collider.CompareTag("Interactable"))
                     {
                         ObjectMove = hit.collider.gameObject;
+                        rb = hit.collider.gameObject.GetComponent<Rigidbody>();
+                        rb.constraints = RigidbodyConstraints.None | RigidbodyConstraints.FreezeRotation;
                         positionIntial = ObjectMove.transform.position.y;
                         objectSelect = true;
                     }
@@ -122,6 +125,8 @@ public class LaserManager : MonoBehaviour
                 {
                     ObjectMove.transform.position = new Vector3(ObjectMove.transform.position.x, positionIntial, ObjectMove.transform.position.z);
                     ObjectMove.GetComponent<Rigidbody>().velocity = ObjectMove.transform.position * 0f;
+                    rb.constraints = RigidbodyConstraints.FreezeAll;
+                    rb = null;
                     StartCoroutine(Wait());
                     objectSelect = false;
                 }

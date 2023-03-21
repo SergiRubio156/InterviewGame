@@ -23,9 +23,11 @@ public class LaserRay : MonoBehaviour
     public GameObject reflexive = null;
     public GameObject triangle = null;
 
+    int materialNum = 1;
     void Start()
     {
         inputLine = GetComponentInChildren<LineRenderer>();
+        InputColor();
     }
     // See Order of Execution for Event Functions for information on FixedUpdate() and Update() related to physics queries
     void FixedUpdate()
@@ -36,6 +38,16 @@ public class LaserRay : MonoBehaviour
         layerObjects = 1 << 7;
 
         DrawReflection();
+    }
+
+    void InputColor()
+    {
+        if (inputLine.material.name == "Red (Instance)")
+            materialNum = 0;
+        else if (inputLine.material.name == "Blue (Instance)")
+            materialNum = 1;
+        else if (inputLine.material.name == "Yellow (Instance)")
+            materialNum = 2;
     }
     void DrawReflection()
     {
@@ -55,7 +67,7 @@ public class LaserRay : MonoBehaviour
                 if (checkColor)
                 {
                     checkColor = false;
-                    cubeColor.GetComponent<CubeColors>().RecivedColors(inputLine.material.name, checkColor);
+                    cubeColor.GetComponent<CubeColors>().RecivedColors(materialNum, checkColor);
                 }
             }
             else if (checkMirror)
@@ -76,7 +88,7 @@ public class LaserRay : MonoBehaviour
             {
                 checkColor = true;
                 cubeColor = hit.transform.gameObject;
-                hit.transform.gameObject.GetComponent<CubeColors>().RecivedColors(inputLine.material.name, checkColor);
+                hit.transform.gameObject.GetComponent<CubeColors>().RecivedColors(materialNum, checkColor);
                 if (checkMirror)
                 {
                     checkMirror = false;
@@ -86,7 +98,7 @@ public class LaserRay : MonoBehaviour
             else if (checkColor)
             {
                 checkColor = false;
-                cubeColor.GetComponent<CubeColors>().RecivedColors(inputLine.material.name, checkColor);
+                cubeColor.GetComponent<CubeColors>().RecivedColors(materialNum, checkColor);
             }
         }
         else if(Physics.Raycast(transform.position, transform.forward, out hit, 100, layerWalls))
@@ -94,7 +106,7 @@ public class LaserRay : MonoBehaviour
             if (checkColor)
             {
                 checkColor = false;
-                cubeColor.GetComponent<CubeColors>().RecivedColors(inputLine.material.name, checkColor);
+                cubeColor.GetComponent<CubeColors>().RecivedColors(materialNum, checkColor);
                 cubeColor = null;
             }
             if(checkMirror)

@@ -12,6 +12,7 @@ public class CubeColors : MonoBehaviour
     public LineRenderer inputLine;
     Vector3 reflectiveRayPoint;
 
+    public Material[] mat = new Material[3];
 
     // Start is called before the first frame update
     void Start()
@@ -28,35 +29,17 @@ public class CubeColors : MonoBehaviour
 
 
 
-    public void RecivedColors(string _name,bool _bool)
+    public void RecivedColors(int _name, bool _bool)
     {
         switch (_name)
         {
-            case "Red (Instance)":
+            case 0:
                 red = _bool;
                 break;
-            case "Red (Instance) (Instance)":
-                red = _bool;
-                break;
-            case "Red (Instance) (Instance) (Instance)":
-                red = _bool;
-                break;
-            case "Blue (Instance)":
+            case 1:
                 blue = _bool;
                 break;
-            case "Blue (Instance) (Instance)":
-                blue = _bool;
-                break;
-            case "Blue (Instance) (Instance) (Instance)":
-                blue = _bool;
-                break;
-            case "Yellow (Instance)":
-                yellow = _bool;
-                break;
-            case "Yellow (Instance) (Instance)":
-                yellow = _bool;
-                break;
-            case "Yellow (Instance) (Instance) (Instance)":
+            case 2:
                 yellow = _bool;
                 break;
         }

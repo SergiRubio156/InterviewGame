@@ -21,7 +21,6 @@ public class MenuManager : MonoBehaviour
     private void GameManager_OnGameStateChanged(GameState state)    //Esta funcion depende del Awake del evento, Como he explicado antes nso permite comparar entre Script y GameObjects
     {
         //panelMenu.SetActive(state == GameState.Menu);   //Si el GameState es Menu se activa este panel
-
         settingsMenu.SetActive(state == GameState.Settings);        //Si el GameState es Settings se activa este panel
 
     }
@@ -29,7 +28,7 @@ public class MenuManager : MonoBehaviour
 
     public void StartGame() //Esta funcion se llama cuando le damos click al botton del Menu
     {
-        GameManager.Instance.UpdateGameState(GameState.Lasers);//Utilizando la instancia del GameManager, entramos a la funcion UpdateGameState, y cambiamos el State a Lasers
+        GameManager.Instance.UpdateGameState(GameState.Playing);//Utilizando la instancia del GameManager, entramos a la funcion UpdateGameState, y cambiamos el State a Lasers
     }
 
     public void StartSettings() //Esta funcion se llama cuando le damos click al botton del Menu

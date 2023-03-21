@@ -10,8 +10,11 @@ public class ReflexiveRay : MonoBehaviour
     int layerWalls;
     bool checkColor = false;
     bool checkMirror = false;
+    bool checkTriangle = false;
     public GameObject cubeColor;
     public GameObject reflexiveCube;
+    public GameObject triangle;
+
     Vector3 reflectiveRayPoint2;
 
 
@@ -34,7 +37,6 @@ public class ReflexiveRay : MonoBehaviour
        
         if (_bool)
         {
-
             if (Physics.Raycast(point, reflectiveRayPoint * 3 - point, out hit, 100, layerObjects))
             {
                 //POSICION Y MATERIAL DEL LINE RENDERER
@@ -48,7 +50,7 @@ public class ReflexiveRay : MonoBehaviour
                 {
                     checkColor = true;
                     cubeColor = hit.transform.gameObject;
-                    hit.transform.gameObject.GetComponent<CubeColors>().RecivedColors(inputLine.material.name, checkColor);
+                    //hit.transform.gameObject.GetComponent<CubeColors>().RecivedColors(inputLine.material.name, checkColor, mat);
                 }
 
                 //SI EL MIRROR XOCA CON UN MIRROR
@@ -62,7 +64,13 @@ public class ReflexiveRay : MonoBehaviour
                     hit.transform.gameObject.GetComponent<ReflexiveRay>().ReflexiveMirror(hit.point, reflectiveRayPoint2, checkMirror, inputLine.material);
                 }
 
+                if ((hit.transform.gameObject.name == "1") || (hit.transform.gameObject.name == "2") || (hit.transform.gameObject.name == "3"))
+                {
+                    checkTriangle = true;
+                    triangle = hit.transform.gameObject;
+                    hit.transform.gameObject.GetComponentInParent<TriangleScript>().CheckPlane(hit.point, hit.transform.gameObject.name, checkTriangle, inputLine.material);
 
+                }
 
             }
             else if (Physics.Raycast(point, reflectiveRayPoint * 3 - point, out hit, 100, layerWalls))
@@ -78,15 +86,23 @@ public class ReflexiveRay : MonoBehaviour
                     checkMirror = false;
                     reflectiveRayPoint2 = Vector3.Reflect(hit.point - point, hit.normal);
                     reflexiveCube.GetComponent<ReflexiveRay>().ReflexiveMirror(hit.point, reflectiveRayPoint2, checkMirror, inputLine.material);
+                    reflexiveCube = null;
                 }
 
                 //SI EL MIRROR NO XOCA CON UN CYLINDER
                 if (checkColor)
                 {
                     checkColor = false;
-                    cubeColor.GetComponent<CubeColors>().RecivedColors(inputLine.material.name, checkColor);
+                    //cubeColor.GetComponent<CubeColors>().RecivedColors(inputLine.material.name, checkColor, mat);
+                    cubeColor = null;
                 }
-
+                //Si el mirror no xoca con el triangulo
+                if (checkTriangle)
+                {
+                    checkTriangle = false;
+                    triangle.GetComponentInParent<TriangleScript>().CheckPlane(hit.point, hit.transform.gameObject.name, checkTriangle, inputLine.material);
+                    triangle = null;
+                }
             }
         }//RESETEAMOS EL LINE RENDERER A 0
         else if(!_bool)
@@ -112,9 +128,26 @@ public class ReflexiveRay : MonoBehaviour
                 {
                     checkColor = true;
                     cubeColor = hit.transform.gameObject;
-                    hit.transform.gameObject.GetComponent<CubeColors>().RecivedColors(inputLine.material.name, checkColor);
+                    //hit.transform.gameObject.GetComponent<CubeColors>().RecivedColors(inputLine.material.name, checkColor, mat);
                 }
 
+                if (hit.transform.gameObject.name == "Mirror")
+                {
+
+                    reflectiveRayPoint2 = Vector3.Reflect(hit.point - point, hit.normal);
+
+                    checkMirror = true;
+                    reflexiveCube = hit.transform.gameObject;
+                    hit.transform.gameObject.GetComponent<ReflexiveRay>().ReflexiveMirror(hit.point, reflectiveRayPoint2, checkMirror, inputLine.material);
+                }
+
+                if ((hit.transform.gameObject.name == "1") || (hit.transform.gameObject.name == "2") || (hit.transform.gameObject.name == "3"))
+                {
+                    checkTriangle = true;
+                    triangle = hit.transform.gameObject;
+                    hit.transform.gameObject.GetComponentInParent<TriangleScript>().CheckPlane(hit.point, hit.transform.gameObject.name, checkTriangle, inputLine.material);
+
+                }
 
             }
             else if (Physics.Raycast(point, reflectiveRayPoint * 3 - point, out hit, 100, layerWalls))
@@ -128,7 +161,7 @@ public class ReflexiveRay : MonoBehaviour
                 if (checkColor)
                 {
                     checkColor = false;
-                    cubeColor.GetComponent<CubeColors>().RecivedColors(inputLine.material.name, checkColor);
+                    //cubeColor.GetComponent<CubeColors>().RecivedColors(inputLine.material.name, checkColor, mat);
                 }
                 if (checkMirror)
                 {

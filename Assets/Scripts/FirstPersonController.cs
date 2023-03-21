@@ -73,6 +73,7 @@ namespace StarterAssets
 		private GameObject _mainCamera;
 
 		private const float _threshold = 0.01f;
+		bool sceneSettings, isPlaying;
 
 		private bool IsCurrentDeviceMouse
 		{
@@ -86,8 +87,9 @@ namespace StarterAssets
 			}
 		}
 
-		private void Awake()
+		void Awake()
 		{
+			GameManager.OnGameStateChanged += GameManager_OnGameStateChanged;   //Esto es el evento del script GameManager
 			// get a reference to our main camera
 			if (_mainCamera == null)
 			{
@@ -110,16 +112,38 @@ namespace StarterAssets
 			_fallTimeoutDelta = FallTimeout;
 		}
 
-		private void Update()
+		private void OnDestroy()
 		{
-			JumpAndGravity();
-			GroundedCheck();
-			Move();
+			GameManager.OnGameStateChanged -= GameManager_OnGameStateChanged;   //La funcion "OnDestroy" se activa cuando destruimos el objeto, una vez destruido se activa el evento,
+		}
+		void GameManager_OnGameStateChanged(GameState state)        //Esta funcion depende del Awake del evento, Como he explicado antes nso permite comparar entre Script y GameObjects
+		{
+			Cursor.visible = (state == GameState.Settings);
+			sceneSettings = (state == GameState.Settings);
+			isPlaying = (state == GameState.Settings);
+		}
+
+		void Update()
+		{
+			if (Input.GetKeyDown(KeyCode.Escape)) //Cuando le damos click al Escape entra a esta funcion
+			{
+				if (sceneSettings) GameManager.Instance.UpdateGameState(GameState.Playing);
+				else GameManager.Instance.UpdateGameState(GameState.Settings);
+			}
+			if (!isPlaying)
+			{
+				JumpAndGravity();
+				GroundedCheck();
+				Move();
+			}
 		}
 
 		private void LateUpdate()
 		{
-			CameraRotation();
+			if (!isPlaying)
+			{
+				CameraRotation();
+			}
 		}
 
 		private void GroundedCheck()
