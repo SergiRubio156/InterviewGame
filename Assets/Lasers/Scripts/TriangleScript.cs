@@ -46,19 +46,19 @@ public class TriangleScript : MonoBehaviour
 
         Vector3 reflectiveRayPoint = Vector3.Reflect(_hitPoint - _position, hit.normal);
 
-        reflexive.GetComponent<ReflexiveRay>().ReceiveImpactPoint(_hitPoint, reflectiveRayPoint, _bool, _mat);
+        //reflexive.GetComponent<ReflexiveRay>().ReceiveImpactPoint(_hitPoint, reflectiveRayPoint, _bool, _mat.color);
 
 
     }
 
-    public void CheckPlane(Vector3 _point ,string _name, bool _bool,Material _mat)
+    public void CheckPlane(Vector3 _point ,string _name, bool _bool,Color _mat)
     {
         if (_bool)
         {
             checkTriangle = false;
-            LineSide[0].material = _mat;
-            LineSide[1].material = _mat;
-            LineSide[2].material = _mat;
+            LineSide[0].material.color = _mat;
+            LineSide[1].material.color = _mat;
+            LineSide[2].material.color = _mat;
             switch (_name)
             {
                 case "1":

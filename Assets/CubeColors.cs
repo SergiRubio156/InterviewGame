@@ -12,8 +12,10 @@ public class CubeColors : MonoBehaviour
     public LineRenderer inputLine;
     Vector3 reflectiveRayPoint;
 
-    public Material[] mat = new Material[3];
+    public Material[] nameColor = new Material[4];
 
+    bool checkMirror;
+    GameObject reflexive;
     // Start is called before the first frame update
     void Start()
     {
@@ -29,19 +31,26 @@ public class CubeColors : MonoBehaviour
 
 
 
-    public void RecivedColors(int _name, bool _bool)
+    public void RecivedColors(Color _name, bool _bool)
     {
-        switch (_name)
+
+        for (int i = 0; i < nameColor.Length; i++)
         {
-            case 0:
-                red = _bool;
-                break;
-            case 1:
-                blue = _bool;
-                break;
-            case 2:
-                yellow = _bool;
-                break;
+            if (nameColor[i].color == _name)
+            {
+                switch (i)
+                {
+                    case 0:
+                        red = _bool;
+                        break;
+                    case 1:
+                        blue = _bool;
+                        break;
+                    case 2:
+                        yellow = _bool;
+                        break;
+                }
+            }
         }
         if (red && blue && yellow)
         {
@@ -56,7 +65,16 @@ public class CubeColors : MonoBehaviour
                 {
                     hit.transform.gameObject.GetComponent<CheckLaser>().CheckLasers();
                 }
-            }
+
+                if (hit.transform.gameObject.name == "Mirror")
+                {
+                    Vector3 reflectiveRayPoint2 = Vector3.Reflect(hit.point - transform.position, hit.normal);
+
+                    checkMirror = true;
+                    reflexive = hit.transform.gameObject;
+                    //hit.transform.gameObject.GetComponent<ReflexiveRay>().ReceiveImpactPoint(hit.point, reflectiveRayPoint2, checkMirror, inputLine.material.color);
+                }
+             }
             else if (Physics.Raycast(transform.position, transform.forward, out hit, 100, layerWalls))
             {
                 Vector3 _hitPoint = hit.point;
@@ -67,7 +85,6 @@ public class CubeColors : MonoBehaviour
         }
         else
         {
-
             inputLine.SetPosition(0, Vector3.zero);
             inputLine.SetPosition(1, Vector3.zero);
         }
