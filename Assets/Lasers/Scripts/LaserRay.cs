@@ -101,7 +101,7 @@ public class LaserRay : MonoBehaviour
 
     }
 
-    bool LaserWall()
+    void LaserWall()
     {
         if (Physics.Raycast(transform.position, transform.forward, out hit, Mathf.Infinity, layerWalls))
         {
@@ -109,18 +109,9 @@ public class LaserRay : MonoBehaviour
             inputLine.SetPosition(1, hit.point);
 
             laserReset("all");
-            return true;
-        }
-        return false;
-    }
 
-    bool LaserConfirm()
-    {
-        if (Physics.Raycast(transform.position, transform.forward, out hit, 100))
-        {
-                return true;
         }
-        return false;
+
     }
 
     void LaserDraw()
