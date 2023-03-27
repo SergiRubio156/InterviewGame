@@ -185,7 +185,7 @@ public class ReflexiveRay : MonoBehaviour
 
     public void ReceiveImpactPoint(Vector3 _point,Vector3 _reflectiveRayPoint, bool _bool,Color _color, Vector3 _transformStart)
     {
-        Debug.Log(gameObject.name);
+        //Debug.Log(gameObject.name);
         point = _point;
         reflectiveRayPoint = _reflectiveRayPoint;
         checkBool = _bool;
