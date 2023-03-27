@@ -49,7 +49,6 @@ public class LaserRay : MonoBehaviour
                 reflexive.GetComponent<ReflexiveRay>().ReceiveImpactPoint(Vector3.zero, Vector3.zero, false, inputLine.material.color, transform.position);
                 reflexive = null;
             }
-
             reflexive = hit.transform.gameObject;
             hit.transform.gameObject.GetComponent<ReflexiveRay>().ReceiveImpactPoint(_hitPoint, reflectiveRayPoint, true, inputLine.material.color, transform.position);
 

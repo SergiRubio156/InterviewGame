@@ -31,6 +31,18 @@ public class ReflexiveRay : MonoBehaviour
         layerTriangle = 1 << 8;
         layerWalls = 1 << 9;
         LayerStart = 1 << 10;
+
+        if(ConfirmLine())
+        {
+            laserReset("all");
+        }
+    }
+
+    bool ConfirmLine()
+    {
+        if(inputLine.GetPosition(0) == Vector3.zero)
+            return true;
+        return false;
     }
 
     int SearchLaser()
@@ -53,8 +65,16 @@ public class ReflexiveRay : MonoBehaviour
             inputLine.SetPosition(0, point);
             inputLine.SetPosition(1, hit.point);
 
+            if (reflexiveCube != hit.transform.gameObject && reflexiveCube != null)
+            {
+                reflexiveCube.GetComponent<ReflexiveRay>().ReceiveImpactPoint(Vector3.zero, Vector3.zero, false, inputLine.material.color, transform.position);
+                reflexiveCube = null;
+            }
+
+            Debug.Log("hola");
+
             reflexiveCube = hit.transform.gameObject;
-            reflexiveCube.GetComponent<ReflexiveRay>().ReceiveImpactPoint(_hitPoint, reflectiveRayPoint2, true, inputLine.material.color, transform.position);
+            reflexiveCube.GetComponent<ReflexiveRay>().ReflexiveMirror(_hitPoint, reflectiveRayPoint2, true, inputLine.material.color, transform.position);
 
             laserReset("Mirror");
         }
@@ -120,7 +140,7 @@ public class ReflexiveRay : MonoBehaviour
         if (Physics.Raycast(point, transformStart - point, out hit, 100))
         {
 
-            if (hit.transform.gameObject.layer == 10 || hit.transform.gameObject.layer == 7 || hit.transform.gameObject.layer == 6)
+            if (hit.transform.gameObject.layer == 10 || hit.transform.gameObject.layer == 7)
             {
                 return true;
             }
@@ -128,7 +148,7 @@ public class ReflexiveRay : MonoBehaviour
         return false;
     }
 
-    /*bool ReflexConfirm()
+    bool ReflexConfirm()
     {
         if (Physics.Raycast(point, transformStart - point, out hit, 100))
         {
@@ -139,12 +159,11 @@ public class ReflexiveRay : MonoBehaviour
             }
         }
         return false;
-    }*/
-
+    }
 
     void LaserDraw()
     {
-        if (LaserConfirm() && checkBool) //|| (ReflexConfirm() && checkBool1))
+        if ((LaserConfirm() && checkBool) || (ReflexConfirm() && checkBool1))
         {
             switch (SearchLaser())
             {
@@ -179,7 +198,6 @@ public class ReflexiveRay : MonoBehaviour
 
     public void ReceiveImpactPoint(Vector3 _point,Vector3 _reflectiveRayPoint, bool _bool,Color _color, Vector3 _transformStart)
     {
-        Debug.Log(gameObject.name);
         point = _point;
         reflectiveRayPoint = _reflectiveRayPoint;
         checkBool = _bool;

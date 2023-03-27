@@ -34,6 +34,17 @@ public class CubeColors : MonoBehaviour
         layerWalls = 1 << 9;
         LayerStart = 1 << 10;
 
+        if (ConfirmLine())
+        {
+            laserReset("all");
+        }
+    }
+
+    bool ConfirmLine()
+    {
+        if (inputLine.GetPosition(0) == Vector3.zero)
+            return true;
+        return false;
     }
 
     void LaserMirror()
