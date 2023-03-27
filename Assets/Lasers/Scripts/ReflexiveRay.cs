@@ -31,8 +31,6 @@ public class ReflexiveRay : MonoBehaviour
         layerTriangle = 1 << 8;
         layerWalls = 1 << 9;
         LayerStart = 1 << 10;
-
-        LaserDraw();
     }
 
     int SearchLaser()
@@ -55,14 +53,10 @@ public class ReflexiveRay : MonoBehaviour
             inputLine.SetPosition(0, point);
             inputLine.SetPosition(1, hit.point);
 
-            if(reflexiveCube.name != hit.transform.gameObject.name)
-            {
+            reflexiveCube = hit.transform.gameObject;
+            reflexiveCube.GetComponent<ReflexiveRay>().ReceiveImpactPoint(_hitPoint, reflectiveRayPoint2, true, inputLine.material.color, transform.position);
 
-                reflexiveCube = hit.transform.gameObject;
-                hit.transform.gameObject.GetComponent<ReflexiveRay>().ReflexiveMirror(hit.point, reflectiveRayPoint2, true, inputLine.material.color, transform.position);
-
-                laserReset("Mirror");
-            }
+            laserReset("Mirror");
         }
     }
 
@@ -126,7 +120,7 @@ public class ReflexiveRay : MonoBehaviour
         if (Physics.Raycast(point, transformStart - point, out hit, 100))
         {
 
-            if (hit.transform.gameObject.layer == 10 || hit.transform.gameObject.layer == 7)
+            if (hit.transform.gameObject.layer == 10 || hit.transform.gameObject.layer == 7 || hit.transform.gameObject.layer == 6)
             {
                 return true;
             }
@@ -134,7 +128,7 @@ public class ReflexiveRay : MonoBehaviour
         return false;
     }
 
-    bool ReflexConfirm()
+    /*bool ReflexConfirm()
     {
         if (Physics.Raycast(point, transformStart - point, out hit, 100))
         {
@@ -145,12 +139,12 @@ public class ReflexiveRay : MonoBehaviour
             }
         }
         return false;
-    }
+    }*/
 
 
     void LaserDraw()
     {
-        if ((LaserConfirm() && checkBool) || (ReflexConfirm() && checkBool1))
+        if (LaserConfirm() && checkBool) //|| (ReflexConfirm() && checkBool1))
         {
             switch (SearchLaser())
             {
