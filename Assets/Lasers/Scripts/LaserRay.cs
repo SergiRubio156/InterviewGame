@@ -6,7 +6,7 @@ using UnityEngine;
 
 public class LaserRay : MonoBehaviour
 {
-    int layerWalls,layerMirror,layerCylinder,layerTriangle;
+    int layerWalls,layerMirror,layerCylinder,layerTriangle, LayerStart;
     public LineRenderer inputLine;
 
     RaycastHit hit;
@@ -28,6 +28,8 @@ public class LaserRay : MonoBehaviour
         layerCylinder = 1 << 7;
         layerTriangle = 1 << 8;
         layerWalls = 1 << 9;
+        LayerStart = 1 << 10;
+
         LaserDraw();
     }
 
@@ -35,11 +37,18 @@ public class LaserRay : MonoBehaviour
     {
         if (Physics.Raycast(transform.position, transform.forward, out hit, Mathf.Infinity, layerMirror))
         {
+
             Vector3 _hitPoint = hit.point;
             reflectiveRayPoint = Vector3.Reflect(_hitPoint - transform.position, hit.normal);
 
             inputLine.SetPosition(0, transform.position);
             inputLine.SetPosition(1, _hitPoint);
+
+            if(reflexive != hit.transform.gameObject && reflexive != null)
+            {
+                reflexive.GetComponent<ReflexiveRay>().ReceiveImpactPoint(Vector3.zero, Vector3.zero, false, inputLine.material.color, transform.position);
+                reflexive = null;
+            }
 
             reflexive = hit.transform.gameObject;
             hit.transform.gameObject.GetComponent<ReflexiveRay>().ReceiveImpactPoint(_hitPoint, reflectiveRayPoint, true, inputLine.material.color, transform.position);
@@ -79,6 +88,19 @@ public class LaserRay : MonoBehaviour
 
     }
 
+    void LaserStart()
+    {
+        if (Physics.Raycast(transform.position, transform.forward, out hit, 100, LayerStart))
+        {
+            inputLine.SetPosition(0, transform.position);
+            inputLine.SetPosition(1, hit.point);
+
+            laserReset("all");
+
+        }
+
+    }
+
     bool LaserWall()
     {
         if (Physics.Raycast(transform.position, transform.forward, out hit, Mathf.Infinity, layerWalls))
@@ -91,40 +113,50 @@ public class LaserRay : MonoBehaviour
         }
         return false;
     }
+
+    bool LaserConfirm()
+    {
+        if (Physics.Raycast(transform.position, transform.forward, out hit, 100))
+        {
+                return true;
+        }
+        return false;
+    }
+
     void LaserDraw()
     {
-        switch(SearchLaser())
-        {
-            case "Mirror":
-                LaserMirror();
-                break;
-            case "Cylinder":
-                LaserColor();
-                break;
-            case "1":
-                LaserDivide();
-                break;
-            case "2":
-                LaserDivide();
-                break;
-            case "3":
-                LaserDivide();
-                break;
-            default:
-                LaserWall();
-                break;
-        }
+            switch (SearchLaser())
+            {
+                case 6:
+                    LaserMirror();
+                    break;
+                case 7:
+                    LaserColor();
+                    break;
+                case 8:
+                    LaserDivide();
+                    break;
+                case 9:
+                    LaserWall();
+                    break;
+                case 10:
+                    LaserStart();
+                    break;
+                default:
+                    LaserWall();
+                    break;
+            }
 
     }
 
-    string SearchLaser()
+    int SearchLaser()
     {
         if (Physics.Raycast(transform.position, transform.forward, out hit, Mathf.Infinity))
         {
-            return hit.transform.gameObject.name;
+            return hit.transform.gameObject.layer;
         }
 
-        return "Walls";
+        return 0;
     }
     void laserReset(string _name)
     {
