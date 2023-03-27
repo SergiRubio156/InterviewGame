@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8518095307114649405}
   - component: {fileID: 8518095307114649402}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: LineYellow
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -145,9 +145,9 @@ GameObject:
   - component: {fileID: 8518095308060005330}
   - component: {fileID: 8518095308060005331}
   - component: {fileID: 8518095308060005328}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: CubeYellow
-  m_TagString: Interactable
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -243,11 +243,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 952e9c632601bf54999351640ac3b059, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  layerWalls: 0
-  layerObjects: 0
   inputLine: {fileID: 0}
   cubeColor: {fileID: 0}
   reflexive: {fileID: 0}
+  triangle: {fileID: 0}
 --- !u!54 &8518095308060005328
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -262,5 +261,5 @@ Rigidbody:
   m_UseGravity: 0
   m_IsKinematic: 0
   m_Interpolate: 0
-  m_Constraints: 112
+  m_Constraints: 126
   m_CollisionDetection: 0
