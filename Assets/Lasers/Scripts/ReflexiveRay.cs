@@ -94,7 +94,7 @@ public class ReflexiveRay : MonoBehaviour
 
     }
 
-    bool LaserWall()
+    void  LaserWall()
     {
         if (Physics.Raycast(point, reflectiveRayPoint * 3 - point, out hit, 100, layerWalls))
         {
@@ -102,11 +102,10 @@ public class ReflexiveRay : MonoBehaviour
             inputLine.SetPosition(1, hit.point);
 
             laserReset("all");
-            return true;
-        }
-        return false;
-    }
 
+        }
+
+    }
     bool LaserConfirm()
     {
         Debug.DrawRay(point, transformStart - point, Color.black);
@@ -140,13 +139,9 @@ public class ReflexiveRay : MonoBehaviour
     {
         if ((LaserConfirm() && checkBool) || (ReflexConfirm() && checkBool1))
         {
-            Debug.Log(gameObject.name);
             switch (SearchLaser())
             {
                 case "Mirror":
-                    LaserMirror();
-                    break;
-                case "Mirror1":
                     LaserMirror();
                     break;
                 case "Cylinder":
@@ -171,11 +166,13 @@ public class ReflexiveRay : MonoBehaviour
         }
         else
         {
+            laserReset("all");
             inputLine.SetPosition(0, Vector3.zero);
             inputLine.SetPosition(1, Vector3.zero);
         }
 
     }
+
 
     public void ReceiveImpactPoint(Vector3 _point,Vector3 _reflectiveRayPoint, bool _bool,Color _color, Vector3 _transformStart)
     {
