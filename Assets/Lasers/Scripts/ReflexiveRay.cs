@@ -8,9 +8,9 @@ public class ReflexiveRay : MonoBehaviour
     public LineRenderer inputLine;
     int layerWalls, layerMirror, layerCylinder, layerTriangle, LayerStart;
 
-    public GameObject cubeColor;
-    public GameObject reflexiveCube;
-    public GameObject triangle;
+    public GameObject cubeColor = null;
+    public GameObject reflexiveCube = null;
+    public GameObject triangle = null;
 
     Vector3 reflectiveRayPoint;
     Vector3 point;
@@ -24,7 +24,7 @@ public class ReflexiveRay : MonoBehaviour
     }
 
     // Update is called once per frame
-    void Update()
+    void FixedUpdate()
     {
         layerMirror = 1 << 6;
         layerCylinder = 1 << 7;
@@ -35,20 +35,19 @@ public class ReflexiveRay : MonoBehaviour
         LaserDraw();
     }
 
-    string SearchLaser()
+    int SearchLaser()
     {
         if (Physics.Raycast(point, reflectiveRayPoint * 3 - point, out hit, 100))
         {
-            return hit.transform.gameObject.name;
+            return hit.transform.gameObject.layer;
         }
 
-        return "null";
+        return 0;
     }
     void LaserMirror()
     {
         if (Physics.Raycast(point, reflectiveRayPoint * 3 - point, out hit, 100, layerMirror))
-        {
-
+        {               
             Vector3 _hitPoint = hit.point;
             Vector3 reflectiveRayPoint2 = Vector3.Reflect(hit.point - point, hit.normal);
 
@@ -56,10 +55,14 @@ public class ReflexiveRay : MonoBehaviour
             inputLine.SetPosition(0, point);
             inputLine.SetPosition(1, hit.point);
 
-            reflexiveCube = hit.transform.gameObject;
-            hit.transform.gameObject.GetComponent<ReflexiveRay>().ReflexiveMirror(hit.point, reflectiveRayPoint2, true, inputLine.material.color,transform.position);
+            if(reflexiveCube.name != hit.transform.gameObject.name)
+            {
 
-            laserReset("Mirror");
+                reflexiveCube = hit.transform.gameObject;
+                hit.transform.gameObject.GetComponent<ReflexiveRay>().ReflexiveMirror(hit.point, reflectiveRayPoint2, true, inputLine.material.color, transform.position);
+
+                laserReset("Mirror");
+            }
         }
     }
 
@@ -106,13 +109,24 @@ public class ReflexiveRay : MonoBehaviour
         }
 
     }
+    void LaserStart()
+    {
+        if (Physics.Raycast(point, reflectiveRayPoint * 3 - point, out hit, 100, LayerStart))
+        {
+            inputLine.SetPosition(0, point);
+            inputLine.SetPosition(1, hit.point);
+
+            laserReset("all");
+
+        }
+
+    }
     bool LaserConfirm()
     {
-        Debug.DrawRay(point, transformStart - point, Color.black);
         if (Physics.Raycast(point, transformStart - point, out hit, 100))
         {
 
-            if (hit.transform.gameObject.name == "CubeYellow" || hit.transform.gameObject.name == "CubeRed" || hit.transform.gameObject.name == "CubeBlue")
+            if (hit.transform.gameObject.layer == 10 || hit.transform.gameObject.layer == 7)
             {
                 return true;
             }
@@ -122,11 +136,10 @@ public class ReflexiveRay : MonoBehaviour
 
     bool ReflexConfirm()
     {
-        Debug.DrawRay(point, transformStart - point, Color.black);
         if (Physics.Raycast(point, transformStart - point, out hit, 100))
         {
 
-            if (hit.transform.gameObject.name == "Mirror")
+            if (hit.transform.gameObject.layer == 6)
             {
                 return true;
             }
@@ -141,23 +154,20 @@ public class ReflexiveRay : MonoBehaviour
         {
             switch (SearchLaser())
             {
-                case "Mirror":
+                case 6: //MIRROR
                     LaserMirror();
                     break;
-                case "Cylinder":
+                case 7: //CYLINDER
                     LaserColor();
                     break;
-                case "1":
+                case 8: //TRIANGLE
                     LaserDivide();
                     break;
-                case "2":
-                    LaserDivide();
-                    break;
-                case "3":
-                    LaserDivide();
-                    break;
-                case "Wall":
+                case 9: //WALL
                     LaserWall();
+                    break;
+                case 10: //LaserStart
+                    LaserStart();
                     break;
                 default:
                     checkBool = false;
@@ -175,6 +185,7 @@ public class ReflexiveRay : MonoBehaviour
 
     public void ReceiveImpactPoint(Vector3 _point,Vector3 _reflectiveRayPoint, bool _bool,Color _color, Vector3 _transformStart)
     {
+        Debug.Log(gameObject.name);
         point = _point;
         reflectiveRayPoint = _reflectiveRayPoint;
         checkBool = _bool;
