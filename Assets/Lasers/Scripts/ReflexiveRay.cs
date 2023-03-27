@@ -166,7 +166,6 @@ public class ReflexiveRay : MonoBehaviour
         }
         else
         {
-            laserReset("all");
             inputLine.SetPosition(0, Vector3.zero);
             inputLine.SetPosition(1, Vector3.zero);
         }
