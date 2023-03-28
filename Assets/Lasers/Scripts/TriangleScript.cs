@@ -17,7 +17,7 @@ public class TriangleScript : MonoBehaviour
     int layerWalls, layerMirror, layerCylinder, layerTriangle, LayerStart;
 
     Vector3 point;
-    public int name;
+    public int nameSide = 0;
 
     bool checkBool, checkConfirm = true;
     // Start is called before the first frame update
@@ -42,15 +42,18 @@ public class TriangleScript : MonoBehaviour
         LayerStart = 1 << 10;
 
         Render();
-        if (ConfirmLine(name))
+        if (ConfirmLine(nameSide) && !checkBool)
         {
-                laserReset("all", name);
+            for (int i = 0; i < inputLine.Length; i++)
+            {
+                laserReset("all", i);
+            }
         }
     }
 
     bool ConfirmLine(int _name)
     {
-        if (inputLine[name].GetPosition(0) == Vector3.zero)
+        if (inputLine[nameSide].GetPosition(1) == Vector3.zero)
             return true;
         return false;
     }
@@ -156,18 +159,18 @@ public class TriangleScript : MonoBehaviour
                         case 7:
                             LaserColor(i);
                             break;
-                        /*case 8:
+                        case 8:
                             LaserDivide(i);
-                            break;*/
+                            break;
                         case 9:
                             LaserWall(i);
                             break;
-                            /*case 10:
-                                LaserStart(i);
-                                break;
-                            default:
-                                LaserWall(i);
-                                break;*/
+                        case 10:
+                            LaserStart(i);
+                            break;
+                        default:
+                            LaserWall(i);
+                            break;
                     }
                 }
                 else if (i == _name)
@@ -209,11 +212,11 @@ public class TriangleScript : MonoBehaviour
                 checkBool = false;
             }
             if (_name == "1")
-                name = 0;
+                nameSide = 0;
             else if (_name == "2")
-                name = 1;
+                nameSide = 1;
             else if (_name == "3")
-                name = 2;
+                nameSide = 2;
 
             checkBool = _bool;
             for (int i = 0; i < inputLine.Length; i++)
@@ -221,7 +224,7 @@ public class TriangleScript : MonoBehaviour
                 inputLine[i].material.color = _color;
             }
 
-            LaserDraw(name);
+            LaserDraw(nameSide);
     }
  
 

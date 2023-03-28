@@ -63,7 +63,11 @@ public class LaserRay : MonoBehaviour
             inputLine.SetPosition(0, transform.position);
             inputLine.SetPosition(1, hit.point);
 
-
+            if (cubeColor != hit.transform.gameObject && cubeColor != null)
+            {
+                cubeColor.GetComponent<CubeColors>().RecivedColors(inputLine.material.color, false);
+                cubeColor = null;
+            }
             cubeColor = hit.transform.gameObject;
             hit.transform.gameObject.GetComponent<CubeColors>().RecivedColors(inputLine.material.color, true);
 
@@ -78,6 +82,11 @@ public class LaserRay : MonoBehaviour
             inputLine.SetPosition(0, transform.position);
             inputLine.SetPosition(1, hit.point);
 
+            if (triangle != hit.transform.gameObject && triangle != null)
+            {
+                triangle.GetComponentInParent<TriangleScript>().CheckPlane(Vector3.zero, triangle.name, false, inputLine.material.color);
+                triangle = null;
+            }
 
             triangle = hit.transform.gameObject;
             hit.transform.gameObject.GetComponentInParent<TriangleScript>().CheckPlane(hit.point, hit.transform.gameObject.name, true, inputLine.material.color);
