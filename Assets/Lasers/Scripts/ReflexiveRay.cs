@@ -17,6 +17,8 @@ public class ReflexiveRay : MonoBehaviour
     Vector3 transformStart;
     bool checkBool1;
     bool checkBool;
+
+    int num,numRef;
     // Start is called before the first frame update
     void Start()
     {
@@ -64,19 +66,19 @@ public class ReflexiveRay : MonoBehaviour
 
             inputLine.SetPosition(0, point);
             inputLine.SetPosition(1, hit.point);
-
-            if (reflexiveCube != hit.transform.gameObject && reflexiveCube != null)
+            if (numRef != 6)
             {
-                reflexiveCube.GetComponent<ReflexiveRay>().ReceiveImpactPoint(Vector3.zero, Vector3.zero, false, inputLine.material.color, transform.position);
-                reflexiveCube = null;
+                if (reflexiveCube != hit.transform.gameObject && reflexiveCube != null)
+                {
+                    reflexiveCube.GetComponent<ReflexiveRay>().ReceiveImpactPoint(Vector3.zero, Vector3.zero, false, inputLine.material.color, transform.position);
+                    reflexiveCube = null;
+
+                }
+
+                reflexiveCube = hit.transform.gameObject;
+                reflexiveCube.GetComponent<ReflexiveRay>().ReflexiveMirror(_hitPoint, reflectiveRayPoint2, true, inputLine.material.color, transform.position);
+                laserReset("Mirror");
             }
-
-            Debug.Log("hola");
-
-            reflexiveCube = hit.transform.gameObject;
-            reflexiveCube.GetComponent<ReflexiveRay>().ReflexiveMirror(_hitPoint, reflectiveRayPoint2, true, inputLine.material.color, transform.position);
-
-            laserReset("Mirror");
         }
     }
 
@@ -87,11 +89,13 @@ public class ReflexiveRay : MonoBehaviour
             inputLine.SetPosition(0, point);
             inputLine.SetPosition(1, hit.point);
 
+            if (num != 7)
+            {
+                cubeColor = hit.transform.gameObject;
+                hit.transform.gameObject.GetComponent<CubeColors>().RecivedColors(inputLine.material.color, true);
 
-            cubeColor = hit.transform.gameObject;
-            hit.transform.gameObject.GetComponent<CubeColors>().RecivedColors(inputLine.material.color, true);
-
-            laserReset("Color");
+                laserReset("Color");
+            }
         }
     }
 
@@ -102,11 +106,13 @@ public class ReflexiveRay : MonoBehaviour
             inputLine.SetPosition(0, point);
             inputLine.SetPosition(1, hit.point);
 
+            if (num != 8)
+            {
+                triangle = hit.transform.gameObject;
+                hit.transform.gameObject.GetComponentInParent<TriangleScript>().CheckPlane(hit.point, hit.transform.gameObject.name, true, inputLine.material.color);
 
-            triangle = hit.transform.gameObject;
-            hit.transform.gameObject.GetComponentInParent<TriangleScript>().CheckPlane(hit.point, hit.transform.gameObject.name, true, inputLine.material.color);
-
-            laserReset("Divide");
+                laserReset("Divide");
+            }
         }
 
     }
@@ -140,8 +146,9 @@ public class ReflexiveRay : MonoBehaviour
         if (Physics.Raycast(point, transformStart - point, out hit, 100))
         {
 
-            if (hit.transform.gameObject.layer == 10 || hit.transform.gameObject.layer == 7)
+            if (hit.transform.gameObject.layer == 10 || hit.transform.gameObject.layer == 7 || hit.transform.gameObject.layer == 8)
             {
+                num = hit.transform.gameObject.layer;
                 return true;
             }
         }
@@ -150,11 +157,13 @@ public class ReflexiveRay : MonoBehaviour
 
     bool ReflexConfirm()
     {
+        numRef = 0;
         if (Physics.Raycast(point, transformStart - point, out hit, 100))
         {
 
             if (hit.transform.gameObject.layer == 6)
             {
+                numRef = hit.transform.gameObject.layer;
                 return true;
             }
         }
@@ -163,8 +172,10 @@ public class ReflexiveRay : MonoBehaviour
 
     void LaserDraw()
     {
+
         if ((LaserConfirm() && checkBool) || (ReflexConfirm() && checkBool1))
         {
+
             switch (SearchLaser())
             {
                 case 6: //MIRROR

@@ -164,11 +164,8 @@ public class LaserRay : MonoBehaviour
                 break;
             case "Color":
                 if (reflexive != null)
-                {
                     reflexive.GetComponent<ReflexiveRay>().ReceiveImpactPoint(Vector3.zero, Vector3.zero, false, inputLine.material.color,transform.position);
-                    reflexive = null;
-                }
-
+                reflexive = null;
                 if (triangle != null)
                     triangle.GetComponentInParent<TriangleScript>().CheckPlane(Vector3.zero, triangle.name, false, inputLine.material.color);
                 triangle = null;

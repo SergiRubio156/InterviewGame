@@ -163,6 +163,12 @@ public class CubeColors : MonoBehaviour
                 inputLine.SetPosition(1, Vector3.zero);
             }
         }
+        else if(!_bool)
+        {
+            red = false;
+            yellow = false;
+            blue = false;
+        }
     }
     int SearchLaser()
     {
