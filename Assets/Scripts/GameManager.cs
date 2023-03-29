@@ -14,7 +14,8 @@ public enum GameState
     Playing,
     Lasers,
     Settings,
-    Menu
+    Menu,
+    Exit
 
 
 };
@@ -103,6 +104,9 @@ public class GameManager : MonoBehaviour
                     State = newState;
                     break;
 
+                case GameState.Exit:
+                    HandleExit();
+                    break;
                 default: //se entrara aqui si el valor "newState" no coincide con ningun valor anterior
                     throw new ArgumentOutOfRangeException(nameof(newState), newState, null);//pone el valor "newState" a null para que no pete el programa.
             }
@@ -112,6 +116,11 @@ public class GameManager : MonoBehaviour
         Debug.Log("State " + State);
         Debug.Log("Newstate " + newState);
         
+    }
+
+    private void HandleExit()
+    {
+        Application.Quit();
     }
 
     private void HandlePlayerLasers(string _name)

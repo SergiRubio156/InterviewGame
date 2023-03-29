@@ -17,9 +17,10 @@ public class ReflexiveRay : MonoBehaviour
     Vector3 point;
     Vector3 transformStart;
     bool checkBool1;
-    bool checkBool;
-
-    int num,numRef;
+    bool checkBool = false;
+    bool confirmBool = false;
+    int nameSide;
+    public int num,numRef;
     // Start is called before the first frame update
     void Start()
     {
@@ -42,9 +43,9 @@ public class ReflexiveRay : MonoBehaviour
         }
     }
 
-    bool ConfirmLine()
+    public bool ConfirmLine()
     {
-        if(inputLine.GetPosition(0) == Vector3.zero)
+        if(inputLine.GetPosition(1) == Vector3.zero)
             return true;
         return false;
     }
@@ -68,8 +69,7 @@ public class ReflexiveRay : MonoBehaviour
 
             inputLine.SetPosition(0, point);
             inputLine.SetPosition(1, hit.point);
-            if (numRef != 6)
-            {
+
                 if (reflexiveCube != hit.transform.gameObject && reflexiveCube != null)
                 {
                     reflexiveCube.GetComponent<ReflexiveRay>().ReceiveImpactPoint(Vector3.zero, Vector3.zero, false, inputLine.material.color, transform.position);
@@ -78,9 +78,10 @@ public class ReflexiveRay : MonoBehaviour
                 }
 
                 reflexiveCube = hit.transform.gameObject;
+            //if (reflexiveCube.GetComponent<ReflexiveRay>().ConfirmLine() || confirmBool)
                 reflexiveCube.GetComponent<ReflexiveRay>().ReflexiveMirror(_hitPoint, reflectiveRayPoint2, true, inputLine.material.color, transform.position);
                 laserReset("Mirror");
-            }
+
         }
     }
 
@@ -109,15 +110,12 @@ public class ReflexiveRay : MonoBehaviour
             inputLine.SetPosition(1, hit.point);
             triangle = hit.transform.gameObject;
 
-            if (triangle.GetComponentInParent<TriangleScript>().CheckObject())
-            {
                 if (num != 8)
                 {
                     hit.transform.gameObject.GetComponentInParent<TriangleScript>().CheckPlane(hit.point, hit.transform.gameObject.name, true, inputLine.material.color);
 
                     laserReset("Divide");
-                }
-            }
+                }      
         }
 
     }
@@ -155,7 +153,7 @@ public class ReflexiveRay : MonoBehaviour
 
 
             laserFinal = hit.transform.gameObject;
-            hit.transform.gameObject.GetComponent<CheckLaser>().ReceivedLaser(true);
+            hit.transform.gameObject.GetComponent<CheckLaser>().ReceivedLaser(true, inputLine.material.color);
             laserReset("Final");
 
         }
@@ -164,6 +162,7 @@ public class ReflexiveRay : MonoBehaviour
 
     bool LaserConfirm()
     {
+        num = 0;
         if (Physics.Raycast(point, transformStart - point, out hit, 100))
         {
 
@@ -233,24 +232,29 @@ public class ReflexiveRay : MonoBehaviour
 
     public void ReceiveImpactPoint(Vector3 _point,Vector3 _reflectiveRayPoint, bool _bool,Color _color, Vector3 _transformStart)
     {
-        point = _point;
-        reflectiveRayPoint = _reflectiveRayPoint;
-        checkBool = _bool;
-        inputLine.material.color = _color;
-        transformStart = _transformStart;
 
-        LaserDraw();
+            point = _point;
+            reflectiveRayPoint = _reflectiveRayPoint;
+            checkBool = _bool;
+            inputLine.material.color = _color;
+            transformStart = _transformStart;
+
+            confirmBool = _bool;
+                LaserDraw();
+        
     }
 
     public void ReflexiveMirror(Vector3 _point, Vector3 _reflectiveRayPoint, bool _bool, Color _color, Vector3 _transformStart)
     {
-        point = _point;
-        reflectiveRayPoint = _reflectiveRayPoint;
-        checkBool1 = _bool;
-        inputLine.material.color = _color;
-        transformStart = _transformStart;
 
-        LaserDraw();
+            point = _point;
+            reflectiveRayPoint = _reflectiveRayPoint;
+            checkBool1 = _bool;
+            inputLine.material.color = _color;
+            transformStart = _transformStart;
+
+            LaserDraw();
+
     }
 
 
@@ -269,7 +273,7 @@ public class ReflexiveRay : MonoBehaviour
                 triangle = null;
 
                 if (laserFinal != null)
-                    laserFinal.GetComponent<CheckLaser>().ReceivedLaser(false);
+                    laserFinal.GetComponent<CheckLaser>().ReceivedLaser(false, inputLine.material.color);
                 laserFinal = null;
                 break;
 
@@ -283,7 +287,7 @@ public class ReflexiveRay : MonoBehaviour
                 triangle = null;
 
                 if (laserFinal != null)
-                    laserFinal.GetComponent<CheckLaser>().ReceivedLaser(false);
+                    laserFinal.GetComponent<CheckLaser>().ReceivedLaser(false, inputLine.material.color);
                 laserFinal = null;
                 break;
 
@@ -297,7 +301,7 @@ public class ReflexiveRay : MonoBehaviour
                 cubeColor = null;
 
                 if (laserFinal != null)
-                    laserFinal.GetComponent<CheckLaser>().ReceivedLaser(false);
+                    laserFinal.GetComponent<CheckLaser>().ReceivedLaser(false, inputLine.material.color);
                 laserFinal = null;
                 break;
 
@@ -329,7 +333,7 @@ public class ReflexiveRay : MonoBehaviour
                 triangle = null;
 
                 if (laserFinal != null)
-                    laserFinal.GetComponent<CheckLaser>().ReceivedLaser(false);
+                    laserFinal.GetComponent<CheckLaser>().ReceivedLaser(false, inputLine.material.color);
                 laserFinal = null;
                 break;
 

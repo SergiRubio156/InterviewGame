@@ -127,7 +127,7 @@ public class LaserManager : MonoBehaviour
                     ObjectMove.GetComponent<Rigidbody>().velocity = ObjectMove.transform.position * 0f;
                     rb.constraints = RigidbodyConstraints.FreezeAll;
                     rb = null;
-                    StartCoroutine(Wait());
+                    //StartCoroutine(Wait());
                     objectSelect = false;
                 }
         }

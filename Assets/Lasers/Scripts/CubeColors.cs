@@ -28,7 +28,7 @@ public class CubeColors : MonoBehaviour
     }
 
     // Update is called once per frame
-    void Update()
+    void FixedUpdate()
     {
         layerMirror = 1 << 6;
         layerCylinder = 1 << 7;
@@ -43,7 +43,7 @@ public class CubeColors : MonoBehaviour
         }
     }
 
-    bool ConfirmLine()
+    public bool ConfirmLine()
     {
         if (inputLine.GetPosition(0) == Vector3.zero)
             return true;
@@ -139,7 +139,7 @@ public class CubeColors : MonoBehaviour
 
 
             laserFinal = hit.transform.gameObject;
-            hit.transform.gameObject.GetComponent<CheckLaser>().ReceivedLaser(true);
+            hit.transform.gameObject.GetComponent<CheckLaser>().ReceivedLaser(true, inputLine.material.color);
             laserReset("Final");
         }
 
@@ -233,7 +233,7 @@ public class CubeColors : MonoBehaviour
                 triangle = null;
 
                 if (laserFinal != null)
-                    laserFinal.GetComponent<CheckLaser>().ReceivedLaser(false);
+                    laserFinal.GetComponent<CheckLaser>().ReceivedLaser(false, inputLine.material.color);
                 laserFinal = null;
                 break;
 
@@ -247,7 +247,7 @@ public class CubeColors : MonoBehaviour
                 triangle = null;
 
                 if (laserFinal != null)
-                    laserFinal.GetComponent<CheckLaser>().ReceivedLaser(false);
+                    laserFinal.GetComponent<CheckLaser>().ReceivedLaser(false, inputLine.material.color);
                 laserFinal = null;
                 break;
 
@@ -261,7 +261,7 @@ public class CubeColors : MonoBehaviour
                 cubeColor = null;
 
                 if (laserFinal != null)
-                    laserFinal.GetComponent<CheckLaser>().ReceivedLaser(false);
+                    laserFinal.GetComponent<CheckLaser>().ReceivedLaser(false, inputLine.material.color);
                 laserFinal = null;
                 break;
 
@@ -293,7 +293,7 @@ public class CubeColors : MonoBehaviour
                 triangle = null;
 
                 if (laserFinal != null)
-                    laserFinal.GetComponent<CheckLaser>().ReceivedLaser(false);
+                    laserFinal.GetComponent<CheckLaser>().ReceivedLaser(false, inputLine.material.color);
                 laserFinal = null;
                 break;
         }

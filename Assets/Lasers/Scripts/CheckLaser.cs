@@ -5,6 +5,7 @@ using UnityEngine;
 public class CheckLaser : MonoBehaviour
 {
     public GameObject finalCheck;
+    public Material mat;
     // Start is called before the first frame update
     void Awake()
     {
@@ -18,8 +19,9 @@ public class CheckLaser : MonoBehaviour
     }
 
 
-    public void ReceivedLaser(bool _bool)
+    public void ReceivedLaser(bool _bool,Color _color)
     {
+        if(mat.color == _color)
         finalCheck.GetComponent<FinalCheck>().CheckList(_bool,gameObject.name);
     }
 

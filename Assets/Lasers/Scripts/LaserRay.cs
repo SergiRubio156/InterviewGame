@@ -116,7 +116,7 @@ public class LaserRay : MonoBehaviour
 
 
             laserFinal = hit.transform.gameObject;
-            hit.transform.gameObject.GetComponent<CheckLaser>().ReceivedLaser(true);
+            hit.transform.gameObject.GetComponent<CheckLaser>().ReceivedLaser(true, inputLine.material.color);
             laserReset("Final");
         }
 
@@ -186,7 +186,7 @@ public class LaserRay : MonoBehaviour
                 triangle = null;
 
                 if (laserFinal != null)
-                    laserFinal.GetComponent<CheckLaser>().ReceivedLaser(false);
+                    laserFinal.GetComponent<CheckLaser>().ReceivedLaser(false, inputLine.material.color);
                 laserFinal = null;
                 break;
 
@@ -200,7 +200,7 @@ public class LaserRay : MonoBehaviour
                 triangle = null;
 
                 if (laserFinal != null)
-                    laserFinal.GetComponent<CheckLaser>().ReceivedLaser(false);
+                    laserFinal.GetComponent<CheckLaser>().ReceivedLaser(false, inputLine.material.color);
                 laserFinal = null;
                 break;
 
@@ -214,7 +214,7 @@ public class LaserRay : MonoBehaviour
                 cubeColor = null;
 
                 if (laserFinal != null)
-                    laserFinal.GetComponent<CheckLaser>().ReceivedLaser(false);
+                    laserFinal.GetComponent<CheckLaser>().ReceivedLaser(false, inputLine.material.color);
                 laserFinal = null;
                 break;
 
@@ -246,7 +246,7 @@ public class LaserRay : MonoBehaviour
                 triangle = null;
 
                 if (laserFinal != null)
-                    laserFinal.GetComponent<CheckLaser>().ReceivedLaser(false);
+                    laserFinal.GetComponent<CheckLaser>().ReceivedLaser(false, inputLine.material.color);
                 laserFinal = null;
                 break;
         }
