@@ -39,8 +39,12 @@ public class MenuManager : MonoBehaviour
     {
         GameManager.Instance.UpdateGameState(GameState.Menu);//Utilizando la instancia del GameManager, entramos a la funcion UpdateGameState, y cambiamos el State a Lasers
     }
-    public void ExitMenu() //Esta funcion se llama cuando le damos click al botton del Menu
+    public void ExitToGame() 
     {
-        GameManager.Instance.UpdateGameState(GameState.Exit);//Utilizando la instancia del GameManager, entramos a la funcion UpdateGameState, y cambiamos el State a Lasers
+        GameManager.Instance.UpdateGameState(GameState.Exit);
+    }
+    public void ExitToPlay()
+    {
+        GameManager.Instance.UpdateGameState(GameState.Playing);
     }
 }                                                                                                                                                                                                                                                                                    

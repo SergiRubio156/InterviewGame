@@ -2,9 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Level1 : MonoBehaviour
+public class LevelsLaser : MonoBehaviour
 {
-    string name = "Level1";
+    public string name = "Level1";
     void Awake()
     {
         GameManager.OnGameStateChanged += GameManager_OnGameStateChanged; //Esto es el evento del script GameManager
