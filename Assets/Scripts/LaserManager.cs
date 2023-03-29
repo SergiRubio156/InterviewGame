@@ -24,13 +24,14 @@ public class LaserManager : MonoBehaviour
 
         //Rigidbody
         Rigidbody rb = null;
+        public bool isPlaying;
 
-    void Awake()
-    {
+        void Awake()
+        {
             GameManager.OnGameStateChanged += GameManager_OnGameStateChanged;   //Esto es el evento del script GameManager
             mainCamera = Camera.main;
-            //controls = new StarterAssetsInputs();
-    }
+                    //controls = new StarterAssetsInputs();
+        }
 
         private void OnDestroy()
         {
@@ -41,24 +42,30 @@ public class LaserManager : MonoBehaviour
             objectSelect = false;
         }
 
-        private void GameManager_OnGameStateChanged(GameState state)        //Esta funcion depende del Awake del evento, Como he explicado antes nso permite comparar entre Script y GameObjects
+        void GameManager_OnGameStateChanged(GameState state)        //Esta funcion depende del Awake del evento, Como he explicado antes nso permite comparar entre Script y GameObjects
         {
-            Cursor.visible = (state == GameState.Settings || state == GameState.Lasers);
+            if (state == GameState.Settings || state == GameState.Lasers)
+                Cursor.visible = true;
+
             sceneSettings = (state == GameState.Settings);
+            isPlaying = (state != GameState.Settings);
         }
 
 
         // Update is called once per frame
-        void Update()
+        void FixedUpdate()
         {
-            MoveMouse();
             if (Input.GetKeyDown(KeyCode.Escape)) //Cuando le damos click al Escape entra a esta funcion
             {
                 if (sceneSettings) GameManager.Instance.UpdateGameState(GameState.Lasers);
                 else GameManager.Instance.UpdateGameState(GameState.Settings);
             }
-            if (objectSelect)
-                CheckGround();
+            if (isPlaying)
+            {
+                MoveMouse();
+                if (objectSelect)
+                    CheckGround();
+            }
         }
 
 

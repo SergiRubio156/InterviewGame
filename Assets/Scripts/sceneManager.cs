@@ -35,9 +35,6 @@ public class sceneManager : MonoBehaviour
                     SceneManager.LoadScene(_name);
 
                     break;
-                case "NIVEL 1":
-                    SceneManager.LoadScene(_name);
-                    break;
 
             }
         }
@@ -54,31 +51,34 @@ public class sceneManager : MonoBehaviour
                     SceneManager.LoadScene(_name);
                     break;
 
-                case "Level2":
+                case "NIVEL 2":
                     SceneManager.LoadScene(_name);
                     break;
 
-                case "Level3":
+                case "NIVEL 3":
                     SceneManager.LoadScene(_name);
                     break;
 
-                case "Level4":
+                case "NIVEL 4":
                     SceneManager.LoadScene(_name);
                     break;
 
-                case "Level5":
+                case "NIVEL 5":
                     SceneManager.LoadScene(_name);
                     break;
 
-                case "Level6":
+                case "NIVEL 6":
                     SceneManager.LoadScene(_name);
                     break;
 
-                case "Level7":
+                case "NIVEL 7":
                     SceneManager.LoadScene(_name);
                     break;
 
-                case "Level8":
+                case "NIVEL 8":
+                    SceneManager.LoadScene(_name);
+                    break;
+                case "NIVEL 9":
                     SceneManager.LoadScene(_name);
                     break;
 

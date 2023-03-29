@@ -34,7 +34,7 @@ public class GameManager : MonoBehaviour
     //Nosotros utilizaremos el evento para decir que si estas en GameState.menu el objeto PanelMenu se active, un evento te permite comparar scripts con Unity.GameObjects
     public static event Action<GameState> OnGameStateChanged; 
 
-    GameState State = GameState.Menu;
+    GameState State = GameState.Lasers;
 
     bool ejecutar = true;
 
@@ -65,7 +65,7 @@ public class GameManager : MonoBehaviour
 
     void Start() //Solo se entra una vez, pero si el script esta desactivado no entra
     {
-        UpdateGameState(GameState.Menu);//Entro en la funcion UpdateGameState, y ponemos como referencia el GameState.Menu porque es el stado que queremos
+        UpdateGameState(GameState.Lasers);//Entro en la funcion UpdateGameState, y ponemos como referencia el GameState.Menu porque es el stado que queremos
         
         DontDestroyOnLoad(this.gameObject); //Esto lo que hace es que no se destruya lobjeto quando se cambia de escena
         if (managers[1] != null)
@@ -140,6 +140,7 @@ public class GameManager : MonoBehaviour
 
     private void HandlePlaying()
     {
+        Debug.Log("hola");
         sceneManager.ChangeScene("Play");
     }
 

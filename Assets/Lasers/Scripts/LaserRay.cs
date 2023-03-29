@@ -7,6 +7,7 @@ using UnityEngine;
 public class LaserRay : MonoBehaviour
 {
     int layerWalls,layerMirror,layerCylinder,layerTriangle, LayerStart, LayerFinal;
+
     public LineRenderer inputLine;
 
     RaycastHit hit;
@@ -16,13 +17,23 @@ public class LaserRay : MonoBehaviour
      public GameObject cubeColor = null;
      public GameObject reflexive = null;
      public GameObject triangle = null;
-    public GameObject laserFinal = null; 
+     public GameObject laserFinal = null;
+
+    //Rotacion 
+    public float rotationSpeed = 50.0f;
+    bool isRotation;
     void Start()
     {
         inputLine = GetComponentInChildren<LineRenderer>();
+        GameManager.OnGameStateChanged += GameManager_OnGameStateChanged; //Esto es el evento del script GameManager
+        rotationSpeed = 50;
     }
-    // See Order of Execution for Event Functions for information on FixedUpdate() and Update() related to physics queries
-    void FixedUpdate()
+
+    private void GameManager_OnGameStateChanged(GameState state)    //Esta funcion depende del Awake del evento, Como he explicado antes nso permite comparar entre Script y GameObjects
+    {
+
+    }
+    void Update()
     {
         layerMirror = 1 << 6;
         layerCylinder = 1 << 7;
@@ -31,7 +42,24 @@ public class LaserRay : MonoBehaviour
         LayerStart = 1 << 10;
         LayerFinal = 1 << 11;
         LaserDraw();
+        RotationObject();
+        if (Input.GetKeyDown(KeyCode.Space)) //Cuando le damos click al Escape entra a esta funcion
+        {
+            isRotation = !isRotation;// = true ? isRotation : !isRotation;
+        }
+
     }
+
+    void RotationObject()
+    {
+        if(isRotation)
+            rotationSpeed = 0;
+        else if(!isRotation)
+            rotationSpeed = 50;
+        transform.Rotate(0f, rotationSpeed * Time.deltaTime, 0f);
+
+    }
+
 
     void LaserMirror()
     {
