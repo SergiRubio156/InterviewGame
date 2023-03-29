@@ -125,7 +125,7 @@ public class GameManager : MonoBehaviour
 
     private void HandlePlayerLasers(string _name)
     {
-        sceneManager.ChangeScene(_name);
+        sceneManager.ChangeSceneLevel(_name);
     }
 
     private void HandleSelectButton()

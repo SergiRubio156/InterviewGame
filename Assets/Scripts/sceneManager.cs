@@ -42,4 +42,47 @@ public class sceneManager : MonoBehaviour
             }
         }
     }
+
+    public void ChangeSceneLevel(string _name)
+    {
+
+        if (_name != GetCurrentSceneName())
+        {
+            switch (_name)
+            {
+                case "Level1":
+                    SceneManager.LoadScene(_name);
+                    break;
+
+                case "Level2":
+                    SceneManager.LoadScene(_name);
+                    break;
+
+                case "Level3":
+                    SceneManager.LoadScene(_name);
+                    break;
+
+                case "Level4":
+                    SceneManager.LoadScene(_name);
+                    break;
+
+                case "Level5":
+                    SceneManager.LoadScene(_name);
+                    break;
+
+                case "Level6":
+                    SceneManager.LoadScene(_name);
+                    break;
+
+                case "Level7":
+                    SceneManager.LoadScene(_name);
+                    break;
+
+                case "Level8":
+                    SceneManager.LoadScene(_name);
+                    break;
+
+            }
+        }
+    }
 }
