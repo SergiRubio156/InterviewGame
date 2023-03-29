@@ -35,7 +35,7 @@ public class TriangleScript : MonoBehaviour
     }
 
     // Update is called once per frame
-    void Update()
+    void FixedUpdate()
     {
         layerMirror = 1 << 6;
         layerCylinder = 1 << 7;
@@ -54,7 +54,7 @@ public class TriangleScript : MonoBehaviour
         }
     }
 
-    bool ConfirmLine(int _name)
+    public bool ConfirmLine(int _name)
     {
         if (inputLine[nameSide].GetPosition(1) == Vector3.zero)
             return true;
@@ -154,7 +154,7 @@ public class TriangleScript : MonoBehaviour
 
 
             laserFinal[i] = hit.transform.gameObject;
-            hit.transform.gameObject.GetComponent<CheckLaser>().ReceivedLaser(true);
+            hit.transform.gameObject.GetComponent<CheckLaser>().ReceivedLaser(true, inputLine[i].material.color);
 
             laserReset("Final", i);
         }
@@ -246,12 +246,6 @@ public class TriangleScript : MonoBehaviour
             LaserDraw(nameSide);
     }
  
-    public bool CheckObject()
-    {
-        if (checkBool)
-            return true;
-        return false;
-    }
 
     void laserReset(string _name, int i)
     {
@@ -267,7 +261,7 @@ public class TriangleScript : MonoBehaviour
                 triangle[i] = null;
 
                 if (laserFinal[i] != null)
-                    laserFinal[i].GetComponent<CheckLaser>().ReceivedLaser(false);
+                    laserFinal[i].GetComponent<CheckLaser>().ReceivedLaser(false, inputLine[i].material.color);
                 laserFinal[i] = null;
                 break;
             case "Color":
@@ -280,7 +274,7 @@ public class TriangleScript : MonoBehaviour
                 triangle[i] = null;
 
                 if (laserFinal[i] != null)
-                    laserFinal[i].GetComponent<CheckLaser>().ReceivedLaser(false);
+                    laserFinal[i].GetComponent<CheckLaser>().ReceivedLaser(false, inputLine[i].material.color);
                 laserFinal[i] = null;
                 break;
             case "Divide":
@@ -293,7 +287,7 @@ public class TriangleScript : MonoBehaviour
                 cubeColor[i] = null;
 
                 if (laserFinal[i] != null)
-                    laserFinal[i].GetComponent<CheckLaser>().ReceivedLaser(false);
+                    laserFinal[i].GetComponent<CheckLaser>().ReceivedLaser(false, inputLine[i].material.color);
                 laserFinal[i] = null;
                 break;
             case "Final":
@@ -325,7 +319,7 @@ public class TriangleScript : MonoBehaviour
                 triangle[i] = null;
 
                 if (laserFinal[i] != null)
-                    laserFinal[i].GetComponent<CheckLaser>().ReceivedLaser(false);
+                    laserFinal[i].GetComponent<CheckLaser>().ReceivedLaser(false, inputLine[i].material.color);
                 laserFinal[i] = null;
                 break;
         }
