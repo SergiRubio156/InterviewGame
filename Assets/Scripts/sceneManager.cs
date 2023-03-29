@@ -35,7 +35,7 @@ public class sceneManager : MonoBehaviour
                     SceneManager.LoadScene(_name);
 
                     break;
-                case "Level1":
+                case "NIVEL 1":
                     SceneManager.LoadScene(_name);
                     break;
 
@@ -50,7 +50,7 @@ public class sceneManager : MonoBehaviour
         {
             switch (_name)
             {
-                case "Level1":
+                case "NIVEL 1":
                     SceneManager.LoadScene(_name);
                     break;
 
