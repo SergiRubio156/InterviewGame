@@ -24,7 +24,7 @@ public class TriangleScript : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        for(int i = 0; i < reflexive.Length; i++)
+        for(int i = 0; i < Sides.Length; i++)
         {
             reflexive[i] = null;
             cubeColor[i] = null;
