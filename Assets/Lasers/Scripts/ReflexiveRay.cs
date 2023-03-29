@@ -6,11 +6,12 @@ public class ReflexiveRay : MonoBehaviour
 {
     RaycastHit hit;
     public LineRenderer inputLine;
-    int layerWalls, layerMirror, layerCylinder, layerTriangle, LayerStart;
+    int layerWalls, layerMirror, layerCylinder, layerTriangle, LayerStart, LayerFinal;
 
     public GameObject cubeColor = null;
     public GameObject reflexiveCube = null;
     public GameObject triangle = null;
+    public GameObject laserFinal = null;
 
     Vector3 reflectiveRayPoint;
     Vector3 point;
@@ -33,8 +34,9 @@ public class ReflexiveRay : MonoBehaviour
         layerTriangle = 1 << 8;
         layerWalls = 1 << 9;
         LayerStart = 1 << 10;
+        LayerFinal = 1 << 11;
 
-        if(ConfirmLine())
+        if (ConfirmLine())
         {
             laserReset("all");
         }
@@ -105,13 +107,16 @@ public class ReflexiveRay : MonoBehaviour
         {
             inputLine.SetPosition(0, point);
             inputLine.SetPosition(1, hit.point);
+            triangle = hit.transform.gameObject;
 
-            if (num != 8)
+            if (triangle.GetComponentInParent<TriangleScript>().CheckObject())
             {
-                triangle = hit.transform.gameObject;
-                hit.transform.gameObject.GetComponentInParent<TriangleScript>().CheckPlane(hit.point, hit.transform.gameObject.name, true, inputLine.material.color);
+                if (num != 8)
+                {
+                    hit.transform.gameObject.GetComponentInParent<TriangleScript>().CheckPlane(hit.point, hit.transform.gameObject.name, true, inputLine.material.color);
 
-                laserReset("Divide");
+                    laserReset("Divide");
+                }
             }
         }
 
@@ -141,12 +146,28 @@ public class ReflexiveRay : MonoBehaviour
         }
 
     }
+    void LaserFinal()
+    {
+        if (Physics.Raycast(point, reflectiveRayPoint * 3 - point, out hit, 100, LayerFinal))
+        {
+            inputLine.SetPosition(0, point);
+            inputLine.SetPosition(1, hit.point);
+
+
+            laserFinal = hit.transform.gameObject;
+            hit.transform.gameObject.GetComponent<CheckLaser>().ReceivedLaser(true);
+            laserReset("Final");
+
+        }
+
+    }
+
     bool LaserConfirm()
     {
         if (Physics.Raycast(point, transformStart - point, out hit, 100))
         {
 
-            if (hit.transform.gameObject.layer == 10 || hit.transform.gameObject.layer == 7 || hit.transform.gameObject.layer == 8)
+            if (hit.transform.gameObject.layer == 10 || hit.transform.gameObject.layer == 7 || hit.transform.gameObject.layer == 8 || hit.transform.gameObject.layer == 11)
             {
                 num = hit.transform.gameObject.layer;
                 return true;
@@ -192,6 +213,9 @@ public class ReflexiveRay : MonoBehaviour
                     break;
                 case 10: //LaserStart
                     LaserStart();
+                    break;
+                case 11: //LaserStart
+                    LaserFinal();
                     break;
                 default:
                     checkBool = false;
@@ -244,7 +268,11 @@ public class ReflexiveRay : MonoBehaviour
                     triangle.GetComponentInParent<TriangleScript>().CheckPlane(Vector3.zero, triangle.name, false, inputLine.material.color);
                 triangle = null;
 
+                if (laserFinal != null)
+                    laserFinal.GetComponent<CheckLaser>().ReceivedLaser(false);
+                laserFinal = null;
                 break;
+
             case "Color":
                 if (reflexiveCube != null)
                     reflexiveCube.GetComponent<ReflexiveRay>().ReceiveImpactPoint(Vector3.zero, Vector3.zero, false, inputLine.material.color, Vector3.zero);
@@ -254,7 +282,11 @@ public class ReflexiveRay : MonoBehaviour
                     triangle.GetComponentInParent<TriangleScript>().CheckPlane(Vector3.zero, triangle.name, false, inputLine.material.color);
                 triangle = null;
 
+                if (laserFinal != null)
+                    laserFinal.GetComponent<CheckLaser>().ReceivedLaser(false);
+                laserFinal = null;
                 break;
+
             case "Divide":
                 if (reflexiveCube != null)
                     reflexiveCube.GetComponent<ReflexiveRay>().ReceiveImpactPoint(Vector3.zero, Vector3.zero, false, inputLine.material.color, Vector3.zero);
@@ -264,7 +296,25 @@ public class ReflexiveRay : MonoBehaviour
                     cubeColor.GetComponent<CubeColors>().RecivedColors(inputLine.material.color, false);
                 cubeColor = null;
 
+                if (laserFinal != null)
+                    laserFinal.GetComponent<CheckLaser>().ReceivedLaser(false);
+                laserFinal = null;
                 break;
+
+            case "Final":
+                if (reflexiveCube != null)
+                    reflexiveCube.GetComponent<ReflexiveRay>().ReceiveImpactPoint(Vector3.zero, Vector3.zero, false, inputLine.material.color, transform.position);
+                reflexiveCube = null;
+
+                if (cubeColor != null)
+                    cubeColor.GetComponent<CubeColors>().RecivedColors(inputLine.material.color, false);
+                cubeColor = null;
+
+                if (triangle != null)
+                    triangle.GetComponentInParent<TriangleScript>().CheckPlane(Vector3.zero, triangle.name, false, inputLine.material.color);
+                triangle = null;
+                break;
+
             case "all":
                 if (reflexiveCube != null)
                     reflexiveCube.GetComponent<ReflexiveRay>().ReceiveImpactPoint(Vector3.zero, Vector3.zero, false, inputLine.material.color, Vector3.zero);
@@ -277,7 +327,12 @@ public class ReflexiveRay : MonoBehaviour
                 if (triangle != null)
                     triangle.GetComponentInParent<TriangleScript>().CheckPlane(Vector3.zero, triangle.name, false, inputLine.material.color);
                 triangle = null;
+
+                if (laserFinal != null)
+                    laserFinal.GetComponent<CheckLaser>().ReceivedLaser(false);
+                laserFinal = null;
                 break;
+
         }
     }
 }

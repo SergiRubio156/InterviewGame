@@ -4,10 +4,11 @@ using UnityEngine;
 
 public class CheckLaser : MonoBehaviour
 {
+    public GameObject finalCheck;
     // Start is called before the first frame update
-    void Start()
+    void Awake()
     {
-        
+        finalCheck = this.gameObject.transform.parent.gameObject;
     }
 
     // Update is called once per frame
@@ -16,9 +17,10 @@ public class CheckLaser : MonoBehaviour
         
     }
 
-    public void CheckLasers()
+
+    public void ReceivedLaser(bool _bool)
     {
-        Debug.Log("Victory");
+        finalCheck.GetComponent<FinalCheck>().CheckList(_bool,gameObject.name);
     }
 
 }

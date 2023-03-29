@@ -11,23 +11,25 @@ public class TriangleScript : MonoBehaviour
     public GameObject[] reflexive = new GameObject[3];
     public GameObject[] cubeColor = new GameObject[3];
     public GameObject[] triangle = new GameObject[3];
+    public GameObject[] laserFinal = new GameObject[3];
 
     RaycastHit hit;
 
-    int layerWalls, layerMirror, layerCylinder, layerTriangle, LayerStart;
+    int layerWalls, layerMirror, layerCylinder, layerTriangle, LayerStart, LayerFinal;
 
     Vector3 point;
     public int nameSide = 0;
 
-    bool checkBool, checkConfirm = true;
+    public bool checkBool;
     // Start is called before the first frame update
     void Start()
     {
-        for(int i = 0; i < reflexive.Length; i++)
+        for(int i = 0; i < Sides.Length; i++)
         {
             reflexive[i] = null;
             cubeColor[i] = null;
             triangle[i] = null;
+            laserFinal[i] = null;
         }
         Render();
     }
@@ -40,6 +42,7 @@ public class TriangleScript : MonoBehaviour
         layerTriangle = 1 << 8;
         layerWalls = 1 << 9;
         LayerStart = 1 << 10;
+        LayerFinal = 1 << 11;
 
         Render();
         if (ConfirmLine(nameSide) && !checkBool)
@@ -142,7 +145,21 @@ public class TriangleScript : MonoBehaviour
         }
 
     }
+    void LaserFinal(int i)
+    {
+        if (Physics.Raycast(Sides[i].transform.position, localForward[i], out hit, 100, LayerFinal))
+        {
+            inputLine[i].SetPosition(0, transform.position);
+            inputLine[i].SetPosition(1, hit.point);
 
+
+            laserFinal[i] = hit.transform.gameObject;
+            hit.transform.gameObject.GetComponent<CheckLaser>().ReceivedLaser(true);
+
+            laserReset("Final", i);
+        }
+
+    }
     void LaserDraw(int _name)
     {
         if (checkBool)
@@ -167,6 +184,9 @@ public class TriangleScript : MonoBehaviour
                             break;
                         case 10:
                             LaserStart(i);
+                            break;
+                        case 11:
+                            LaserFinal(i);
                             break;
                         default:
                             LaserWall(i);
@@ -205,7 +225,6 @@ public class TriangleScript : MonoBehaviour
 
     public void CheckPlane(Vector3 _point, string _name, bool _bool, Color _color)
     {
-
             point = _point;
             if (_point == Vector3.zero)
             {
@@ -227,6 +246,12 @@ public class TriangleScript : MonoBehaviour
             LaserDraw(nameSide);
     }
  
+    public bool CheckObject()
+    {
+        if (checkBool)
+            return true;
+        return false;
+    }
 
     void laserReset(string _name, int i)
     {
@@ -234,56 +259,74 @@ public class TriangleScript : MonoBehaviour
         {
             case "Mirror":
                 if (cubeColor[i] != null)
-                {
                     cubeColor[i].GetComponent<CubeColors>().RecivedColors(inputLine[i].material.color, false);
-                    cubeColor = null;
-                }
+                cubeColor[i] = null;
+
                 if (triangle[i] != null)
-                {
                     triangle[i].GetComponentInParent<TriangleScript>().CheckPlane(Vector3.zero, triangle[i].name, false, inputLine[i].material.color);
-                    triangle[i] = null;
-                }
+                triangle[i] = null;
+
+                if (laserFinal[i] != null)
+                    laserFinal[i].GetComponent<CheckLaser>().ReceivedLaser(false);
+                laserFinal[i] = null;
                 break;
             case "Color":
                 if (reflexive[i] != null)
-                {
                     reflexive[i].GetComponent<ReflexiveRay>().ReceiveImpactPoint(Vector3.zero, Vector3.zero, false, inputLine[i].material.color, transform.position);
-                    reflexive[i] = null;
-                }
+                reflexive[i] = null;
+
                 if (triangle[i] != null)
-                {
                     triangle[i].GetComponentInParent<TriangleScript>().CheckPlane(Vector3.zero, triangle[i].name, false, inputLine[i].material.color);
-                    triangle[i] = null;
-                }
+                triangle[i] = null;
+
+                if (laserFinal[i] != null)
+                    laserFinal[i].GetComponent<CheckLaser>().ReceivedLaser(false);
+                laserFinal[i] = null;
                 break;
             case "Divide":
                 if (reflexive[i] != null)
-                {
                     reflexive[i].GetComponent<ReflexiveRay>().ReceiveImpactPoint(Vector3.zero, Vector3.zero, false, inputLine[i].material.color, transform.position);
-                    reflexive[i] = null;
-                }
+                reflexive[i] = null;
+
                 if (cubeColor[i] != null)
-                {
                     cubeColor[i].GetComponent<CubeColors>().RecivedColors(inputLine[i].material.color, false);
-                    cubeColor[i] = null;
-                }
+                cubeColor[i] = null;
+
+                if (laserFinal[i] != null)
+                    laserFinal[i].GetComponent<CheckLaser>().ReceivedLaser(false);
+                laserFinal[i] = null;
+                break;
+            case "Final":
+                if (reflexive[i] != null)
+                    reflexive[i].GetComponent<ReflexiveRay>().ReceiveImpactPoint(Vector3.zero, Vector3.zero, false, inputLine[i].material.color, transform.position);
+                reflexive[i] = null;
+
+                if (cubeColor[i] != null)
+
+                    cubeColor[i].GetComponent<CubeColors>().RecivedColors(inputLine[i].material.color, false);
+                cubeColor[i] = null;
+
+                if (triangle[i] != null)
+                    triangle[i].GetComponentInParent<TriangleScript>().CheckPlane(Vector3.zero, triangle[i].name, false, inputLine[i].material.color);
+                triangle[i] = null;
                 break;
             case "all":
                 if (reflexive[i] != null)
-                {
                     reflexive[i].GetComponent<ReflexiveRay>().ReceiveImpactPoint(Vector3.zero, Vector3.zero, false, inputLine[i].material.color, transform.position);
-                    reflexive[i] = null;
-                }
+                reflexive[i] = null;
+
                 if (cubeColor[i] != null)
-                {
+
                     cubeColor[i].GetComponent<CubeColors>().RecivedColors(inputLine[i].material.color, false);
-                    cubeColor[i] = null;
-                }
+                cubeColor[i] = null;
+
                 if (triangle[i] != null)
-                {
                     triangle[i].GetComponentInParent<TriangleScript>().CheckPlane(Vector3.zero, triangle[i].name, false, inputLine[i].material.color);
-                    triangle[i] = null;
-                }
+                triangle[i] = null;
+
+                if (laserFinal[i] != null)
+                    laserFinal[i].GetComponent<CheckLaser>().ReceivedLaser(false);
+                laserFinal[i] = null;
                 break;
         }
     }
