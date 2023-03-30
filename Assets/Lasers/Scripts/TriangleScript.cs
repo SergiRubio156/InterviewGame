@@ -12,6 +12,7 @@ public class TriangleScript : MonoBehaviour
     public GameObject[] cubeColor = new GameObject[3];
     public GameObject[] triangle = new GameObject[3];
     public GameObject[] laserFinal = new GameObject[3];
+    public Material[] mat = new Material[4];
 
     RaycastHit hit;
 
@@ -238,15 +239,25 @@ public class TriangleScript : MonoBehaviour
                 nameSide = 2;
 
             checkBool = _bool;
-            for (int i = 0; i < inputLine.Length; i++)
-            {
-                inputLine[i].material.color = _color;
-            }
+            TakeColor(_color);
 
             LaserDraw(nameSide);
     }
- 
 
+    void TakeColor(Color _color)
+    {
+        for (int i = 0; i < mat.Length; i++)
+        {
+            if (mat[i].color == _color)
+            {
+                inputLine[0].material = mat[i];
+                inputLine[1].material = mat[i];
+                inputLine[2].material = mat[i];
+
+            }
+        }
+
+    }
     void laserReset(string _name, int i)
     {
         switch (_name)

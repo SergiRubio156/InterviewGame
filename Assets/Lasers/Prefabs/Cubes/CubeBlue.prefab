@@ -13,10 +13,10 @@ GameObject:
   - component: {fileID: 2650361343762067918}
   - component: {fileID: 2650361343762067955}
   - component: {fileID: 2650361343762067919}
-  - component: {fileID: 1191079178}
+  - component: {fileID: 1259377058}
   m_Layer: 10
   m_Name: CubeBlue
-  m_TagString: Interactable
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -103,6 +103,8 @@ MonoBehaviour:
   cubeColor: {fileID: 0}
   reflexive: {fileID: 0}
   triangle: {fileID: 0}
+  laserFinal: {fileID: 0}
+  rotationSpeed: 50
 --- !u!65 &2650361343762067919
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -116,7 +118,7 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
---- !u!54 &1191079178
+--- !u!54 &1259377058
 Rigidbody:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}

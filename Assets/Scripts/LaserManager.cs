@@ -53,7 +53,7 @@ public class LaserManager : MonoBehaviour
 
 
         // Update is called once per frame
-        void FixedUpdate()
+        void Update()
         {
             if (Input.GetKeyDown(KeyCode.Escape)) //Cuando le damos click al Escape entra a esta funcion
             {

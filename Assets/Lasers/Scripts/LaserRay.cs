@@ -31,7 +31,7 @@ public class LaserRay : MonoBehaviour
 
     private void GameManager_OnGameStateChanged(GameState state)    //Esta funcion depende del Awake del evento, Como he explicado antes nso permite comparar entre Script y GameObjects
     {
-
+        isRotation = (state == GameState.Settings);
     }
     void Update()
     {
