@@ -17,6 +17,7 @@ public class LaserManager : MonoBehaviour
         Vector3 worldPosition;
         bool objectSelect;
         public float velocity = 5f;
+
         //Rotacion 
         public float rotationSpeed = 1f;
         Quaternion currentRotation;
@@ -134,15 +135,8 @@ public class LaserManager : MonoBehaviour
                     ObjectMove.GetComponent<Rigidbody>().velocity = ObjectMove.transform.position * 0f;
                     rb.constraints = RigidbodyConstraints.FreezeAll;
                     rb = null;
-                    //StartCoroutine(Wait());
                     objectSelect = false;
                 }
-        }
-
-        IEnumerator Wait()
-        {
-            yield return new WaitForSeconds(.2f);
-            ObjectMove = null;
         }
     
 }
