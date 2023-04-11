@@ -48,9 +48,15 @@ public class HexGrid : MonoBehaviour
 
                 HexTile hextile = tile.AddComponent<HexTile>();
                 hextile.settings = settings;
-                hextile.RollTileType();
+                if(y < 2 || x < 2 || y >= 13 || x >= 13)
+                    hextile.RollTileType(0,1);
+                else if(y == 3 || x == 3 || y == 12 || x == 13)
+                    hextile.RollTileType(0,3);
+                else if(y >= 4 || x >= 4)
+                    hextile.RollTileType(1, 2);
                 hextile.AddTile();
 
+                tile.transform.SetParent(transform,true);
                 //hextile.offsetCordinates = new Vector2Int(x, y);
 
                 //hextile.cubeCoordinates = Utilities.OffsetToCube(hextile.offsetCordinates);

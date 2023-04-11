@@ -45,9 +45,9 @@ public class HexTile : MonoBehaviour
         }
     }
 
-    public void RollTileType()
+    public void RollTileType(int menos, int mas)
     {
-        tiletype = (HexTileGenerationSettings.TileType)Random.Range(0, 3);
+        tiletype = (HexTileGenerationSettings.TileType)Random.Range(menos, mas);
     }
 
     public void AddTile()
