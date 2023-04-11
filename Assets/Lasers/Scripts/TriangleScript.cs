@@ -14,6 +14,8 @@ public class TriangleScript : MonoBehaviour
     public GameObject[] laserFinal = new GameObject[3];
     public Material[] mat = new Material[4];
 
+    public GameObject objectRecvied;
+
     RaycastHit hit;
 
     int layerWalls, layerMirror, layerCylinder, layerTriangle, LayerStart, LayerFinal;
@@ -83,7 +85,7 @@ public class TriangleScript : MonoBehaviour
 
 
             reflexive[i] = hit.transform.gameObject;
-            hit.transform.gameObject.GetComponent<ReflexiveRay>().ReceiveImpactPoint(_hitPoint, reflectiveRayPoint, true, inputLine[i].material.color, transform.position);
+            hit.transform.gameObject.GetComponent<ReflexiveRay>().ReceiveImpactPoint(_hitPoint, reflectiveRayPoint, true, inputLine[i].material.color, transform.position,gameObject);
 
             laserReset("Mirror", i);
 
@@ -114,7 +116,7 @@ public class TriangleScript : MonoBehaviour
 
 
             triangle[i] = hit.transform.gameObject;
-            hit.transform.gameObject.GetComponentInParent<TriangleScript>().CheckPlane(hit.point, hit.transform.gameObject.name, true, inputLine[i].material.color);
+            hit.transform.gameObject.GetComponentInParent<TriangleScript>().CheckPlane(hit.point, hit.transform.gameObject.name, true, inputLine[i].material.color,gameObject);
 
             laserReset("Divide", i);
         }
@@ -224,8 +226,11 @@ public class TriangleScript : MonoBehaviour
         return 0;
     }
 
-    public void CheckPlane(Vector3 _point, string _name, bool _bool, Color _color)
+    public void CheckPlane(Vector3 _point, string _name, bool _bool, Color _color, GameObject _gameObject)
     {
+        if (_gameObject == objectRecvied || objectRecvied == null || _gameObject == null)
+        {
+            objectRecvied = _gameObject;
             point = _point;
             if (_point == Vector3.zero)
             {
@@ -242,6 +247,7 @@ public class TriangleScript : MonoBehaviour
             TakeColor(_color);
 
             LaserDraw(nameSide);
+        }
     }
 
     void TakeColor(Color _color)
@@ -268,7 +274,7 @@ public class TriangleScript : MonoBehaviour
                 cubeColor[i] = null;
 
                 if (triangle[i] != null)
-                    triangle[i].GetComponentInParent<TriangleScript>().CheckPlane(Vector3.zero, triangle[i].name, false, inputLine[i].material.color);
+                    triangle[i].GetComponentInParent<TriangleScript>().CheckPlane(Vector3.zero, triangle[i].name, false, inputLine[i].material.color,null);
                 triangle[i] = null;
 
                 if (laserFinal[i] != null)
@@ -277,11 +283,11 @@ public class TriangleScript : MonoBehaviour
                 break;
             case "Color":
                 if (reflexive[i] != null)
-                    reflexive[i].GetComponent<ReflexiveRay>().ReceiveImpactPoint(Vector3.zero, Vector3.zero, false, inputLine[i].material.color, transform.position);
+                    reflexive[i].GetComponent<ReflexiveRay>().ReceiveImpactPoint(Vector3.zero, Vector3.zero, false, inputLine[i].material.color, transform.position, null);
                 reflexive[i] = null;
 
                 if (triangle[i] != null)
-                    triangle[i].GetComponentInParent<TriangleScript>().CheckPlane(Vector3.zero, triangle[i].name, false, inputLine[i].material.color);
+                    triangle[i].GetComponentInParent<TriangleScript>().CheckPlane(Vector3.zero, triangle[i].name, false, inputLine[i].material.color, null);
                 triangle[i] = null;
 
                 if (laserFinal[i] != null)
@@ -290,7 +296,7 @@ public class TriangleScript : MonoBehaviour
                 break;
             case "Divide":
                 if (reflexive[i] != null)
-                    reflexive[i].GetComponent<ReflexiveRay>().ReceiveImpactPoint(Vector3.zero, Vector3.zero, false, inputLine[i].material.color, transform.position);
+                    reflexive[i].GetComponent<ReflexiveRay>().ReceiveImpactPoint(Vector3.zero, Vector3.zero, false, inputLine[i].material.color, transform.position, null);
                 reflexive[i] = null;
 
                 if (cubeColor[i] != null)
@@ -303,7 +309,7 @@ public class TriangleScript : MonoBehaviour
                 break;
             case "Final":
                 if (reflexive[i] != null)
-                    reflexive[i].GetComponent<ReflexiveRay>().ReceiveImpactPoint(Vector3.zero, Vector3.zero, false, inputLine[i].material.color, transform.position);
+                    reflexive[i].GetComponent<ReflexiveRay>().ReceiveImpactPoint(Vector3.zero, Vector3.zero, false, inputLine[i].material.color, transform.position, null);
                 reflexive[i] = null;
 
                 if (cubeColor[i] != null)
@@ -312,12 +318,12 @@ public class TriangleScript : MonoBehaviour
                 cubeColor[i] = null;
 
                 if (triangle[i] != null)
-                    triangle[i].GetComponentInParent<TriangleScript>().CheckPlane(Vector3.zero, triangle[i].name, false, inputLine[i].material.color);
+                    triangle[i].GetComponentInParent<TriangleScript>().CheckPlane(Vector3.zero, triangle[i].name, false, inputLine[i].material.color, null);
                 triangle[i] = null;
                 break;
             case "all":
                 if (reflexive[i] != null)
-                    reflexive[i].GetComponent<ReflexiveRay>().ReceiveImpactPoint(Vector3.zero, Vector3.zero, false, inputLine[i].material.color, transform.position);
+                    reflexive[i].GetComponent<ReflexiveRay>().ReceiveImpactPoint(Vector3.zero, Vector3.zero, false, inputLine[i].material.color, transform.position, null);
                 reflexive[i] = null;
 
                 if (cubeColor[i] != null)
@@ -326,7 +332,7 @@ public class TriangleScript : MonoBehaviour
                 cubeColor[i] = null;
 
                 if (triangle[i] != null)
-                    triangle[i].GetComponentInParent<TriangleScript>().CheckPlane(Vector3.zero, triangle[i].name, false, inputLine[i].material.color);
+                    triangle[i].GetComponentInParent<TriangleScript>().CheckPlane(Vector3.zero, triangle[i].name, false, inputLine[i].material.color, null);
                 triangle[i] = null;
 
                 if (laserFinal[i] != null)

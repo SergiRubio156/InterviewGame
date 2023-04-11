@@ -37,7 +37,10 @@ public class FinalCheck : MonoBehaviour
             {
                 CheckBool[i] = _bool;
                 if (CheckBools())
-                    Victory();
+                {
+                    //Victory();
+                }
+                    
             }
 
         }
