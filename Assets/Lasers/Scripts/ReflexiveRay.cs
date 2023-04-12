@@ -156,7 +156,8 @@ public class ReflexiveRay : MonoBehaviour
 
 
             laserFinal = hit.transform.gameObject;
-            hit.transform.gameObject.GetComponent<CheckLaser>().ReceivedLaser(true, inputLine.material.color);
+            Vector3 direccion = hit.point - transform.position;
+            hit.transform.gameObject.GetComponent<CheckLaser>().ReceivedLaser(true, inputLine.material.color, direccion);
             laserReset("Final");
 
         }
@@ -293,7 +294,7 @@ public class ReflexiveRay : MonoBehaviour
                 triangle = null;
 
                 if (laserFinal != null)
-                    laserFinal.GetComponent<CheckLaser>().ReceivedLaser(false, inputLine.material.color);
+                    laserFinal.GetComponent<CheckLaser>().ReceivedLaser(false, inputLine.material.color, Vector3.zero);
                 laserFinal = null;
                 break;
 
@@ -307,7 +308,7 @@ public class ReflexiveRay : MonoBehaviour
                 triangle = null;
 
                 if (laserFinal != null)
-                    laserFinal.GetComponent<CheckLaser>().ReceivedLaser(false, inputLine.material.color);
+                    laserFinal.GetComponent<CheckLaser>().ReceivedLaser(false, inputLine.material.color, Vector3.zero);
                 laserFinal = null;
                 break;
 
@@ -322,7 +323,7 @@ public class ReflexiveRay : MonoBehaviour
                 cubeColor = null;
 
                 if (laserFinal != null)
-                    laserFinal.GetComponent<CheckLaser>().ReceivedLaser(false, inputLine.material.color);
+                    laserFinal.GetComponent<CheckLaser>().ReceivedLaser(false, inputLine.material.color, Vector3.zero);
                 laserFinal = null;
                 break;
 
@@ -354,7 +355,7 @@ public class ReflexiveRay : MonoBehaviour
                 triangle = null;
 
                 if (laserFinal != null)
-                    laserFinal.GetComponent<CheckLaser>().ReceivedLaser(false, inputLine.material.color);
+                    laserFinal.GetComponent<CheckLaser>().ReceivedLaser(false, inputLine.material.color, Vector3.zero);
                 laserFinal = null;
                 break;
 

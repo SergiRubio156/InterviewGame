@@ -38,7 +38,6 @@ public class CardsScript : MonoBehaviour
             {
                 nuevaCarta = Instantiate(cardsObjects[0], panel.transform.position, Quaternion.identity);
                 nuevaCarta.transform.SetParent(panel.transform,false); ;
-                //nuevaCarta.transform.Translate(desplazamientoHorizontal * Inventory.Count, 0, 0);
             }
             i++;
         }

@@ -63,39 +63,35 @@ public class LaserManager : MonoBehaviour
             }
             if (isPlaying)
             {
-                MoveMouse();
-                if (objectSelect)
-                    CheckGround();
+                CheckGround();
             }
         }
 
 
-
-        void MoveMouse()
-        {
-            worldPosition = Input.mousePosition;
-            worldPosition.z = 10.0f;
-            Vector3 curScreenPoint = new Vector3(Input.mousePosition.x, Input.mousePosition.y, worldPosition.z);
-            curScreenPoint = Camera.main.ScreenToWorldPoint(curScreenPoint);
-
-            transform.position = curScreenPoint;
-            if (Input.GetMouseButtonDown(0))
-                RayObject();
-        }
         void CheckGround()
         {
             RaycastHit hit;
             Ray ray = mainCamera.ScreenPointToRay(Input.mousePosition);
-            if (Physics.Raycast(ray, out hit, maxRayDistance,LayerMask.NameToLayer("NoInteractable")))
+            if (Physics.Raycast(ray, out hit, Mathf.Infinity, LayerMask.NameToLayer("NoInteractable")))
             {
-                Vector3 newPosition = new Vector3(hit.point.x, hit.point.y + 0.8f, hit.point.z) - ObjectMove.transform.position;
-                ObjectMove.GetComponent<Rigidbody>().velocity = newPosition * velocity;
-                currentRotation = ObjectMove.transform.rotation;
-                Rotation();
+                Vector3 curScreenPoint = new Vector3(hit.point.x, hit.point.y + 0.8f, hit.point.z);
+                transform.position = curScreenPoint;
+
+                if (Input.GetMouseButtonDown(0))
+                    RayObject();
+
+                if (objectSelect)
+                {
+                    Vector3 newPosition2 = new Vector3(hit.point.x, hit.point.y + 0.8f, hit.point.z) - ObjectMove.transform.position;
+                    ObjectMove.GetComponent<Rigidbody>().velocity = newPosition2 * velocity;
+                    currentRotation = ObjectMove.transform.rotation;
+                    Rotation();
+                }
+
             }
         }
 
-        void Rotation()
+    void Rotation()
         {
             Quaternion targetQuaternion = Quaternion.Euler(0, targetRotation, 0) * currentRotation;
 

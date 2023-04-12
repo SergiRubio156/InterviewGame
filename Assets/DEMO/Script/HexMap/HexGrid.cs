@@ -14,6 +14,9 @@ public class HexGrid : MonoBehaviour
     public float radius = 1f;
     public float outerSize = 1f;
 
+
+    int waterLow, waterUp, waterLandLow, waterLandUp;
+
     //public GameObject Prefab
     public bool isFlatTopped;
 
@@ -35,10 +38,20 @@ public class HexGrid : MonoBehaviour
         }
     }
 
+    void reformGridSize()
+    {
+        int x = gridSize.x;
+        waterLow = Mathf.RoundToInt(x * 0.15f);
+        waterLandLow = Mathf.RoundToInt(x * 0.2f);
+        waterUp = gridSize.x - waterLow;
+        waterLandUp = gridSize.x - waterLandLow;
+    }
+
     public void LayoutGrid()
     {
         Clear();
-        for(int y = 0; y < gridSize.y; y++)
+        reformGridSize();
+        for (int y = 0; y < gridSize.y; y++)
         {
             for (int x = 0; x < gridSize.x; x++)
             {
@@ -48,11 +61,11 @@ public class HexGrid : MonoBehaviour
 
                 HexTile hextile = tile.AddComponent<HexTile>();
                 hextile.settings = settings;
-                if(y < 2 || x < 2 || y >= 13 || x >= 13)
+                if(y < waterLow || x < waterLow || y >= waterUp || x >= waterUp)
                     hextile.RollTileType(0,1);
-                else if(y == 3 || x == 3 || y == 12 || x == 13)
+                else if(y == waterLandLow || x == waterLandLow || y == waterLandUp || x == waterLandUp)
                     hextile.RollTileType(0,3);
-                else if(y >= 4 || x >= 4)
+                else if(y >= waterLandLow+1 || x >= waterLandLow+1)
                     hextile.RollTileType(1, 2);
                 hextile.AddTile();
 

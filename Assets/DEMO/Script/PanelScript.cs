@@ -10,11 +10,13 @@ public class PanelScript : MonoBehaviour, IPointerDownHandler, IDragHandler
     private Canvas canvas;
     GameObject islandManager;
 
+    Image image;
     private void Start()
     {
         rectTransform = GetComponent<RectTransform>();
         canvas = GetComponentInParent<Canvas>();
         islandManager = GameObject.FindGameObjectWithTag("IslandManager");
+        image = GetComponent<Image>();
 
     }
 
@@ -29,7 +31,15 @@ public class PanelScript : MonoBehaviour, IPointerDownHandler, IDragHandler
         if(rectTransform.anchoredPosition.y >= 80.0f)
         {
             islandManager.GetComponent<IslandManager>().RecievedCard();
-            gameObject.SetActive(false);
+            image.enabled = false;
+            StartCoroutine(Wait());
         }
     }
+
+    IEnumerator Wait()
+    {
+        yield return new WaitForSeconds(2f);
+        Destroy(gameObject);
+    }
+
 }
