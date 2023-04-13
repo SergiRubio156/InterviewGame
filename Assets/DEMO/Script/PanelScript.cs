@@ -10,6 +10,8 @@ public class PanelScript : MonoBehaviour, IPointerDownHandler, IDragHandler
     private Canvas canvas;
     GameObject islandManager;
 
+    GameObject card;
+    CardsScript cardsScript;
     Image image;
     private void Start()
     {
@@ -17,6 +19,8 @@ public class PanelScript : MonoBehaviour, IPointerDownHandler, IDragHandler
         canvas = GetComponentInParent<Canvas>();
         islandManager = GameObject.FindGameObjectWithTag("IslandManager");
         image = GetComponent<Image>();
+        card = GameObject.FindGameObjectWithTag("Cards");
+        cardsScript = card.GetComponent<CardsScript>();
 
     }
 
@@ -32,13 +36,14 @@ public class PanelScript : MonoBehaviour, IPointerDownHandler, IDragHandler
         {
             islandManager.GetComponent<IslandManager>().RecievedCard();
             image.enabled = false;
+            cardsScript.DeleteObject(gameObject);
             StartCoroutine(Wait());
         }
     }
 
     IEnumerator Wait()
     {
-        yield return new WaitForSeconds(2f);
+        yield return new WaitForSeconds(1f);
         Destroy(gameObject);
     }
 
