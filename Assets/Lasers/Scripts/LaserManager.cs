@@ -26,6 +26,7 @@ public class LaserManager : MonoBehaviour
         //Rigidbody
         Rigidbody rb = null;
         public bool isPlaying;
+        float positionIntial = 0f;
 
         void Awake()
         {
@@ -111,7 +112,7 @@ public class LaserManager : MonoBehaviour
 
         void RayObject()
         {
-                float positionIntial = 0f;
+                
                 RaycastHit hit;
                 Ray ray = mainCamera.ScreenPointToRay(Input.mousePosition);
                 if (Physics.Raycast(ray, out hit, maxRayDistance) && !objectSelect)

@@ -101,11 +101,11 @@ namespace StarterAssets
 		{
 			_controller = GetComponent<CharacterController>();
 			_input = GetComponent<StarterAssetsInputs>();
-#if ENABLE_INPUT_SYSTEM && STARTER_ASSETS_PACKAGES_CHECKED
-			_playerInput = GetComponent<PlayerInput>();
-#else
-			Debug.LogError( "Starter Assets package is missing dependencies. Please use Tools/Starter Assets/Reinstall Dependencies to fix it");
-#endif
+		#if ENABLE_INPUT_SYSTEM && STARTER_ASSETS_PACKAGES_CHECKED
+					_playerInput = GetComponent<PlayerInput>();
+		#else
+					Debug.LogError( "Starter Assets package is missing dependencies. Please use Tools/Starter Assets/Reinstall Dependencies to fix it");
+		#endif
 
 			// reset our timeouts on start
 			_jumpTimeoutDelta = JumpTimeout;
@@ -118,13 +118,16 @@ namespace StarterAssets
 		}
 		void GameManager_OnGameStateChanged(GameState state)        //Esta funcion depende del Awake del evento, Como he explicado antes nso permite comparar entre Script y GameObjects
 		{
-			Cursor.visible = (state == GameState.Settings);
+			Cursor.visible = (state != GameState.Playing);
+
 			sceneSettings = (state == GameState.Settings);
 			isPlaying = (state == GameState.Settings);
 		}
 
 		void Update()
 		{
+			if (Input.GetKey(KeyCode.Q))
+				Cursor.lockState = CursorLockMode.None;
 			if (Input.GetKeyDown(KeyCode.Escape)) //Cuando le damos click al Escape entra a esta funcion
 			{
 				if (sceneSettings) GameManager.Instance.UpdateGameState(GameState.Playing);
@@ -132,6 +135,12 @@ namespace StarterAssets
 			}
 			if (!isPlaying)
 			{
+				Cursor.visible = false;
+				if (!Cursor.visible)
+				{
+					Cursor.lockState = CursorLockMode.Confined;
+					Cursor.lockState = CursorLockMode.Locked;
+				}
 				JumpAndGravity();
 				GroundedCheck();
 				Move();
