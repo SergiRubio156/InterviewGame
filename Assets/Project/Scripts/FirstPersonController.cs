@@ -118,7 +118,9 @@ namespace StarterAssets
 		}
 		void GameManager_OnGameStateChanged(GameState state)        //Esta funcion depende del Awake del evento, Como he explicado antes nso permite comparar entre Script y GameObjects
 		{
-			Cursor.visible = (state != GameState.Playing);
+			if (state == GameState.Settings)
+				Cursor.lockState = CursorLockMode.None;
+
 
 			sceneSettings = (state == GameState.Settings);
 			isPlaying = (state == GameState.Settings);
@@ -126,8 +128,6 @@ namespace StarterAssets
 
 		void Update()
 		{
-			if (Input.GetKey(KeyCode.Q))
-				Cursor.lockState = CursorLockMode.None;
 			if (Input.GetKeyDown(KeyCode.Escape)) //Cuando le damos click al Escape entra a esta funcion
 			{
 				if (sceneSettings) GameManager.Instance.UpdateGameState(GameState.Playing);

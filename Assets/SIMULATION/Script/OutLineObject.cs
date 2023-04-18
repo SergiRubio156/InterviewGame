@@ -7,20 +7,25 @@ public class OutLineObject : MonoBehaviour
     [SerializeField] private Material outiLineMaterial;
     [SerializeField] private float outlineScaleFactor;
     [SerializeField] private Color outlineColor;
+    [SerializeField] private Rigidbody rb;
     private Renderer outlineRenderer;
 
+    Vector3 positionCube;
+    bool oneTime;
     // Start is called before the first frame update
     void Start()
     {
+        positionCube = transform.position;
         outlineRenderer = CreateOutline(outiLineMaterial, outlineScaleFactor, outlineColor);
         outlineRenderer.enabled = false;
     }
 
-    public void Outline(bool _bool)
+    public void Outline(bool _bool,Vector3 _position)
     {
         if (_bool)
         {
             outlineRenderer.enabled = true;
+            outlineRenderer.transform.position = _position;
         }
         else
             outlineRenderer.enabled = false;
@@ -29,7 +34,7 @@ public class OutLineObject : MonoBehaviour
     Renderer CreateOutline(Material _mat, float _scaleFactor, Color _color)
     {
 
-        GameObject outlineObject = Instantiate(this.gameObject, transform.position, transform.rotation);
+        GameObject outlineObject = Instantiate(this.gameObject, positionCube, transform.rotation);
         Renderer rend = outlineObject.GetComponent<Renderer>();
 
         rend.material = _mat;
@@ -39,6 +44,9 @@ public class OutLineObject : MonoBehaviour
 
         outlineObject.GetComponent<OutLineObject>().enabled = false;
         outlineObject.GetComponent<Collider>().enabled = false;
+        rb = outlineObject.GetComponent<Rigidbody>();
+
+        rb.useGravity = false;
 
         rend.enabled = true;
 
