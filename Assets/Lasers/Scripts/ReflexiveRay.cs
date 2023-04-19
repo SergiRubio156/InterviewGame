@@ -115,7 +115,7 @@ public class ReflexiveRay : MonoBehaviour
 
                 if (num != 8)
                 {
-                    hit.transform.gameObject.GetComponentInParent<TriangleScript>().CheckPlane(hit.point, hit.transform.gameObject.name, true, inputLine.material.color,gameObject);
+                    hit.transform.gameObject.GetComponentInParent<TriangleScript>().CheckPlane(Vector3.zero,hit.point, true, inputLine.material,gameObject);
 
                     laserReset("Divide");
                 }      
@@ -290,7 +290,7 @@ public class ReflexiveRay : MonoBehaviour
                 cubeColor = null;
 
                 if (triangle != null)
-                    triangle.GetComponentInParent<TriangleScript>().CheckPlane(Vector3.zero, triangle.name, false, inputLine.material.color, null);
+                    triangle.GetComponentInParent<TriangleScript>().CheckPlane(Vector3.zero,Vector3.zero, false, inputLine.material, null);
                 triangle = null;
 
                 if (laserFinal != null)
@@ -304,7 +304,7 @@ public class ReflexiveRay : MonoBehaviour
                 reflexiveCube = null;
 
                 if (triangle != null)
-                    triangle.GetComponentInParent<TriangleScript>().CheckPlane(Vector3.zero, triangle.name, false, inputLine.material.color, null);
+                    triangle.GetComponentInParent<TriangleScript>().CheckPlane(Vector3.zero,Vector3.zero, false, inputLine.material, null);
                 triangle = null;
 
                 if (laserFinal != null)
@@ -337,7 +337,7 @@ public class ReflexiveRay : MonoBehaviour
                 cubeColor = null;
 
                 if (triangle != null)
-                    triangle.GetComponentInParent<TriangleScript>().CheckPlane(Vector3.zero, triangle.name, false, inputLine.material.color, null);
+                    triangle.GetComponentInParent<TriangleScript>().CheckPlane(Vector3.zero,Vector3.zero, false, inputLine.material, null);
                 triangle = null;
                 break;
 
@@ -351,7 +351,7 @@ public class ReflexiveRay : MonoBehaviour
                 cubeColor = null;
 
                 if (triangle != null)
-                    triangle.GetComponentInParent<TriangleScript>().CheckPlane(Vector3.zero, triangle.name, false, inputLine.material.color, null);
+                    triangle.GetComponentInParent<TriangleScript>().CheckPlane(Vector3.zero,Vector3.zero, false, inputLine.material, null);
                 triangle = null;
 
                 if (laserFinal != null)

@@ -18,12 +18,15 @@ public class LaserRay : MonoBehaviour
      public GameObject reflexive = null;
      public GameObject triangle = null;
      public GameObject laserFinal = null;
+    public GameObject LaserObject = null;
 
+    Vector3 positionLaser;
     //Rotacion 
     public float rotationSpeed;
     public bool isRotation;
     void Start()
     {
+        positionLaser = LaserObject.transform.position;
         inputLine = GetComponentInChildren<LineRenderer>();
         GameManager.OnGameStateChanged += GameManager_OnGameStateChanged; //Esto es el evento del script GameManager
         rotationSpeed = 50;
@@ -63,13 +66,13 @@ public class LaserRay : MonoBehaviour
 
     void LaserMirror()
     {
-        if (Physics.Raycast(transform.position, transform.forward, out hit, Mathf.Infinity, layerMirror))
+        if (Physics.Raycast(positionLaser, transform.forward, out hit, Mathf.Infinity, layerMirror))
         {
 
             Vector3 _hitPoint = hit.point;
             reflectiveRayPoint = Vector3.Reflect(_hitPoint - transform.position, hit.normal);
 
-            inputLine.SetPosition(0, transform.position);
+            inputLine.SetPosition(0, positionLaser);
             inputLine.SetPosition(1, _hitPoint);
 
             if(reflexive != hit.transform.gameObject && reflexive != null)
@@ -86,9 +89,9 @@ public class LaserRay : MonoBehaviour
 
     void LaserColor()
     {
-        if (Physics.Raycast(transform.position, transform.forward, out hit, Mathf.Infinity, layerCylinder))
+        if (Physics.Raycast(positionLaser, transform.forward, out hit, Mathf.Infinity, layerCylinder))
         {
-            inputLine.SetPosition(0, transform.position);
+            inputLine.SetPosition(0, positionLaser);
             inputLine.SetPosition(1, hit.point);
 
             if (cubeColor != hit.transform.gameObject && cubeColor != null)
@@ -105,18 +108,20 @@ public class LaserRay : MonoBehaviour
 
     void LaserDivide()
     {
-        if (Physics.Raycast(transform.position, transform.forward, out hit, Mathf.Infinity, layerTriangle))
+        Ray ray = new Ray(positionLaser, transform.forward);
+        if (Physics.Raycast(ray, out hit, Mathf.Infinity, layerTriangle))
         {
-            inputLine.SetPosition(0, transform.position);
+            inputLine.SetPosition(0, positionLaser);
             inputLine.SetPosition(1, hit.point);
 
             if (triangle != hit.transform.gameObject && triangle != null)
             {
-                triangle.GetComponentInParent<TriangleScript>().CheckPlane(Vector3.zero, triangle.name, false, inputLine.material.color,null);
+                triangle.GetComponentInParent<TriangleScript>().CheckPlane(Vector3.zero,Vector3.zero, false, inputLine.material,null);
                 triangle = null;
             }
             triangle = hit.transform.gameObject;
-            hit.transform.gameObject.GetComponentInParent<TriangleScript>().CheckPlane(hit.point, hit.transform.gameObject.name, true, inputLine.material.color,gameObject);
+            Vector3 positionLaserDivide = hit.point - triangle.transform.position;
+            triangle.GetComponent<TriangleScript>().CheckPlane(hit.point,positionLaserDivide, true, inputLine.material, this.gameObject);
             laserReset("Divide");
 
         }
@@ -125,9 +130,9 @@ public class LaserRay : MonoBehaviour
 
     void LaserStart()
     {
-        if (Physics.Raycast(transform.position, transform.forward, out hit, 100, LayerStart))
+        if (Physics.Raycast(positionLaser, transform.forward, out hit, 100, LayerStart))
         {
-            inputLine.SetPosition(0, transform.position);
+            inputLine.SetPosition(0, positionLaser);
             inputLine.SetPosition(1, hit.point);
 
             laserReset("all");
@@ -137,9 +142,9 @@ public class LaserRay : MonoBehaviour
     }
     void LaserFinal()
     {
-        if (Physics.Raycast(transform.position, transform.forward, out hit, 100, LayerFinal))
+        if (Physics.Raycast(positionLaser, transform.forward, out hit, 100, LayerFinal))
         {
-            inputLine.SetPosition(0, transform.position);
+            inputLine.SetPosition(0, positionLaser);
             inputLine.SetPosition(1, hit.point);
 
 
@@ -152,9 +157,9 @@ public class LaserRay : MonoBehaviour
     }
     void LaserWall()
     {
-        if (Physics.Raycast(transform.position, transform.forward, out hit, Mathf.Infinity, layerWalls))
+        if (Physics.Raycast(positionLaser, transform.forward, out hit, Mathf.Infinity, layerWalls))
         {
-            inputLine.SetPosition(0, transform.position);
+            inputLine.SetPosition(0, positionLaser);
             inputLine.SetPosition(1, hit.point);
 
             laserReset("all");
@@ -194,7 +199,7 @@ public class LaserRay : MonoBehaviour
 
     int SearchLaser()
     {
-        if (Physics.Raycast(transform.position, transform.forward, out hit, Mathf.Infinity))
+        if (Physics.Raycast(positionLaser, transform.forward, out hit, Mathf.Infinity))
         {
             return hit.transform.gameObject.layer;
         }
@@ -211,7 +216,7 @@ public class LaserRay : MonoBehaviour
                 cubeColor = null;
 
                 if (triangle != null)
-                    triangle.GetComponentInParent<TriangleScript>().CheckPlane(Vector3.zero, triangle.name, false, inputLine.material.color,null);
+                    triangle.GetComponentInParent<TriangleScript>().CheckPlane(Vector3.zero, Vector3.zero, false, inputLine.material, null);
                 triangle = null;
 
                 if (laserFinal != null)
@@ -225,7 +230,7 @@ public class LaserRay : MonoBehaviour
                 reflexive = null;
 
                 if (triangle != null)
-                    triangle.GetComponentInParent<TriangleScript>().CheckPlane(Vector3.zero, triangle.name, false, inputLine.material.color, null);
+                    triangle.GetComponentInParent<TriangleScript>().CheckPlane(Vector3.zero,Vector3.zero, false, inputLine.material, null);
                 triangle = null;
 
                 if (laserFinal != null)
@@ -257,7 +262,7 @@ public class LaserRay : MonoBehaviour
                 cubeColor = null;
 
                 if (triangle != null)
-                    triangle.GetComponentInParent<TriangleScript>().CheckPlane(Vector3.zero, triangle.name, false, inputLine.material.color, null);
+                    triangle.GetComponentInParent<TriangleScript>().CheckPlane(Vector3.zero,Vector3.zero, false, inputLine.material, null);
                 triangle = null;
                 break;
 
@@ -271,7 +276,7 @@ public class LaserRay : MonoBehaviour
                 cubeColor = null;
 
                 if (triangle != null)
-                    triangle.GetComponentInParent<TriangleScript>().CheckPlane(Vector3.zero, triangle.name, false, inputLine.material.color, null);
+                    triangle.GetComponentInParent<TriangleScript>().CheckPlane(Vector3.zero,Vector3.zero, false, inputLine.material, null);
                 triangle = null;
 
                 if (laserFinal != null)

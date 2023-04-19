@@ -100,7 +100,7 @@ public class CubeColors : MonoBehaviour
             inputLine.SetPosition(1, hit.point);
 
                 triangle = hit.transform.gameObject;
-                hit.transform.gameObject.GetComponentInParent<TriangleScript>().CheckPlane(hit.point, hit.transform.gameObject.name, true, inputLine.material.color,gameObject);
+                hit.transform.gameObject.GetComponentInParent<TriangleScript>().CheckPlane(Vector3.zero,hit.point,true, inputLine.material,gameObject);
 
                 laserReset("Divide");
         }
@@ -230,7 +230,7 @@ public class CubeColors : MonoBehaviour
                 cubeColor = null;
 
                 if (triangle != null)
-                    triangle.GetComponentInParent<TriangleScript>().CheckPlane(Vector3.zero, triangle.name, false, inputLine.material.color, null);
+                    triangle.GetComponentInParent<TriangleScript>().CheckPlane(Vector3.zero,Vector3.zero, false, inputLine.material, null);
                 triangle = null;
 
                 if (laserFinal != null)
@@ -244,7 +244,7 @@ public class CubeColors : MonoBehaviour
                 reflexiveCube = null;
 
                 if (triangle != null)
-                    triangle.GetComponentInParent<TriangleScript>().CheckPlane(Vector3.zero, triangle.name, false, inputLine.material.color, null);
+                    triangle.GetComponentInParent<TriangleScript>().CheckPlane(Vector3.zero,Vector3.zero, false, inputLine.material, null);
                 triangle = null;
 
                 if (laserFinal != null)
@@ -276,7 +276,7 @@ public class CubeColors : MonoBehaviour
                 cubeColor = null;
 
                 if (triangle != null)
-                    triangle.GetComponentInParent<TriangleScript>().CheckPlane(Vector3.zero, triangle.name, false, inputLine.material.color, null);
+                    triangle.GetComponentInParent<TriangleScript>().CheckPlane(Vector3.zero,Vector3.zero, false, inputLine.material, null);
                 triangle = null;
                 break;
 
@@ -290,7 +290,7 @@ public class CubeColors : MonoBehaviour
                 cubeColor = null;
 
                 if (triangle != null)
-                    triangle.GetComponentInParent<TriangleScript>().CheckPlane(Vector3.zero, triangle.name, false, inputLine.material.color, null);
+                    triangle.GetComponentInParent<TriangleScript>().CheckPlane(Vector3.zero,Vector3.zero, false, inputLine.material, null);
                 triangle = null;
 
                 if (laserFinal != null)
