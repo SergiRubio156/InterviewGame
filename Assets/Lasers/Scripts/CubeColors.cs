@@ -14,7 +14,7 @@ public class CubeColors : MonoBehaviour
     Vector3 reflectiveRayPoint;
 
     public Material[] nameColor = new Material[4];
-    public Renderer[] renderer = new Renderer[3];
+    public MeshRenderer[] renderer = new MeshRenderer[3];
 
     bool checkMirror;
 
@@ -60,7 +60,7 @@ public class CubeColors : MonoBehaviour
             Vector3 _hitPoint = hit.point;
             reflectiveRayPoint = Vector3.Reflect(_hitPoint - transform.position, hit.normal);
 
-            inputLine.SetPosition(0, transform.position);
+            inputLine.SetPosition(0, sun.transform.position);
             inputLine.SetPosition(1, _hitPoint);
 
             /*if (reflexiveCube.name != hit.transform.gameObject.name && reflexiveCube != null)
@@ -80,7 +80,7 @@ public class CubeColors : MonoBehaviour
     {
         if (Physics.Raycast(transform.position, transform.forward, out hit, Mathf.Infinity, layerTriangle))
         {
-            inputLine.SetPosition(0, transform.position);
+            inputLine.SetPosition(0, sun.transform.position);
             inputLine.SetPosition(1, hit.point);
 
             triangle = hit.transform.gameObject;
@@ -97,7 +97,7 @@ public class CubeColors : MonoBehaviour
     {
         if (Physics.Raycast(transform.position, transform.forward, out hit, 100, LayerStart))
         {
-            inputLine.SetPosition(0, transform.position);
+            inputLine.SetPosition(0, sun.transform.position);
             inputLine.SetPosition(1, hit.point);
 
             laserReset("all");
@@ -110,7 +110,7 @@ public class CubeColors : MonoBehaviour
     {
         if (Physics.Raycast(transform.position, transform.forward, out hit, Mathf.Infinity, layerWalls))
         {
-            inputLine.SetPosition(0, transform.position);
+            inputLine.SetPosition(0, sun.transform.position);
             inputLine.SetPosition(1, hit.point);
 
             laserReset("all");
@@ -120,7 +120,7 @@ public class CubeColors : MonoBehaviour
     {
         if (Physics.Raycast(transform.position, transform.forward, out hit, 100, LayerFinal))
         {
-            inputLine.SetPosition(0, transform.position);
+            inputLine.SetPosition(0, sun.transform.position);
             inputLine.SetPosition(1, hit.point);
 
 
@@ -134,7 +134,7 @@ public class CubeColors : MonoBehaviour
     public void RecivedColors(Material _mat, bool _bool,string _name)
     {
         Color _color = _mat.color;
-        if (!red || !blue || !yellow)
+        if (!red || !blue || !yellow || !_bool)
         {
             for (int i = 0; i < nameColor.Length; i++)
             {
@@ -157,6 +157,8 @@ public class CubeColors : MonoBehaviour
                     }
                 }
             }
+            if (renderer[3].material != nameColor[3])
+                RenderColor("5", _color, false, "Sun");
         }
         if (red && blue && yellow)
         {
@@ -177,15 +179,15 @@ public class CubeColors : MonoBehaviour
         {
             case "1":
                 if (_bool)
-                    renderer[0].material.SetColor("_EmissiveColor", _color);
+                    renderer[0].material.color = _color;
                 break;
             case "2":
                 if (_bool)
-                    renderer[1].material.SetColor("_EmissiveColor", _color);
+                    renderer[1].material.color = _color;
                 break;
             case "3":
                 if(_bool)
-                    renderer[2].material.SetColor("_EmissiveColor", _color);
+                    renderer[2].material.color = _color;
                 break;
             case "4":
                 if(_bool)
@@ -193,12 +195,12 @@ public class CubeColors : MonoBehaviour
                 break;
             default:
                 if (_name2 == "Red")
-                    forColor(Color.red);
-                else if (_name2 == "Blue")
-                    forColor(Color.blue);
-                else if (_name2 == "Yellow")
-                    forColor(Color.yellow);
-                else if (_name2 == "Sun")
+                    forColor(_color);
+                if (_name2 == "Blue")
+                    forColor(_color);
+                if (_name2 == "Yellow")
+                    forColor(_color);
+                if (_name2 == "Sun")
                     renderer[3].material = nameColor[3];
                 break;
         }
