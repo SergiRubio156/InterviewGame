@@ -15,7 +15,7 @@ public class AnimationDoor : MonoBehaviour
 
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Tab) && !hasPlayed)
+        if (Input.GetKeyDown(KeyCode.M) && !hasPlayed)
         {
             animObject.SetActive(true);
             animator.Play("door");
@@ -26,7 +26,7 @@ public class AnimationDoor : MonoBehaviour
 
     IEnumerator DisableAnimation()
     {
-        yield return new WaitForSeconds(animator.GetCurrentAnimatorStateInfo(0).length);
+        yield return new WaitForSeconds(animator.GetCurrentAnimatorStateInfo(0) .length);
         animObject.SetActive(false);
     }
 }
