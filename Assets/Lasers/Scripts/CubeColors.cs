@@ -9,10 +9,12 @@ public class CubeColors : MonoBehaviour
     int layerWalls, layerMirror, layerCylinder, layerTriangle, LayerStart, LayerFinal;
 
     RaycastHit hit;
-    public LineRenderer inputLine;
+    public GameObject sun;
+    LineRenderer inputLine;
     Vector3 reflectiveRayPoint;
 
     public Material[] nameColor = new Material[4];
+    public Renderer[] renderer = new Renderer[3];
 
     bool checkMirror;
 
@@ -24,7 +26,7 @@ public class CubeColors : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        inputLine = GetComponentInChildren<LineRenderer>();
+        inputLine = sun.GetComponent<LineRenderer>();
     }
 
     // Update is called once per frame
@@ -74,24 +76,6 @@ public class CubeColors : MonoBehaviour
         }
     }
 
-    void LaserColor()
-    {
-        if (Physics.Raycast(transform.position, transform.forward, out hit, Mathf.Infinity, layerCylinder))
-        {
-            inputLine.SetPosition(0, transform.position);
-            inputLine.SetPosition(1, hit.point);
-
-
-            if (cubeColor.name != hit.transform.gameObject.name)
-            {
-                cubeColor = hit.transform.gameObject;
-                hit.transform.gameObject.GetComponent<CubeColors>().RecivedColors(inputLine.material.color, true);
-
-                laserReset("Color");
-            }
-        }
-    }
-
     void LaserDivide()
     {
         if (Physics.Raycast(transform.position, transform.forward, out hit, Mathf.Infinity, layerTriangle))
@@ -99,8 +83,10 @@ public class CubeColors : MonoBehaviour
             inputLine.SetPosition(0, transform.position);
             inputLine.SetPosition(1, hit.point);
 
-                triangle = hit.transform.gameObject;
-                hit.transform.gameObject.GetComponentInParent<TriangleScript>().CheckPlane(Vector3.zero,hit.point,true, inputLine.material,gameObject);
+            triangle = hit.transform.gameObject;
+            string _name = hit.transform.gameObject.name;
+
+            hit.transform.gameObject.GetComponentInParent<TriangleScript>().CheckPlane(Vector3.zero, _name, true, inputLine.material,gameObject);
 
                 laserReset("Divide");
         }
@@ -145,45 +131,88 @@ public class CubeColors : MonoBehaviour
         }
 
     }
-    public void RecivedColors(Color _name, bool _bool)
+    public void RecivedColors(Material _mat, bool _bool,string _name)
     {
-        if (nameColor[3].color != _name)
+        Color _color = _mat.color;
+        if (!red || !blue || !yellow)
         {
-            for (int i = 0; i < nameColor.Length-1; i++)
+            for (int i = 0; i < nameColor.Length; i++)
             {
-                if (nameColor[i].color == _name)
+                if (nameColor[i].color == _color)
                 {
                     switch (i)
                     {
                         case 0:
                             red = _bool;
+                            RenderColor(_name, _color, _bool,"Red");
                             break;
                         case 1:
                             blue = _bool;
+                            RenderColor(_name, _color, _bool,"Blue");
                             break;
                         case 2:
                             yellow = _bool;
+                            RenderColor(_name, _color, _bool,"Yellow");
                             break;
                     }
                 }
             }
-            if (red && blue && yellow)
-            {
-                LaserDraw();
-            }
-            else
-            {
-                inputLine.SetPosition(0, Vector3.zero);
-                inputLine.SetPosition(1, Vector3.zero);
-            }
         }
-        else if(!_bool)
+        if (red && blue && yellow)
         {
-            red = false;
-            yellow = false;
-            blue = false;
+            RenderColor("4", _color, _bool,"Yellow");
+            LaserDraw();
+        }
+        else
+        {
+            inputLine.SetPosition(0, Vector3.zero);
+            inputLine.SetPosition(1, Vector3.zero);
+        }
+
+    }
+
+    void RenderColor(string _name,Color _color,bool _bool,string _name2)
+    {
+        switch (_name)
+        {
+            case "1":
+                if (_bool)
+                    renderer[0].material.SetColor("_EmissiveColor", _color);
+                break;
+            case "2":
+                if (_bool)
+                    renderer[1].material.SetColor("_EmissiveColor", _color);
+                break;
+            case "3":
+                if(_bool)
+                    renderer[2].material.SetColor("_EmissiveColor", _color);
+                break;
+            case "4":
+                if(_bool)
+                    renderer[3].material = nameColor[4];
+                break;
+            default:
+                if (_name2 == "Red")
+                    forColor(Color.red);
+                else if (_name2 == "Blue")
+                    forColor(Color.blue);
+                else if (_name2 == "Yellow")
+                    forColor(Color.yellow);
+                else if (_name2 == "Sun")
+                    renderer[3].material = nameColor[3];
+                break;
         }
     }
+
+    void forColor(Color _name)
+    {
+        for(int i = 0; i < renderer.Length; i++)
+        {
+            if(renderer[i].material.color == _name)
+                renderer[i].material = nameColor[3];
+        }
+    }
+
     int SearchLaser()
     {
         if (Physics.Raycast(transform.position, transform.forward, out hit, 100))
@@ -199,9 +228,6 @@ public class CubeColors : MonoBehaviour
         {
             case 6: //MIRROR
                 LaserMirror();
-                break;
-            case 7: //CYLINDER
-                LaserColor();
                 break;
             case 8: //TRIANGLE
                 LaserDivide();
@@ -226,11 +252,11 @@ public class CubeColors : MonoBehaviour
         {
             case "Mirror":
                 if (cubeColor != null)
-                    cubeColor.GetComponent<CubeColors>().RecivedColors(inputLine.material.color, false);
+                    cubeColor.GetComponent<CubeColors>().RecivedColors(inputLine.material, false,_name);
                 cubeColor = null;
 
                 if (triangle != null)
-                    triangle.GetComponentInParent<TriangleScript>().CheckPlane(Vector3.zero,Vector3.zero, false, inputLine.material, null);
+                    triangle.GetComponentInParent<TriangleScript>().CheckPlane(Vector3.zero, _name, false, inputLine.material, null);
                 triangle = null;
 
                 if (laserFinal != null)
@@ -244,7 +270,7 @@ public class CubeColors : MonoBehaviour
                 reflexiveCube = null;
 
                 if (triangle != null)
-                    triangle.GetComponentInParent<TriangleScript>().CheckPlane(Vector3.zero,Vector3.zero, false, inputLine.material, null);
+                    triangle.GetComponentInParent<TriangleScript>().CheckPlane(Vector3.zero, _name, false, inputLine.material, null);
                 triangle = null;
 
                 if (laserFinal != null)
@@ -258,7 +284,7 @@ public class CubeColors : MonoBehaviour
                 reflexiveCube = null;
 
                 if (cubeColor != null)
-                    cubeColor.GetComponent<CubeColors>().RecivedColors(inputLine.material.color, false);
+                    cubeColor.GetComponent<CubeColors>().RecivedColors(inputLine.material, false, _name);
                 cubeColor = null;
 
                 if (laserFinal != null)
@@ -272,11 +298,11 @@ public class CubeColors : MonoBehaviour
                 reflexiveCube = null;
 
                 if (cubeColor != null)
-                    cubeColor.GetComponent<CubeColors>().RecivedColors(inputLine.material.color, false);
+                    cubeColor.GetComponent<CubeColors>().RecivedColors(inputLine.material, false, _name);
                 cubeColor = null;
 
                 if (triangle != null)
-                    triangle.GetComponentInParent<TriangleScript>().CheckPlane(Vector3.zero,Vector3.zero, false, inputLine.material, null);
+                    triangle.GetComponentInParent<TriangleScript>().CheckPlane(Vector3.zero, _name, false, inputLine.material, null);
                 triangle = null;
                 break;
 
@@ -286,11 +312,11 @@ public class CubeColors : MonoBehaviour
                 reflexiveCube = null;
 
                 if (cubeColor != null)
-                    cubeColor.GetComponent<CubeColors>().RecivedColors(inputLine.material.color, false);
+                    cubeColor.GetComponent<CubeColors>().RecivedColors(inputLine.material, false, _name);
                 cubeColor = null;
 
                 if (triangle != null)
-                    triangle.GetComponentInParent<TriangleScript>().CheckPlane(Vector3.zero,Vector3.zero, false, inputLine.material, null);
+                    triangle.GetComponentInParent<TriangleScript>().CheckPlane(Vector3.zero, _name, false, inputLine.material, null);
                 triangle = null;
 
                 if (laserFinal != null)
