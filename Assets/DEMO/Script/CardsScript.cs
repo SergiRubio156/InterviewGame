@@ -12,7 +12,6 @@ public class CardsScript : MonoBehaviour
     public List<GameObject> cardsObjects;
 
     GameObject nuevaCarta;
-     //Vector3 positionCard = new Vector3(461.50f, 24.8f,0);
 
 
     int i = 0;
@@ -38,9 +37,14 @@ public class CardsScript : MonoBehaviour
             {
                 nuevaCarta = Instantiate(cardsObjects[0], panel.transform.position, Quaternion.identity);
                 nuevaCarta.transform.SetParent(panel.transform,false); ;
-                //nuevaCarta.transform.Translate(desplazamientoHorizontal * Inventory.Count, 0, 0);
             }
             i++;
         }
+    }
+
+    public void DeleteObject(GameObject _object)
+    {
+        Debug.Log("!");
+        Inventory.Remove(_object);
     }
 }
