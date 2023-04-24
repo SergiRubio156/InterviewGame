@@ -29,4 +29,10 @@ public class AnimationDoor : MonoBehaviour
         yield return new WaitForSeconds(animator.GetCurrentAnimatorStateInfo(0) .length);
         animObject.SetActive(false);
     }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.gameObject.CompareTag("Player"))
+            Debug.Log("hika");
+    }
 }

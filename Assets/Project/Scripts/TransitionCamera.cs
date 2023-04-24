@@ -1,3 +1,4 @@
+using Cinemachine;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.Mathematics;
@@ -8,14 +9,13 @@ public class TransitionCamera : MonoBehaviour
 {
     public GameObject triggerObject;
     bool StartCameraZoom;
-    Camera cam;
-    public Animator animaror;
+    CinemachineVirtualCamera cam;
 
     // Start is called before the first frame update
     void Start()
     {
         StartCameraZoom = false;
-        cam = GetComponent<Camera>();
+        cam = GetComponent<CinemachineVirtualCamera>();
     }
 
     // Update is called once per frame
@@ -23,15 +23,14 @@ public class TransitionCamera : MonoBehaviour
     {
         if (triggerObject != null && Input.GetMouseButtonDown(0) && !StartCameraZoom)
         {
-            StartCameraZoom = true;
+            //StartCameraZoom = true;
         }
         if (StartCameraZoom)
         {
-            cam.fieldOfView -= Time.deltaTime * 400;
-            if (cam.fieldOfView < 1)
+            cam.m_Lens.FieldOfView -= Time.deltaTime * 350;
+            if (cam.m_Lens.FieldOfView < 1)
             {
-                animaror.Play("Fadein");
-                SceneManager.LoadScene("Nivel 1");
+                //SceneManager.LoadScene("Nivel 1");
  
             }
         }
