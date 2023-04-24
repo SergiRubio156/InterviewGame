@@ -15,7 +15,7 @@ public class CubeColors : MonoBehaviour
 
     public Material[] nameColor = new Material[4];
     public MeshRenderer[] renderer = new MeshRenderer[3];
-
+    public GameObject laserSun;
     bool checkMirror;
 
     public GameObject cubeColor = null;
@@ -26,7 +26,7 @@ public class CubeColors : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        inputLine = sun.GetComponent<LineRenderer>();
+        inputLine = laserSun.GetComponent<LineRenderer>();
     }
 
     // Update is called once per frame
@@ -54,13 +54,14 @@ public class CubeColors : MonoBehaviour
 
     void LaserMirror()
     {
-        if (Physics.Raycast(transform.position, transform.forward, out hit, Mathf.Infinity, layerMirror))
+        Ray ray = new Ray(laserSun.transform.position, laserSun.transform.forward);
+        if (Physics.Raycast(ray, out hit, Mathf.Infinity, layerMirror))
         {
 
             Vector3 _hitPoint = hit.point;
             reflectiveRayPoint = Vector3.Reflect(_hitPoint - transform.position, hit.normal);
 
-            inputLine.SetPosition(0, sun.transform.position);
+            inputLine.SetPosition(0, laserSun.transform.position);
             inputLine.SetPosition(1, _hitPoint);
 
             /*if (reflexiveCube.name != hit.transform.gameObject.name && reflexiveCube != null)
@@ -78,9 +79,10 @@ public class CubeColors : MonoBehaviour
 
     void LaserDivide()
     {
-        if (Physics.Raycast(transform.position, transform.forward, out hit, Mathf.Infinity, layerTriangle))
+        Ray ray = new Ray(laserSun.transform.position, laserSun.transform.forward);
+        if (Physics.Raycast(ray, out hit, Mathf.Infinity, layerTriangle))
         {
-            inputLine.SetPosition(0, sun.transform.position);
+            inputLine.SetPosition(0, laserSun.transform.position);
             inputLine.SetPosition(1, hit.point);
 
             triangle = hit.transform.gameObject;
@@ -95,9 +97,10 @@ public class CubeColors : MonoBehaviour
 
     void LaserStart()
     {
-        if (Physics.Raycast(transform.position, transform.forward, out hit, 100, LayerStart))
+        Ray ray = new Ray(laserSun.transform.position, laserSun.transform.forward);
+        if (Physics.Raycast(ray, out hit, 100, LayerStart))
         {
-            inputLine.SetPosition(0, sun.transform.position);
+            inputLine.SetPosition(0, laserSun.transform.position);
             inputLine.SetPosition(1, hit.point);
 
             laserReset("all");
@@ -108,9 +111,10 @@ public class CubeColors : MonoBehaviour
 
     void LaserWall()
     {
-        if (Physics.Raycast(transform.position, transform.forward, out hit, Mathf.Infinity, layerWalls))
+        Ray ray = new Ray(laserSun.transform.position, laserSun.transform.forward);
+        if (Physics.Raycast(ray, out hit, Mathf.Infinity, layerWalls))
         {
-            inputLine.SetPosition(0, sun.transform.position);
+            inputLine.SetPosition(0, laserSun.transform.position);
             inputLine.SetPosition(1, hit.point);
 
             laserReset("all");
@@ -118,9 +122,10 @@ public class CubeColors : MonoBehaviour
     }
     void LaserFinal()
     {
-        if (Physics.Raycast(transform.position, transform.forward, out hit, 100, LayerFinal))
+        Ray ray = new Ray(laserSun.transform.position, laserSun.transform.forward);
+        if (Physics.Raycast(ray, out hit, 100, LayerFinal))
         {
-            inputLine.SetPosition(0, sun.transform.position);
+            inputLine.SetPosition(0, laserSun.transform.position);
             inputLine.SetPosition(1, hit.point);
 
 
@@ -217,7 +222,8 @@ public class CubeColors : MonoBehaviour
 
     int SearchLaser()
     {
-        if (Physics.Raycast(transform.position, transform.forward, out hit, 100))
+        Ray ray = new Ray(laserSun.transform.position, laserSun.transform.forward);
+        if (Physics.Raycast(ray, out hit, 100))
         {
             return hit.transform.gameObject.layer;
         }

@@ -395,13 +395,14 @@ GameObject:
   - component: {fileID: 6986440721413075404}
   - component: {fileID: 3122608383988917598}
   - component: {fileID: 8008177981595159286}
-  m_Layer: 8
+  - component: {fileID: 42519511}
+  m_Layer: 0
   m_Name: prisma 2
   m_TagString: Interactable
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &6986440721413075404
 Transform:
   m_ObjectHideFlags: 0
@@ -443,6 +444,7 @@ MonoBehaviour:
   - {fileID: 6825254265617293920}
   - {fileID: 8013613644318435247}
   LaserObject: {fileID: 1902924169671894634}
+  mat: {fileID: 2100000, guid: c94ae028b02b64140afcb303d63b2581, type: 2}
   objectRecvied: {fileID: 0}
   point: {x: 0, y: 0, z: 0}
   nameSide: 0
@@ -463,6 +465,19 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 126
   m_CollisionDetection: 0
+--- !u!65 &42519511
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7763927025459800950}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 1.1763307, y: 0.28545776, z: 1.0236571}
+  m_Center: {x: 0.08816465, y: 1.7924054, z: 0.01182848}
 --- !u!1 &8013613644318435247
 GameObject:
   m_ObjectHideFlags: 0

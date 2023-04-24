@@ -34,7 +34,7 @@ public class GameManager : MonoBehaviour
     //Nosotros utilizaremos el evento para decir que si estas en GameState.menu el objeto PanelMenu se active, un evento te permite comparar scripts con Unity.GameObjects
     public static event Action<GameState> OnGameStateChanged; 
 
-    GameState State = GameState.Playing;
+    GameState State = GameState.Lasers;
 
     bool ejecutar = true;
 
@@ -45,7 +45,7 @@ public class GameManager : MonoBehaviour
     //El script GameManager con todas sus variables y funciones (que aparezcan en public) apareceran en todos los scripts, eso nos
     //permitira llamarlos quando sea necesario.
     public static GameManager Instance
-    {
+    {    
         get
         {
             if (_instance == null)
@@ -60,20 +60,18 @@ public class GameManager : MonoBehaviour
     {
         managers = GameObject.FindGameObjectsWithTag("GameManager");
         sceneManager = GetComponentInChildren<sceneManager>();
-        _instance = this;
+        
     }
 
     void Start() //Solo se entra una vez, pero si el script esta desactivado no entra
     {
-        UpdateGameState(GameState.Playing);//Entro en la funcion UpdateGameState, y ponemos como referencia el GameState.Menu porque es el stado que queremos
-        
+        UpdateGameState(GameState.Lasers);//Entro en la funcion UpdateGameState, y ponemos como referencia el GameState.Menu porque es el stado que queremos
+        _instance = this;
         DontDestroyOnLoad(this.gameObject); //Esto lo que hace es que no se destruya lobjeto quando se cambia de escena
         if (managers[1] != null)
            Destroy(managers[1].gameObject); //!PREGUNTAR PROFESOR, PORK APARECEN GAMEMANAGER CADA VEZ QUE SE ENTRA A UNA SCENA NUEVA, Y KIERO ELIMINARLO, HE PODIDO ELIMINARLO PERO ME PONE GAMEMANAGER NULL PERO AUN ASI SIGUE FUNCIONANDO
     }
 
-    // Update is called once per frame
-    void Update(){}
 
     public void UpdateGameState(GameState newState)
     {
@@ -85,7 +83,7 @@ public class GameManager : MonoBehaviour
             switch (newState)
             {
                 case GameState.Menu:
-                    HandleSelectButton();
+                    HandleMenu();
                     State = newState;
                     break;//break se utiliza para romper el "IF"
 
@@ -111,8 +109,7 @@ public class GameManager : MonoBehaviour
                     throw new ArgumentOutOfRangeException(nameof(newState), newState, null);//pone el valor "newState" a null para que no pete el programa.
             }
         }
-        OnGameStateChanged?.Invoke(newState);//Esta linia se utiliza en que si algun otro script se cambia el estado del juego (si pasa de Menu a Playing) se invocara este linia 
-        //y volvera a entrar al switch y se cambiara de estado.
+        OnGameStateChanged?.Invoke(newState);//Esta linia comprueba si el estado ha cambiado y si es true entonces va a todos los scripts y cambia el estado.
         Debug.Log("State " + State);
         Debug.Log("Newstate " + newState);
         
@@ -128,7 +125,7 @@ public class GameManager : MonoBehaviour
         sceneManager.ChangeSceneLevel(_name);
     }
 
-    private void HandleSelectButton()
+    private void HandleMenu()
     {
         sceneManager.ChangeScene("Menu");
     }
@@ -141,10 +138,5 @@ public class GameManager : MonoBehaviour
     private void HandlePlaying()
     {
         sceneManager.ChangeScene("Pruebas2");
-    }
-
-    public void ChooseLevels(string _name)
-    {
-        nameLevel = _name;
     }
 }

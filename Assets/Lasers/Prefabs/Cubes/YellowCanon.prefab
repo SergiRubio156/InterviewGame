@@ -62,7 +62,7 @@ MeshRenderer:
   m_RendererPriority: 0
   m_Materials:
   - {fileID: 2100000, guid: d15bf5e64155926438dbccd44c3be2f6, type: 2}
-  - {fileID: 2100000, guid: dd22e264ab56d9a4abebdabb59ca397a, type: 2}
+  - {fileID: 2100000, guid: aa7563de5813b994693718723e2ae0bb, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -95,7 +95,7 @@ GameObject:
   - component: {fileID: 7054860716486551913}
   - component: {fileID: 7054860716486551914}
   m_Layer: 10
-  m_Name: LineRed
+  m_Name: LineYellow
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -136,7 +136,7 @@ LineRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: e542f1b5f0f1314409a4a1f639757945, type: 2}
+  - {fileID: 2100000, guid: aa7563de5813b994693718723e2ae0bb, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -241,7 +241,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7753187130262783158}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: -0.28, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -365,7 +365,7 @@ MeshRenderer:
   - {fileID: 2100000, guid: 01aa3e37b695d0b41ab6b8370f556e27, type: 2}
   - {fileID: 2100000, guid: 6c26281d9b36577429b148c3d56ea218, type: 2}
   - {fileID: 2100000, guid: 0e57fd1291f9d3d4da99346b5d60ff5c, type: 2}
-  - {fileID: 2100000, guid: dd22e264ab56d9a4abebdabb59ca397a, type: 2}
+  - {fileID: 2100000, guid: aa7563de5813b994693718723e2ae0bb, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0

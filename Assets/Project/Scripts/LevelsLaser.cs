@@ -23,7 +23,7 @@ public class LevelsLaser : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        GameManager.Instance.ChooseLevels(name);
+        //GameManager.Instance.ChooseLevels(name);
         GameManager.Instance.UpdateGameState(GameState.Lasers);
     }
 

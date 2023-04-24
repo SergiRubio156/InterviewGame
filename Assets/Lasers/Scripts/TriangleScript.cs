@@ -20,6 +20,7 @@ public class TriangleScript : MonoBehaviour
     LineRenderer[] inputLine = new LineRenderer[3];
 
     public GameObject LaserObject = null;
+    public Material mat;
 
     Vector3 positionLaser;
     public GameObject objectRecvied;
@@ -79,6 +80,7 @@ public class TriangleScript : MonoBehaviour
 
     void Render()
     {
+        positionLaser = LaserObject.transform.position;
         for (int i = 0; i < vectorRecibed.Count; i++)
         {
             vectorRecibed[i] = Sides[i].transform.localToWorldMatrix.MultiplyVector(Vector3.forward).normalized;
@@ -223,6 +225,7 @@ public class TriangleScript : MonoBehaviour
         }
         else if (!checkBool)
         {
+            renderer.material = mat;
             for (int i = 0; i < inputLine.Length; i++)
             {
                 inputLine[i].SetPosition(0, Vector3.zero);
@@ -232,7 +235,6 @@ public class TriangleScript : MonoBehaviour
         }
 
     }
-
     int SearchLaser(int i)
     {
         Ray ray = new Ray(Sides[i].transform.position, vectorRecibed[i]);

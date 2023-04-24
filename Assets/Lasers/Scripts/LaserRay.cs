@@ -23,19 +23,20 @@ public class LaserRay : MonoBehaviour
     Vector3 positionLaser;
     //Rotacion 
     public float rotationSpeed;
-    public bool isRotation;
+    private float anguloActual = 0f;
+    public bool isRotation = true;
     void Start()
     {
         positionLaser = LaserObject.transform.position;
         inputLine = GetComponentInChildren<LineRenderer>();
         GameManager.OnGameStateChanged += GameManager_OnGameStateChanged; //Esto es el evento del script GameManager
-        rotationSpeed = 50;
+        rotationSpeed = 25;
         
     }
 
     private void GameManager_OnGameStateChanged(GameState state)    //Esta funcion depende del Awake del evento, Como he explicado antes nso permite comparar entre Script y GameObjects
     {
-        isRotation = (state == GameState.Settings);
+        //isRotation = (state == GameState.Settings);
     }
     void Update()
     {
@@ -45,8 +46,9 @@ public class LaserRay : MonoBehaviour
         layerWalls = 1 << 9;
         LayerStart = 1 << 10;
         LayerFinal = 1 << 11;
+        positionLaser = LaserObject.transform.position;
         LaserDraw();
-        //RotationObject();
+        Rotar();
         if (Input.GetKeyDown(KeyCode.Space)) //Cuando le damos click al Escape entra a esta funcion
         {
             isRotation = !isRotation;// = true ? isRotation : !isRotation;
@@ -54,20 +56,41 @@ public class LaserRay : MonoBehaviour
 
     }
 
-    void RotationObject()
+    void Rotar()
     {
-        if(isRotation)
-            rotationSpeed = 0.0f;
-        else if(!isRotation)
-            rotationSpeed = 50.0f;
-        transform.Rotate(0f, rotationSpeed * Time.deltaTime, 0f);
+        if (isRotation)
+        {
+            float rotacion = rotationSpeed * Time.deltaTime;
+
+            // Añadimos la rotación a la variable de ángulo actual
+            anguloActual += rotacion;
+
+            // Si el ángulo actual es mayor que 45 grados, cambiamos la velocidad de rotación
+            if (anguloActual >= 45f)
+            {
+                rotationSpeed = -rotationSpeed;
+                anguloActual = 45f;
+            }
+
+            // Si el ángulo actual es menor que -45 grados, cambiamos la velocidad de rotación
+            if (anguloActual <= -45f)
+            {
+                rotationSpeed = -rotationSpeed;
+                anguloActual = -45f;
+            }
+
+            // Rotamos el objeto en el eje Y
+            transform.Rotate(0f, rotacion, 0f);
+        }
+
 
     }
 
 
     void LaserMirror()
     {
-        if (Physics.Raycast(positionLaser, transform.forward, out hit, Mathf.Infinity, layerMirror))
+        Ray ray = new Ray(positionLaser, transform.forward);
+        if (Physics.Raycast(ray, out hit, Mathf.Infinity, layerMirror))
         {
 
             Vector3 _hitPoint = hit.point;
@@ -133,7 +156,8 @@ public class LaserRay : MonoBehaviour
 
     void LaserStart()
     {
-        if (Physics.Raycast(positionLaser, transform.forward, out hit, 100, LayerStart))
+        Ray ray = new Ray(positionLaser, transform.forward);
+        if (Physics.Raycast(ray, out hit, 100, LayerStart))
         {
             inputLine.SetPosition(0, positionLaser);
             inputLine.SetPosition(1, hit.point);
@@ -145,7 +169,8 @@ public class LaserRay : MonoBehaviour
     }
     void LaserFinal()
     {
-        if (Physics.Raycast(positionLaser, transform.forward, out hit, 100, LayerFinal))
+        Ray ray = new Ray(positionLaser, transform.forward);
+        if (Physics.Raycast(ray, out hit, 100, LayerFinal))
         {
             inputLine.SetPosition(0, positionLaser);
             inputLine.SetPosition(1, hit.point);
@@ -160,7 +185,8 @@ public class LaserRay : MonoBehaviour
     }
     void LaserWall()
     {
-        if (Physics.Raycast(positionLaser, transform.forward, out hit, Mathf.Infinity, layerWalls))
+        Ray ray = new Ray(positionLaser, transform.forward);
+        if (Physics.Raycast(ray, out hit, Mathf.Infinity, layerWalls))
         {
             inputLine.SetPosition(0, positionLaser);
             inputLine.SetPosition(1, hit.point);
@@ -202,7 +228,8 @@ public class LaserRay : MonoBehaviour
 
     int SearchLaser()
     {
-        if (Physics.Raycast(positionLaser, transform.forward, out hit, Mathf.Infinity))
+        Ray ray = new Ray(positionLaser, transform.forward);
+        if (Physics.Raycast(ray, out hit, Mathf.Infinity))
         {
             return hit.transform.gameObject.layer;
         }
