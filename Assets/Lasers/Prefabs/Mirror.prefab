@@ -30,7 +30,7 @@ Transform:
   m_GameObject: {fileID: 3756338307749087339}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 0.2}
+  m_LocalScale: {x: 1.2896, y: 2.1534, z: 0.2}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 8335529801019543365}
@@ -98,8 +98,8 @@ BoxCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 1, y: 1, z: 1}
-  m_Center: {x: 0, y: 0, z: 0}
+  m_Size: {x: 1, y: 1, z: 0}
+  m_Center: {x: 6.5374284e-10, y: 0, z: -0.50000006}
 --- !u!54 &5431636164313234290
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -138,6 +138,7 @@ MonoBehaviour:
   - {fileID: 2100000, guid: d5e1e9eae05af6544a2a3625e9978f41, type: 2}
   - {fileID: 2100000, guid: 5fb8be190711e7d4cb835a1e2ee85a69, type: 2}
   - {fileID: 2100000, guid: 68992a1c34a2f46498150ecc7ac41cc0, type: 2}
+  objectRecvied: {fileID: 0}
   num: 0
   numRef: 0
 --- !u!1 &8335529801019543366
@@ -223,8 +224,8 @@ LineRenderer:
       serializedVersion: 2
       m_Curve:
       - serializedVersion: 3
-        time: 0.004131317
-        value: 0.11711693
+        time: 0
+        value: 0.25044823
         inSlope: 0
         outSlope: 0
         tangentMode: 0

@@ -48,7 +48,7 @@ public class LaserRay : MonoBehaviour
         LayerFinal = 1 << 11;
         positionLaser = LaserObject.transform.position;
         LaserDraw();
-        Rotar();
+        //Rotar();
         if (Input.GetKeyDown(KeyCode.Space)) //Cuando le damos click al Escape entra a esta funcion
         {
             isRotation = !isRotation;// = true ? isRotation : !isRotation;
