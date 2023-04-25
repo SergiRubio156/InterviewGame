@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
 
 public class TriangleScript : MonoBehaviour
 {
@@ -24,6 +25,7 @@ public class TriangleScript : MonoBehaviour
 
     Vector3 positionLaser;
     public GameObject objectRecvied;
+    public RaycastLine raycastLine;
 
     RaycastHit hit;
 
@@ -89,98 +91,127 @@ public class TriangleScript : MonoBehaviour
 
     void LaserMirror(int i)
     {
-        Ray ray = new Ray(Sides[i].transform.position, vectorRecibed[i]);
-        if (Physics.Raycast(ray, out hit, Mathf.Infinity, layerMirror))
+        Tuple<GameObject, Vector3, string, Material, Vector3> objects = raycastLine.GetGameObjectAndPosition(Sides[i].transform.position, vectorRecibed[i], layerMirror, inputLine[i].material);
+
+        if (reflexive[i] != null)
         {
-
-            Vector3 _hitPoint = hit.point;
-            Vector3 reflectiveRayPoint = Vector3.Reflect(_hitPoint - transform.position, hit.normal);
-
-            inputLine[i].SetPosition(0, positionLaser);
-            inputLine[i].SetPosition(1, _hitPoint);
-
-
-            reflexive[i] = hit.transform.gameObject;
-            hit.transform.gameObject.GetComponent<ReflexiveRay>().ReceiveImpactPoint(_hitPoint, reflectiveRayPoint, true, inputLine[i].material.color, transform.position, gameObject);
-
-            laserReset("Mirror", i);
-
+            if (reflexive[i] != objects.Item1)
+            {
+                reflexive[i].GetComponent<ReflexiveRay>().ReceiveImpactPoint(Vector3.zero, Vector3.zero, false, inputLine[i].material, transform.position, null);
+                reflexive[i] = null;
+            }
         }
+
+        reflexive[i] = objects.Item1;
+        Vector3 _position = objects.Item2;
+        string _name = objects.Item3;
+        Material _mat = objects.Item4;
+        Vector3 _posDir = objects.Item5;
+
+        Vector3 reflectiveRayPoint = Vector3.Reflect(_position - transform.position, _posDir);
+
+        inputLine[i].SetPosition(0, positionLaser);
+        inputLine[i].SetPosition(1, _position);
+
+
+
+        if (reflexive[i] != null)
+            reflexive[i].GetComponent<ReflexiveRay>().ReceiveImpactPoint(_position, reflectiveRayPoint, true, _mat, transform.position, this.gameObject);
+        laserReset("Mirror",i);
     }
 
     void LaserColor(int i)
     {
-        Ray ray = new Ray(Sides[i].transform.position, vectorRecibed[i]);
-        if (Physics.Raycast(ray, out hit, Mathf.Infinity, layerCylinder))
+        Tuple<GameObject, Vector3, string, Material, Vector3> objects = raycastLine.GetGameObjectAndPosition(Sides[i].transform.position, vectorRecibed[i], layerCylinder, inputLine[i].material);
+
+        string _name = objects.Item3;
+
+        if (cubeColor[i] != null)
         {
-            inputLine[i].SetPosition(0, positionLaser);
-            inputLine[i].SetPosition(1, hit.point);
-
-
-            cubeColor[i] = hit.transform.gameObject;
-            string _name = hit.transform.gameObject.name;
-            hit.transform.gameObject.GetComponentInParent<CubeColors>().RecivedColors(inputLine[i].material, true, _name);
-
-            laserReset("Color", i);
+            if (cubeColor[i] != objects.Item1)
+            {
+                cubeColor[i].GetComponentInParent<CubeColors>().RecivedColors(inputLine[i].material, false, _name);
+                cubeColor[i] = null;
+            }
         }
+
+        cubeColor[i] = objects.Item1;
+        Vector3 _position = objects.Item2;
+        Material _mat = objects.Item4;
+
+        inputLine[i].SetPosition(0, positionLaser);
+        inputLine[i].SetPosition(1, _position);
+
+        if (cubeColor[i] != null)
+            cubeColor[i].GetComponentInParent<CubeColors>().RecivedColors(_mat, true, _name);
+
+        laserReset("Color",i);
     }
 
     void LaserDivide(int i)
     {
-        Ray ray = new Ray(Sides[i].transform.position, vectorRecibed[i]);
-        if (Physics.Raycast(ray, out hit, Mathf.Infinity, layerTriangle))
+        Tuple<GameObject, Vector3, string, Material, Vector3> objects = raycastLine.GetGameObjectAndPosition(Sides[i].transform.position, vectorRecibed[i], layerTriangle, inputLine[i].material);
+
+        string _name = objects.Item3;
+
+        if (triangle[i] != null)
         {
-            inputLine[i].SetPosition(0, positionLaser);
-            inputLine[i].SetPosition(1, hit.point);
-
-
-            triangle[i] = hit.transform.gameObject;
-            hit.transform.gameObject.GetComponentInParent<TriangleScript>().CheckPlane(hit.point, hit.transform.gameObject.name, true, inputLine[i].material, gameObject);
-
-            laserReset("Divide", i);
+            if (triangle[i] != objects.Item1)
+            {
+                triangle[i].GetComponentInParent<TriangleScript>().CheckPlane(Vector3.zero, _name, false, inputLine[i].material, null);
+                triangle[i] = null;
+            }
         }
+
+        triangle[i] = objects.Item1;
+        Vector3 _position = objects.Item2;
+        Material _mat = objects.Item4;
+
+        inputLine[i].SetPosition(0, positionLaser);
+        inputLine[i].SetPosition(1, _position);
+
+        if (triangle[i] != null)
+            triangle[i].GetComponentInParent<TriangleScript>().CheckPlane(_position, _name, true, _mat, this.gameObject);
+
+        laserReset("Divide", i);
+        
     }
 
     void LaserStart(int i)
     {
-        Ray ray = new Ray(Sides[i].transform.position, vectorRecibed[i]);
-        if (Physics.Raycast(ray, out hit, Mathf.Infinity, LayerStart))
-        {
-            inputLine[i].SetPosition(0, positionLaser);
-            inputLine[i].SetPosition(1, hit.point);
+        Tuple<GameObject, Vector3, string, Material, Vector3> objects = raycastLine.GetGameObjectAndPosition(Sides[i].transform.position, vectorRecibed[i], LayerStart, inputLine[i].material);
 
-            laserReset("all", i);
-        }
+        Vector3 _position = objects.Item2;
+
+        inputLine[i].SetPosition(0, positionLaser);
+        inputLine[i].SetPosition(1, _position);
+
+        laserReset("all", i);
     }
 
     void LaserWall(int i)
     {
-        Ray ray = new Ray(Sides[i].transform.position, vectorRecibed[i]);
-        if (Physics.Raycast(ray, out hit, Mathf.Infinity, layerWalls))
-        {
-            inputLine[i].SetPosition(0, positionLaser);
-            inputLine[i].SetPosition(1, hit.point);
+        Tuple<GameObject, Vector3, string, Material, Vector3> objects = raycastLine.GetGameObjectAndPosition(Sides[i].transform.position, vectorRecibed[i], layerWalls, inputLine[i].material);
 
-            laserReset("all", i);
+        Vector3 _position = objects.Item2;
 
-        }
+        inputLine[i].SetPosition(0, positionLaser);
+        inputLine[i].SetPosition(1, _position);
+
+        laserReset("all",i);
     }
     void LaserFinal(int i)
     {
-        Ray ray = new Ray(Sides[i].transform.position, vectorRecibed[i]);
-        if (Physics.Raycast(ray, out hit, 100, LayerFinal))
-        {
-            inputLine[i].SetPosition(0, positionLaser);
-            inputLine[i].SetPosition(1, hit.point);
+        Tuple<GameObject, Vector3, string, Material, Vector3> objects = raycastLine.GetGameObjectAndPosition(Sides[i].transform.position, vectorRecibed[i], layerWalls, inputLine[i].material);
 
+        Vector3 _position = objects.Item2;
 
-            laserFinal[i] = hit.transform.gameObject;
-            Vector3 direccion = hit.point - Sides[i].transform.position;
-            hit.transform.gameObject.GetComponent<CheckLaser>().ReceivedLaser(true, inputLine[i].material.color, direccion);
+        inputLine[i].SetPosition(0, positionLaser);
+        inputLine[i].SetPosition(1, _position);
 
-            laserReset("Final", i);
-        }
+        Vector3 direccion = hit.point - Sides[i].transform.position;
 
+        laserReset("Final", i);
     }
     void LaserDraw(int _name)
     {
@@ -190,13 +221,13 @@ public class TriangleScript : MonoBehaviour
             {
                 if (i != _name)
                 {
-                    switch (SearchLaser(i))
+                    switch (raycastLine.SearchLaser(Sides[i].transform.position, vectorRecibed[i], this.gameObject))
                     {
                         case 6:
                             LaserMirror(i);
                             break;
                         case 7:
-                            LaserColor(i);
+                            //LaserColor(i);
                             break;
                         case 8:
                             LaserDivide(i);
@@ -209,9 +240,6 @@ public class TriangleScript : MonoBehaviour
                             break;
                         case 11:
                             LaserFinal(i);
-                            break;
-                        default:
-                            LaserWall(i);
                             break;
                     }
                 }
@@ -234,16 +262,6 @@ public class TriangleScript : MonoBehaviour
 
         }
 
-    }
-    int SearchLaser(int i)
-    {
-        Ray ray = new Ray(Sides[i].transform.position, vectorRecibed[i]);
-        if (Physics.Raycast(ray, out hit, Mathf.Infinity))
-        {
-
-            return hit.transform.gameObject.layer;
-        }
-        return 0;
     }
 
     public void CheckPlane(Vector3 _point, string _name, bool _bool,Material _mat, GameObject _gameObject)
@@ -300,7 +318,7 @@ public class TriangleScript : MonoBehaviour
                 break;
             case "Color":
                 if (reflexive[i] != null)
-                    reflexive[i].GetComponent<ReflexiveRay>().ReceiveImpactPoint(Vector3.zero, Vector3.zero, false, inputLine[i].material.color, transform.position, null);
+                    reflexive[i].GetComponent<ReflexiveRay>().ReceiveImpactPoint(Vector3.zero, Vector3.zero, false, inputLine[i].material, transform.position, null);
                 reflexive[i] = null;
 
                 if (triangle[i] != null)
@@ -313,7 +331,7 @@ public class TriangleScript : MonoBehaviour
                 break;
             case "Divide":
                 if (reflexive[i] != null)
-                    reflexive[i].GetComponent<ReflexiveRay>().ReceiveImpactPoint(Vector3.zero, Vector3.zero, false, inputLine[i].material.color, transform.position, null);
+                    reflexive[i].GetComponent<ReflexiveRay>().ReceiveImpactPoint(Vector3.zero, Vector3.zero, false, inputLine[i].material, transform.position, null);
                 reflexive[i] = null;
 
                 if (cubeColor[i] != null)
@@ -326,7 +344,7 @@ public class TriangleScript : MonoBehaviour
                 break;
             case "Final":
                 if (reflexive[i] != null)
-                    reflexive[i].GetComponent<ReflexiveRay>().ReceiveImpactPoint(Vector3.zero, Vector3.zero, false, inputLine[i].material.color, transform.position, null);
+                    reflexive[i].GetComponent<ReflexiveRay>().ReceiveImpactPoint(Vector3.zero, Vector3.zero, false, inputLine[i].material, transform.position, null);
                 reflexive[i] = null;
 
                 if (cubeColor[i] != null)
@@ -340,7 +358,7 @@ public class TriangleScript : MonoBehaviour
                 break;
             case "all":
                 if (reflexive[i] != null)
-                    reflexive[i].GetComponent<ReflexiveRay>().ReceiveImpactPoint(Vector3.zero, Vector3.zero, false, inputLine[i].material.color, transform.position, null);
+                    reflexive[i].GetComponent<ReflexiveRay>().ReceiveImpactPoint(Vector3.zero, Vector3.zero, false, inputLine[i].material, transform.position, null);
                 reflexive[i] = null;
 
                 if (cubeColor[i] != null)

@@ -71,7 +71,7 @@ public class CubeColors : MonoBehaviour
             }*/
 
             reflexiveCube = hit.transform.gameObject;
-            hit.transform.gameObject.GetComponent<ReflexiveRay>().ReceiveImpactPoint(_hitPoint, reflectiveRayPoint, true, inputLine.material.color, transform.position,gameObject);
+            hit.transform.gameObject.GetComponent<ReflexiveRay>().ReceiveImpactPoint(_hitPoint, reflectiveRayPoint, true, inputLine.material, transform.position,gameObject);
 
             laserReset("Mirror");
         }
@@ -274,7 +274,7 @@ public class CubeColors : MonoBehaviour
 
             case "Color":
                 if (reflexiveCube != null)
-                    reflexiveCube.GetComponent<ReflexiveRay>().ReceiveImpactPoint(Vector3.zero, Vector3.zero, false, inputLine.material.color, Vector3.zero,null);
+                    reflexiveCube.GetComponent<ReflexiveRay>().ReceiveImpactPoint(Vector3.zero, Vector3.zero, false, inputLine.material, Vector3.zero,null);
                 reflexiveCube = null;
 
                 if (triangle != null)
@@ -288,7 +288,7 @@ public class CubeColors : MonoBehaviour
 
             case "Divide":
                 if (reflexiveCube != null)
-                    reflexiveCube.GetComponent<ReflexiveRay>().ReceiveImpactPoint(Vector3.zero, Vector3.zero, false, inputLine.material.color, Vector3.zero,null);
+                    reflexiveCube.GetComponent<ReflexiveRay>().ReceiveImpactPoint(Vector3.zero, Vector3.zero, false, inputLine.material, Vector3.zero,null);
                 reflexiveCube = null;
 
                 if (cubeColor != null)
@@ -302,7 +302,7 @@ public class CubeColors : MonoBehaviour
 
             case "Final":
                 if (reflexiveCube != null)
-                    reflexiveCube.GetComponent<ReflexiveRay>().ReceiveImpactPoint(Vector3.zero, Vector3.zero, false, inputLine.material.color, transform.position,null);
+                    reflexiveCube.GetComponent<ReflexiveRay>().ReceiveImpactPoint(Vector3.zero, Vector3.zero, false, inputLine.material, transform.position,null);
                 reflexiveCube = null;
 
                 if (cubeColor != null)
@@ -316,7 +316,7 @@ public class CubeColors : MonoBehaviour
 
             case "all":
                 if (reflexiveCube != null)
-                    reflexiveCube.GetComponent<ReflexiveRay>().ReceiveImpactPoint(Vector3.zero, Vector3.zero, false, inputLine.material.color, Vector3.zero,null);
+                    reflexiveCube.GetComponent<ReflexiveRay>().ReceiveImpactPoint(Vector3.zero, Vector3.zero, false, inputLine.material, Vector3.zero,null);
                 reflexiveCube = null;
 
                 if (cubeColor != null)

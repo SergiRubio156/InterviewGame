@@ -1,11 +1,13 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
 
 public class ReflexiveRay : MonoBehaviour
 {
     RaycastHit hit;
     public LineRenderer inputLine;
+
     int layerWalls, layerMirror, layerCylinder, layerTriangle, LayerStart, LayerFinal;
 
     public GameObject cubeColor = null;
@@ -13,17 +15,20 @@ public class ReflexiveRay : MonoBehaviour
     public GameObject triangle = null;
     public GameObject laserFinal = null;
 
-    public Material[] mat = new Material[4];
-
     public GameObject objectRecvied;
 
     Vector3 reflectiveRayPoint;
     Vector3 point;
+    Vector3 pointDir;
     Vector3 transformStart;
     bool checkBool1;
     bool checkBool = false;
     int nameSide;
     public int num,numRef;
+     
+    //NECESARIOS
+    public RaycastLine raycastLine;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -53,183 +58,142 @@ public class ReflexiveRay : MonoBehaviour
         return false;
     }
 
-    int SearchLaser()
-    {
-        if (Physics.Raycast(point, reflectiveRayPoint * 3 - point, out hit, Mathf.Infinity))
-        {
-            return hit.transform.gameObject.layer;
-        }
-
-        return 0;
-    }
     void LaserMirror()
     {
-        if (Physics.Raycast(point, reflectiveRayPoint * 3 - point, out hit, Mathf.Infinity, layerMirror))
-        {               
-            Vector3 _hitPoint = hit.point;
-            Vector3 reflectiveRayPoint2 = Vector3.Reflect(hit.point - point, hit.normal);
+        Tuple<GameObject, Vector3, string, Material, Vector3> objects = raycastLine.GetGameObjectAndPosition(point, transform.forward, layerMirror, inputLine.material);
 
+        if(objects.Item1 != this.gameObject)
+            reflexiveCube = objects.Item1;
+        Vector3 _position = objects.Item2;
+        string _name = objects.Item3;
+        Material _mat = objects.Item4;
+        Vector3 _posDir = objects.Item5;
 
-            inputLine.SetPosition(0, point);
-            inputLine.SetPosition(1, hit.point);
+        Vector3 reflectiveRayPoint = Vector3.Reflect(_position - transform.position, _posDir); //hit.normal);
 
-                if (reflexiveCube != hit.transform.gameObject && reflexiveCube != null)
-                {
-                    reflexiveCube.GetComponent<ReflexiveRay>().ReceiveImpactPoint(Vector3.zero, Vector3.zero, false, inputLine.material.color, transform.position,gameObject);
-                    reflexiveCube = null;
+        inputLine.SetPosition(0, point);
+        inputLine.SetPosition(1, _position);
 
-                }
+        if (reflexiveCube != null)
+            reflexiveCube.GetComponent<ReflexiveRay>().ReflexiveMirror(_position, reflectiveRayPoint, true, _mat, transform.position, this.gameObject);
 
-                reflexiveCube = hit.transform.gameObject;
-            if (this.gameObject.name != hit.transform.gameObject.name)
-                hit.transform.gameObject.GetComponent<ReflexiveRay>().ReflexiveMirror(_hitPoint, reflectiveRayPoint2, true, inputLine.material.color, transform.position,gameObject);
-                laserReset("Mirror");
+        laserReset("Mirror");
+
+        /*if (reflexiveCube != hit.transform.gameObject && reflexiveCube != null)
+        {
+            reflexiveCube.GetComponent<ReflexiveRay>().ReceiveImpactPoint(Vector3.zero, Vector3.zero, false, inputLine.material, transform.position,gameObject);
+            reflexiveCube = null;
 
         }
+
+        reflexiveCube = hit.transform.gameObject;
+    if (this.gameObject.name != hit.transform.gameObject.name)
+        hit.transform.gameObject.GetComponent<ReflexiveRay>().ReflexiveMirror(_hitPoint, reflectiveRayPoint2, true, inputLine.material, transform.position,gameObject);
+        laserReset("Mirror");*/
+
     }
+
 
     void LaserColor()
     {
-        if (Physics.Raycast(point, reflectiveRayPoint * 3 - point, out hit, Mathf.Infinity, layerCylinder))
-        {
-            inputLine.SetPosition(0, point);
-            inputLine.SetPosition(1, hit.point);
+        Tuple<GameObject, Vector3, string, Material, Vector3> objects = raycastLine.GetGameObjectAndPosition(point, transform.forward, layerCylinder, inputLine.material);
 
-            string _name = hit.transform.gameObject.name;
-            if (num != 7)
-            {
-                cubeColor = hit.transform.gameObject;
-                hit.transform.gameObject.GetComponentInParent<CubeColors>().RecivedColors(inputLine.material, true, _name);
+        cubeColor = objects.Item1;
+        Vector3 _position = objects.Item2;
+        string _name = objects.Item3;
+        Material _mat = objects.Item4;
 
-                laserReset("Color");
-            }
-        }
+        inputLine.SetPosition(0, point);
+        inputLine.SetPosition(1, _position);
+
+        if (cubeColor != null)
+            cubeColor.GetComponentInParent<CubeColors>().RecivedColors(_mat, true, _name);
+
+        laserReset("Color");
     }
 
     void LaserDivide()
     {
-        if (Physics.Raycast(point, reflectiveRayPoint * 3 - point, out hit, Mathf.Infinity, layerTriangle))
-        {
-            inputLine.SetPosition(0, point);
-            inputLine.SetPosition(1, hit.point);
-            triangle = hit.transform.gameObject;
-            string _name = hit.transform.gameObject.name;
+        Debug.Log("!");
+        Tuple<GameObject, Vector3, string, Material, Vector3> objects = raycastLine.GetGameObjectAndPosition(point, transform.forward, layerTriangle, inputLine.material);
 
-            if (num != 8)
-                {
-                    hit.transform.gameObject.GetComponentInParent<TriangleScript>().CheckPlane(Vector3.zero, _name, true, inputLine.material,gameObject);
+        triangle = objects.Item1;
+        Vector3 _position = objects.Item2;
+        string _name = objects.Item3;
+        Material _mat = objects.Item4;
 
-                    laserReset("Divide");
-                }      
-        }
+        inputLine.SetPosition(0, point);
+        inputLine.SetPosition(1, _position);
+
+        if(triangle != null)
+            triangle.GetComponentInParent<TriangleScript>().CheckPlane(_position, _name, true, _mat, this.gameObject);
+
+        laserReset("Divide");
 
     }
 
     void  LaserWall()
     {
-        if (Physics.Raycast(point, reflectiveRayPoint * 3 - point, out hit, Mathf.Infinity, layerWalls))
-        {
-            inputLine.SetPosition(0, point);
-            inputLine.SetPosition(1, hit.point);
+        Tuple<GameObject, Vector3, string, Material, Vector3> objects = raycastLine.GetGameObjectAndPosition(point, transform.forward, layerWalls, inputLine.material);
 
-            laserReset("all");
+        Vector3 _position = objects.Item2;
 
-        }
+        inputLine.SetPosition(0, point);
+        inputLine.SetPosition(1, _position);
+
+        laserReset("all");
+
+        
 
     }
     void LaserStart()
     {
-        if (Physics.Raycast(point, reflectiveRayPoint * 3 - point, out hit, Mathf.Infinity, LayerStart))
-        {
-            inputLine.SetPosition(0, point);
-            inputLine.SetPosition(1, hit.point);
+        Tuple<GameObject, Vector3, string, Material, Vector3> objects = raycastLine.GetGameObjectAndPosition(point, transform.forward, layerWalls, inputLine.material);
 
-            laserReset("all");
+        Vector3 _position = objects.Item2;
 
-        }
 
+        inputLine.SetPosition(0, point);
+        inputLine.SetPosition(1, _position);
+
+        laserReset("all");
     }
     void LaserFinal()
     {
-        if (Physics.Raycast(point, reflectiveRayPoint * 3 - point, out hit, Mathf.Infinity, LayerFinal))
-        {
-            inputLine.SetPosition(0, point);
-            inputLine.SetPosition(1, hit.point);
-
-
-            laserFinal = hit.transform.gameObject;
-            Vector3 direccion = hit.point - transform.position;
-            hit.transform.gameObject.GetComponent<CheckLaser>().ReceivedLaser(true, inputLine.material.color, direccion);
-            laserReset("Final");
-
-        }
+       
 
     }
 
-    bool LaserConfirm()
-    {
-        num = 0;
-        if (Physics.Raycast(point, transformStart - point, out hit, Mathf.Infinity))
-        {
-
-            if (hit.transform.gameObject.layer == 10 || hit.transform.gameObject.layer == 7 || hit.transform.gameObject.layer == 8 || hit.transform.gameObject.layer == 11)
-            {
-                num = hit.transform.gameObject.layer;            
-                return true;
-
-            }
-            return false;
-        }
-        return false;
-
-    }
-
-    bool ReflexConfirm()
-    {
-        numRef = 0;
-        if (Physics.Raycast(point, transformStart - point, out hit, Mathf.Infinity))
-        {
-
-            if (hit.transform.gameObject.layer == 6)
-            {
-                numRef = hit.transform.gameObject.layer;
-                return true;
-            }
-            return false;
-        }
-        return false;
-
-    }
 
     void LaserDraw()
     {
 
-        if ((LaserConfirm() && checkBool) || (ReflexConfirm() && checkBool1))
+        if (checkBool)//(LaserConfirm() && checkBool) || (ReflexConfirm() && checkBool1))
         {
 
-            switch (SearchLaser())
+            switch (raycastLine.SearchLaser(point, transform.forward, this.gameObject))
             {
-                case 6: //MIRROR
+                case 6:
                     LaserMirror();
                     break;
-                case 7: //CYLINDER
-                    LaserColor();
+                case 7:
+                    //LaserColor();
                     break;
-                case 8: //TRIANGLE
+                case 8:
                     LaserDivide();
                     break;
-                case 9: //WALL
+                case 9:
                     LaserWall();
                     break;
-                case 10: //LaserStart
+                case 10:
                     LaserStart();
                     break;
-                case 11: //LaserStart
-                    LaserFinal();
+                case 11:
+                    //LaserFinal();
                     break;
             }
         }
-        else
+        else if(!checkBool)
         {
             inputLine.SetPosition(0, Vector3.zero);
             inputLine.SetPosition(1, Vector3.zero);
@@ -238,15 +202,16 @@ public class ReflexiveRay : MonoBehaviour
     }
 
 
-    public void ReceiveImpactPoint(Vector3 _point,Vector3 _reflectiveRayPoint, bool _bool,Color _color, Vector3 _transformStart, GameObject _gameObject)
+    public void ReceiveImpactPoint(Vector3 _point,Vector3 _reflectiveRayPoint, bool _bool,Material _mat, Vector3 _transformStart, GameObject _gameObject)
     {
         if(_gameObject == objectRecvied || objectRecvied == null || _gameObject == null)
         {
             objectRecvied = _gameObject;
             point = _point;
             reflectiveRayPoint = _reflectiveRayPoint;
+            //pointDir = _reflectiveRayPoint - _point;
             checkBool = _bool;
-            TakeColor(_color);
+            inputLine.material = _mat;
             transformStart = _transformStart;
 
             LaserDraw();
@@ -254,26 +219,18 @@ public class ReflexiveRay : MonoBehaviour
         
     }
 
-    void TakeColor(Color _color)
-    {
-        for(int i = 0; i < mat.Length; i++)
-        {
-            if (mat[i].color == _color)
-                inputLine.material = mat[i];
-        }
-
-    }
 
 
-    public void ReflexiveMirror(Vector3 _point, Vector3 _reflectiveRayPoint, bool _bool, Color _color, Vector3 _transformStart, GameObject _gameObject)
+    public void ReflexiveMirror(Vector3 _point, Vector3 _reflectiveRayPoint, bool _bool, Material _mat, Vector3 _transformStart, GameObject _gameObject)
     {
         if (_gameObject == objectRecvied || objectRecvied == null || _gameObject == null)
         {
             objectRecvied = _gameObject;
             point = _point;
             reflectiveRayPoint = _reflectiveRayPoint;
-            checkBool1 = _bool;
-            TakeColor(_color);
+            //pointDir = _reflectiveRayPoint - _point;
+            checkBool = _bool;
+            inputLine.material = _mat;
             transformStart = _transformStart;
 
             LaserDraw();
@@ -302,7 +259,7 @@ public class ReflexiveRay : MonoBehaviour
 
             case "Color":
                 if (reflexiveCube != null)
-                    reflexiveCube.GetComponent<ReflexiveRay>().ReceiveImpactPoint(Vector3.zero, Vector3.zero, false, inputLine.material.color, Vector3.zero, null);
+                    reflexiveCube.GetComponent<ReflexiveRay>().ReceiveImpactPoint(Vector3.zero, Vector3.zero, false, inputLine.material, Vector3.zero, null);
                 reflexiveCube = null;
 
                 if (triangle != null)
@@ -316,7 +273,7 @@ public class ReflexiveRay : MonoBehaviour
 
             case "Divide":
                 if (reflexiveCube != null)
-                    reflexiveCube.GetComponent<ReflexiveRay>().ReceiveImpactPoint(Vector3.zero, Vector3.zero, false, inputLine.material.color, Vector3.zero, null);
+                    reflexiveCube.GetComponent<ReflexiveRay>().ReceiveImpactPoint(Vector3.zero, Vector3.zero, false, inputLine.material, Vector3.zero, null);
                 reflexiveCube = null;
                 objectRecvied = null;
 
@@ -331,7 +288,7 @@ public class ReflexiveRay : MonoBehaviour
 
             case "Final":
                 if (reflexiveCube != null)
-                    reflexiveCube.GetComponent<ReflexiveRay>().ReceiveImpactPoint(Vector3.zero, Vector3.zero, false, inputLine.material.color, transform.position, null);
+                    reflexiveCube.GetComponent<ReflexiveRay>().ReceiveImpactPoint(Vector3.zero, Vector3.zero, false, inputLine.material, transform.position, null);
                 reflexiveCube = null;
 
                 if (cubeColor != null)
@@ -345,7 +302,7 @@ public class ReflexiveRay : MonoBehaviour
 
             case "all":
                 if (reflexiveCube != null)
-                    reflexiveCube.GetComponent<ReflexiveRay>().ReceiveImpactPoint(Vector3.zero, Vector3.zero, false, inputLine.material.color, Vector3.zero, null);
+                    reflexiveCube.GetComponent<ReflexiveRay>().ReceiveImpactPoint(Vector3.zero, Vector3.zero, false, inputLine.material, Vector3.zero, null);
                 reflexiveCube = null;
 
                 if (cubeColor != null)
