@@ -6,11 +6,15 @@ public class AnimationPortal : MonoBehaviour
 {
     public GameObject animObject;
     public Animator animator;
+    public AudioSource audioSource;
+    public AudioClip audioClip;
     bool hasPlayed = false;
 
     void Start()
     {
         animator = animObject.GetComponent<Animator>();
+        audioSource = animObject.AddComponent<AudioSource>();
+        audioSource.clip = audioClip;
     }
 
     void Update()
@@ -20,6 +24,7 @@ public class AnimationPortal : MonoBehaviour
             animObject.SetActive(true);
             animator.Play("PORTAL");
             hasPlayed = true;
+            audioSource.Play();
             StartCoroutine(DisableAnimation());
         }
     }
