@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using System;
 
 
 public class LaserRay : MonoBehaviour
@@ -25,10 +25,14 @@ public class LaserRay : MonoBehaviour
     public float rotationSpeed;
     private float anguloActual = 0f;
     public bool isRotation = true;
+
+    //
+    public RaycastLine raycastLine;
+
     void Start()
     {
         positionLaser = LaserObject.transform.position;
-        inputLine = GetComponentInChildren<LineRenderer>();
+        inputLine = LaserObject.GetComponentInChildren<LineRenderer>();
         GameManager.OnGameStateChanged += GameManager_OnGameStateChanged; //Esto es el evento del script GameManager
         rotationSpeed = 25;
         
@@ -48,7 +52,7 @@ public class LaserRay : MonoBehaviour
         LayerFinal = 1 << 11;
         positionLaser = LaserObject.transform.position;
         LaserDraw();
-        //Rotar();
+        //ObjectRotate();
         if (Input.GetKeyDown(KeyCode.Space)) //Cuando le damos click al Escape entra a esta funcion
         {
             isRotation = !isRotation;// = true ? isRotation : !isRotation;
@@ -56,23 +60,20 @@ public class LaserRay : MonoBehaviour
 
     }
 
-    void Rotar()
+    /*void ObjectRotate()
     {
         if (isRotation)
         {
             float rotacion = rotationSpeed * Time.deltaTime;
 
-            // Añadimos la rotación a la variable de ángulo actual
             anguloActual += rotacion;
 
-            // Si el ángulo actual es mayor que 45 grados, cambiamos la velocidad de rotación
             if (anguloActual >= 45f)
             {
                 rotationSpeed = -rotationSpeed;
                 anguloActual = 45f;
             }
 
-            // Si el ángulo actual es menor que -45 grados, cambiamos la velocidad de rotación
             if (anguloActual <= -45f)
             {
                 rotationSpeed = -rotationSpeed;
@@ -84,7 +85,7 @@ public class LaserRay : MonoBehaviour
         }
 
 
-    }
+    }*/
 
 
     void LaserMirror()
@@ -134,37 +135,42 @@ public class LaserRay : MonoBehaviour
 
     void LaserDivide()
     {
-        Ray ray = new Ray(positionLaser, transform.forward);
-        if (Physics.Raycast(ray, out hit, Mathf.Infinity, layerTriangle))
+        Tuple<GameObject, Vector3,string,Material> objects = raycastLine.GetGameObjectAndPosition(positionLaser, transform.forward, layerTriangle, inputLine.material);
+
+        triangle = objects.Item1;
+        Vector3 _position = objects.Item2;
+        string _name = objects.Item3;
+        Material _mat = objects.Item4;
+
+        inputLine.SetPosition(0, positionLaser);
+        inputLine.SetPosition(1, _position);
+
+        triangle.GetComponentInParent<TriangleScript>().CheckPlane(_position, _name, true, _mat, this.gameObject);
+
+        laserReset("Divide");
+
+        /*if (triangle != hit.transform.gameObject && triangle != null)
         {
-            inputLine.SetPosition(0, positionLaser);
-            inputLine.SetPosition(1, hit.point);
-
-            string _name = hit.transform.gameObject.name;
-            if (triangle != hit.transform.gameObject && triangle != null)
-            {
-                triangle.GetComponentInParent<TriangleScript>().CheckPlane(Vector3.zero, _name, false, inputLine.material,null);
-                triangle = null;
-            }
-            triangle = hit.transform.gameObject;
-            triangle.GetComponentInParent<TriangleScript>().CheckPlane(hit.point, _name, true, inputLine.material, this.gameObject);
-            laserReset("Divide");
-
+            triangle.GetComponentInParent<TriangleScript>().CheckPlane(Vector3.zero, _name, false, inputLine.material,null);
+            triangle = null;
         }
+
+        obj.GetComponentInParent<TriangleScript>().CheckPlane(hit.point, _name, true, inputLine.material, this.gameObject);
+        laserReset("Divide");      */
 
     }
 
     void LaserStart()
     {
-        Ray ray = new Ray(positionLaser, transform.forward);
-        if (Physics.Raycast(ray, out hit, 100, LayerStart))
-        {
-            inputLine.SetPosition(0, positionLaser);
-            inputLine.SetPosition(1, hit.point);
+        Tuple<GameObject, Vector3, string, Material> objects = raycastLine.GetGameObjectAndPosition(positionLaser, transform.forward, LayerStart, inputLine.material);
 
-            laserReset("all");
+        GameObject obj = objects.Item1;
+        Vector3 _position = objects.Item2;
 
-        }
+        inputLine.SetPosition(0, positionLaser);
+        inputLine.SetPosition(1, _position);
+
+        laserReset("all");
 
     }
     void LaserFinal()
@@ -183,29 +189,30 @@ public class LaserRay : MonoBehaviour
         }
 
     }
+
+
+
     void LaserWall()
     {
-        Ray ray = new Ray(positionLaser, transform.forward);
-        if (Physics.Raycast(ray, out hit, Mathf.Infinity, layerWalls))
-        {
-            inputLine.SetPosition(0, positionLaser);
-            inputLine.SetPosition(1, hit.point);
+        Tuple<GameObject, Vector3, string, Material> objects = raycastLine.GetGameObjectAndPosition(positionLaser ,transform.forward ,layerWalls, inputLine.material);
 
-            laserReset("all");
+        Vector3 _position = objects.Item2;
 
-        }
+        inputLine.SetPosition(0, positionLaser);
+        inputLine.SetPosition(1, _position);
 
+        laserReset("all");
     }
 
     void LaserDraw()
     {
-            switch (SearchLaser())
+        switch (raycastLine.SearchLaser(positionLaser, transform.forward))
             {
                 case 6:
-                    LaserMirror();
+                    //LaserMirror();
                     break;
                 case 7:
-                    LaserColor();
+                    //LaserColor();
                     break;
                 case 8:
                     LaserDivide();
@@ -217,25 +224,14 @@ public class LaserRay : MonoBehaviour
                     LaserStart();
                     break;
                 case 11:
-                LaserFinal();
-                    break;
-                default:
-                    LaserWall();
+                    //LaserFinal();
                     break;
             }
 
     }
 
-    int SearchLaser()
-    {
-        Ray ray = new Ray(positionLaser, transform.forward);
-        if (Physics.Raycast(ray, out hit, Mathf.Infinity))
-        {
-            return hit.transform.gameObject.layer;
-        }
 
-        return 0;
-    }
+    
     void laserReset(string _name)
     {
         switch(_name)
