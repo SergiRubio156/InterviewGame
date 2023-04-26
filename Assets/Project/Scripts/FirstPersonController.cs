@@ -72,6 +72,8 @@ namespace StarterAssets
 		private StarterAssetsInputs _input;
 		private GameObject _mainCamera;
 
+		public GameObject _camera;
+
 		private const float _threshold = 0.01f;
 		bool sceneSettings, isPlaying;
 
@@ -133,7 +135,7 @@ namespace StarterAssets
 				if (sceneSettings) GameManager.Instance.UpdateGameState(GameState.Playing);
 				else GameManager.Instance.UpdateGameState(GameState.Settings);
 			}
-			if (!isPlaying)
+			if (!isPlaying && _camera.activeSelf)
 			{
 				Cursor.visible = false;
 				if (!Cursor.visible)
@@ -149,7 +151,7 @@ namespace StarterAssets
 
 		private void LateUpdate()
 		{
-			if (!isPlaying)
+			if (!isPlaying && _camera.activeSelf)
 			{
 				CameraRotation();
 			}

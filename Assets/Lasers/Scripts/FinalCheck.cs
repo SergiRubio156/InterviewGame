@@ -38,7 +38,7 @@ public class FinalCheck : MonoBehaviour
                 CheckBool[i] = _bool;
                 if (CheckBools())
                 {
-                    //Victory();
+                    Victory();
                 }
                     
             }
@@ -65,7 +65,7 @@ public class FinalCheck : MonoBehaviour
     IEnumerator Wait()
     {
         yield return new WaitForSeconds(1.2f);
-        GameManager.Instance.UpdateGameState(GameState.Playing);
+        GameManager.Instance.UpdateGameState(GameState.Lasers);
 
     }
 }

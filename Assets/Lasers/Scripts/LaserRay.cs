@@ -51,7 +51,7 @@ public class LaserRay : MonoBehaviour
         LayerFinal = 1 << 11;
         positionLaser = LaserObject.transform.position;
         LaserDraw();
-        //ObjectRotate();
+        ObjectRotate();
         if (Input.GetKeyDown(KeyCode.Space)) //Cuando le damos click al Escape entra a esta funcion
         {
             isRotation = !isRotation;// = true ? isRotation : !isRotation;
@@ -59,7 +59,7 @@ public class LaserRay : MonoBehaviour
 
     }
 
-    /*void ObjectRotate()
+    void ObjectRotate()
     {
         if (isRotation)
         {
@@ -84,7 +84,7 @@ public class LaserRay : MonoBehaviour
         }
 
 
-    }*/
+    }
 
 
     void LaserMirror()
@@ -164,23 +164,12 @@ public class LaserRay : MonoBehaviour
             triangle.GetComponentInParent<TriangleScript>().CheckPlane(_position, _name, true, _mat, this.gameObject);
 
         laserReset("Divide");
-
-        /*if (triangle != hit.transform.gameObject && triangle != null)
-        {
-            triangle.GetComponentInParent<TriangleScript>().CheckPlane(Vector3.zero, _name, false, inputLine.material,null);
-            triangle = null;
-        }
-
-        obj.GetComponentInParent<TriangleScript>().CheckPlane(hit.point, _name, true, inputLine.material, this.gameObject);
-        laserReset("Divide");      */
-
     }
 
     void LaserStart()
     {
         Tuple<GameObject, Vector3, string, Material, Vector3> objects = raycastLine.GetGameObjectAndPosition(positionLaser, transform.forward, LayerStart, inputLine.material);
 
-        GameObject obj = objects.Item1;
         Vector3 _position = objects.Item2;
 
         inputLine.SetPosition(0, positionLaser);
@@ -191,19 +180,18 @@ public class LaserRay : MonoBehaviour
     }
     void LaserFinal()
     {
-        Ray ray = new Ray(positionLaser, transform.forward);
-        if (Physics.Raycast(ray, out hit, 100, LayerFinal))
-        {
-            inputLine.SetPosition(0, positionLaser);
-            inputLine.SetPosition(1, hit.point);
+        Tuple<GameObject, Vector3, string, Material, Vector3> objects = raycastLine.GetGameObjectAndPosition(positionLaser, transform.forward, LayerFinal, inputLine.material);
 
+        laserFinal = objects.Item1;
+        Vector3 _position = objects.Item2;
+        Vector3 _posDir = objects.Item5;
 
-            laserFinal = hit.transform.gameObject;
-            Vector3 direccion = hit.point - transform.position;
-            hit.transform.gameObject.GetComponent<CheckLaser>().ReceivedLaser(true, inputLine.material.color, direccion);
-            laserReset("Final");
-        }
+        inputLine.SetPosition(0, positionLaser);
+        inputLine.SetPosition(1, _position);
 
+        if(laserFinal != null)
+            laserFinal.GetComponent<CheckLaser>().ReceivedLaser(true, inputLine.material);
+        laserReset("Final");
     }
 
 
@@ -240,7 +228,7 @@ public class LaserRay : MonoBehaviour
                     LaserStart();
                     break;
                 case 11:
-                    //LaserFinal();
+                    LaserFinal();
                     break;
             }
 
@@ -262,7 +250,7 @@ public class LaserRay : MonoBehaviour
                 triangle = null;
 
                 if (laserFinal != null)
-                    laserFinal.GetComponent<CheckLaser>().ReceivedLaser(false, inputLine.material.color, Vector3.zero);
+                    laserFinal.GetComponent<CheckLaser>().ReceivedLaser(false, inputLine.material);
                 laserFinal = null;
                 break;
 
@@ -276,7 +264,7 @@ public class LaserRay : MonoBehaviour
                 triangle = null;
 
                 if (laserFinal != null)
-                    laserFinal.GetComponent<CheckLaser>().ReceivedLaser(false, inputLine.material.color, Vector3.zero);
+                    laserFinal.GetComponent<CheckLaser>().ReceivedLaser(false, inputLine.material);
                 laserFinal = null;
                 break;
 
@@ -290,7 +278,7 @@ public class LaserRay : MonoBehaviour
                 cubeColor = null;
 
                 if (laserFinal != null)
-                    laserFinal.GetComponent<CheckLaser>().ReceivedLaser(false, inputLine.material.color, Vector3.zero);
+                    laserFinal.GetComponent<CheckLaser>().ReceivedLaser(false, inputLine.material);
                 laserFinal = null;
                 break;
 
@@ -322,7 +310,7 @@ public class LaserRay : MonoBehaviour
                 triangle = null;
 
                 if (laserFinal != null)
-                    laserFinal.GetComponent<CheckLaser>().ReceivedLaser(false, inputLine.material.color, Vector3.zero);
+                    laserFinal.GetComponent<CheckLaser>().ReceivedLaser(false, inputLine.material);
                 laserFinal = null;
                 break;
         }

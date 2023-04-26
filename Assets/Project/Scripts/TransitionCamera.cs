@@ -9,30 +9,30 @@ public class TransitionCamera : MonoBehaviour
 {
     public GameObject triggerObject;
     bool StartCameraZoom;
-    CinemachineVirtualCamera cam;
+    public GameObject cam1;
+    public GameObject cam2;
+    public float transitionTime = 10f;
 
     // Start is called before the first frame update
     void Start()
     {
         StartCameraZoom = false;
-        cam = GetComponent<CinemachineVirtualCamera>();
     }
 
-    // Update is called once per frame
-    void Update()
+    public void transitionScene()
     {
-        if (triggerObject != null && Input.GetMouseButtonDown(0) && !StartCameraZoom)
-        {
-            //StartCameraZoom = true;
-        }
-        if (StartCameraZoom)
-        {
-            cam.m_Lens.FieldOfView -= Time.deltaTime * 350;
-            if (cam.m_Lens.FieldOfView < 1)
-            {
-                //SceneManager.LoadScene("Nivel 1");
- 
-            }
-        }
+        cam1.SetActive(false);
+        cam2.SetActive(true);
+
+        StartCoroutine(Wait());
     }
+
+    IEnumerator Wait()
+    {
+
+        yield return new WaitForSeconds(transitionTime);
+
+        GameManager.Instance.UpdateGameState(GameState.Lasers);
+    }
+
 }

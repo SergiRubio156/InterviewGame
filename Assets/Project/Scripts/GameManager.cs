@@ -20,6 +20,7 @@ public enum GameState
 
 };
 
+
 public class GameManager : MonoBehaviour
 {
     public static GameManager _instance; //Creamos una variable en Static para que todos los otros scripts puedan utilizar este script
@@ -30,15 +31,19 @@ public class GameManager : MonoBehaviour
 
     public sceneManager sceneManager;
 
+
+    List<string> levelLaser = new List<string>() { "NIVEL 1", "NIVEL 2", "NIVEL 3", "NIVEL 4", "NIVEL 5", "NIVEL 6", "NIVEL 7", "NIVEL 8", "NIVEL 9"};
+
+
     //un evento static esta disponible para todos los scripts en cualquier momento, incluso si no existe ninguna instancia de la clase
     //Nosotros utilizaremos el evento para decir que si estas en GameState.menu el objeto PanelMenu se active, un evento te permite comparar scripts con Unity.GameObjects
     public static event Action<GameState> OnGameStateChanged; 
 
-    GameState State = GameState.Lasers;
+    GameState State = GameState.Playing;
 
     bool ejecutar = true;
 
-    string nameLevel;
+    int  nameLevel = -1;
 
 
     //Una funcion statica, es una funcion que nos permite llamar al codigo sin necesidad de una instancia, en palabras pa tontos
@@ -65,11 +70,11 @@ public class GameManager : MonoBehaviour
 
     void Start() //Solo se entra una vez, pero si el script esta desactivado no entra
     {
-        UpdateGameState(GameState.Lasers);//Entro en la funcion UpdateGameState, y ponemos como referencia el GameState.Menu porque es el stado que queremos
+        UpdateGameState(GameState.Playing);//Entro en la funcion UpdateGameState, y ponemos como referencia el GameState.Menu porque es el stado que queremos
         _instance = this;
         DontDestroyOnLoad(this.gameObject); //Esto lo que hace es que no se destruya lobjeto quando se cambia de escena
-        if (managers[1] != null)
-           Destroy(managers[1].gameObject); //!PREGUNTAR PROFESOR, PORK APARECEN GAMEMANAGER CADA VEZ QUE SE ENTRA A UNA SCENA NUEVA, Y KIERO ELIMINARLO, HE PODIDO ELIMINARLO PERO ME PONE GAMEMANAGER NULL PERO AUN ASI SIGUE FUNCIONANDO
+        //if (managers[1] != null)
+          // Destroy(managers[1].gameObject); //!PREGUNTAR PROFESOR, PORK APARECEN GAMEMANAGER CADA VEZ QUE SE ENTRA A UNA SCENA NUEVA, Y KIERO ELIMINARLO, HE PODIDO ELIMINARLO PERO ME PONE GAMEMANAGER NULL PERO AUN ASI SIGUE FUNCIONANDO
     }
 
 
@@ -93,7 +98,7 @@ public class GameManager : MonoBehaviour
                     break;
 
                 case GameState.Lasers:
-                    HandlePlayerLasers(nameLevel);
+                    HandlePlayerLasers(NameLevel(State));
                     State = newState;
                     break;
 
@@ -110,8 +115,8 @@ public class GameManager : MonoBehaviour
             }
         }
         OnGameStateChanged?.Invoke(newState);//Esta linia comprueba si el estado ha cambiado y si es true entonces va a todos los scripts y cambia el estado.
-        Debug.Log("State " + State);
-        Debug.Log("Newstate " + newState);
+        //Debug.Log("State " + State);
+        //Debug.Log("Newstate " + newState);
         
     }
 
@@ -120,6 +125,13 @@ public class GameManager : MonoBehaviour
         Application.Quit();
     }
 
+
+    private string NameLevel(GameState _newState)
+    {
+        if(_newState != GameState.Settings)
+            nameLevel++;
+        return levelLaser[nameLevel];
+    }
     private void HandlePlayerLasers(string _name)
     {
         sceneManager.ChangeSceneLevel(_name);

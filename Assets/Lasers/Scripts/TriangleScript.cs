@@ -202,16 +202,18 @@ public class TriangleScript : MonoBehaviour
     }
     void LaserFinal(int i)
     {
-        Tuple<GameObject, Vector3, string, Material, Vector3> objects = raycastLine.GetGameObjectAndPosition(Sides[i].transform.position, vectorRecibed[i], layerWalls, inputLine[i].material);
+        Tuple<GameObject, Vector3, string, Material, Vector3> objects = raycastLine.GetGameObjectAndPosition(Sides[i].transform.position, vectorRecibed[i], LayerFinal, inputLine[i].material);
 
+        laserFinal[i] = objects.Item1;
         Vector3 _position = objects.Item2;
+        Vector3 _posDir = objects.Item5;
 
         inputLine[i].SetPosition(0, positionLaser);
         inputLine[i].SetPosition(1, _position);
 
-        Vector3 direccion = hit.point - Sides[i].transform.position;
-
-        laserReset("Final", i);
+        if (laserFinal != null)
+            laserFinal[i].GetComponent<CheckLaser>().ReceivedLaser(true, inputLine[i].material);
+        laserReset("Final" , i);
     }
     void LaserDraw(int _name)
     {
@@ -227,7 +229,7 @@ public class TriangleScript : MonoBehaviour
                             LaserMirror(i);
                             break;
                         case 7:
-                            //LaserColor(i);
+                            LaserColor(i);
                             break;
                         case 8:
                             LaserDivide(i);
@@ -313,7 +315,7 @@ public class TriangleScript : MonoBehaviour
                 triangle[i] = null;
 
                 if (laserFinal[i] != null)
-                    laserFinal[i].GetComponent<CheckLaser>().ReceivedLaser(false, inputLine[i].material.color, Vector3.zero);
+                    laserFinal[i].GetComponent<CheckLaser>().ReceivedLaser(false, inputLine[i].material);
                 laserFinal[i] = null;
                 break;
             case "Color":
@@ -326,7 +328,7 @@ public class TriangleScript : MonoBehaviour
                 triangle[i] = null;
 
                 if (laserFinal[i] != null)
-                    laserFinal[i].GetComponent<CheckLaser>().ReceivedLaser(false, inputLine[i].material.color, Vector3.zero);
+                    laserFinal[i].GetComponent<CheckLaser>().ReceivedLaser(false, inputLine[i].material);
                 laserFinal[i] = null;
                 break;
             case "Divide":
@@ -339,7 +341,7 @@ public class TriangleScript : MonoBehaviour
                 cubeColor[i] = null;
 
                 if (laserFinal[i] != null)
-                    laserFinal[i].GetComponent<CheckLaser>().ReceivedLaser(false, inputLine[i].material.color, Vector3.zero);
+                    laserFinal[i].GetComponent<CheckLaser>().ReceivedLaser(false, inputLine[i].material);
                 laserFinal[i] = null;
                 break;
             case "Final":
@@ -371,7 +373,7 @@ public class TriangleScript : MonoBehaviour
                 triangle[i] = null;
 
                 if (laserFinal[i] != null)
-                    laserFinal[i].GetComponent<CheckLaser>().ReceivedLaser(false, inputLine[i].material.color, Vector3.zero);
+                    laserFinal[i].GetComponent<CheckLaser>().ReceivedLaser(false, inputLine[i].material);
                 laserFinal[i] = null;
                 break;
         }

@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 3002539092727633438}
   - component: {fileID: 5672322863642409463}
   - component: {fileID: 1291197126429766122}
-  m_Layer: 8
+  m_Layer: 0
   m_Name: Cube.002
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -96,7 +96,7 @@ GameObject:
   - component: {fileID: 8463702812797678023}
   - component: {fileID: 5811800745659511867}
   - component: {fileID: 8213843565113907510}
-  m_Layer: 8
+  m_Layer: 0
   m_Name: Cone
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -402,7 +402,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &6986440721413075404
 Transform:
   m_ObjectHideFlags: 0
@@ -446,6 +446,7 @@ MonoBehaviour:
   LaserObject: {fileID: 1902924169671894634}
   mat: {fileID: 2100000, guid: c94ae028b02b64140afcb303d63b2581, type: 2}
   objectRecvied: {fileID: 0}
+  raycastLine: {fileID: 0}
   point: {x: 0, y: 0, z: 0}
   nameSide: 0
   checkBool: 0

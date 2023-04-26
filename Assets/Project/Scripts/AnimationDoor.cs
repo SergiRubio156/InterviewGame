@@ -30,9 +30,4 @@ public class AnimationDoor : MonoBehaviour
         animObject.SetActive(false);
     }
 
-    private void OnTriggerEnter(Collider other)
-    {
-        if (other.gameObject.CompareTag("Player"))
-            Debug.Log("hika");
-    }
 }

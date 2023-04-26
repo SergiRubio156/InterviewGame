@@ -18,6 +18,8 @@ public class MouseManager : MonoBehaviour
     float positionIntial;
     float distanceMax;
     bool isPlaying;
+
+
     void Awake()
     {
         GameManager.OnGameStateChanged += GameManager_OnGameStateChanged;   //Esto es el evento del script GameManager
@@ -96,6 +98,11 @@ public class MouseManager : MonoBehaviour
                 rb.constraints = RigidbodyConstraints.FreezeAll;
                 positionIntial = objectMove.transform.position.y;
                 objectSelect = true;
+            }
+            else if (hit.collider.CompareTag("Door"))
+            {
+                objectSelected = hit.collider.gameObject;
+                objectSelected.GetComponent<TransitionCamera>().transitionScene();
             }
         }
         else if (objectSelect)

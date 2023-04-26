@@ -22,11 +22,10 @@ public class RaycastLine : MonoBehaviour
     void Awake()
     {
 
-        foreach (GameObject go in FindObjectsOfType<GameObject>())
+        /*foreach (GameObject go in FindObjectsOfType<GameObject>())
         {
             if (layerMirror == go.layer)
             {
-                Debug.Log("!");
                 if (!objectMirror.Contains(go))
                 {
                     objectMirror.Add(go);
@@ -60,7 +59,7 @@ public class RaycastLine : MonoBehaviour
                     objectFinish.Add(go);
                 }
             }
-        }
+        }*/
     }
 
     public int SearchLaser(Vector3 point, Vector3 Dir , GameObject _obj)

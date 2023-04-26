@@ -22,7 +22,11 @@ public class MenuManager : MonoBehaviour
     {
         //panelMenu.SetActive(state == GameState.Menu);   //Si el GameState es Menu se activa este panel
         settingsMenu.SetActive(state == GameState.Settings);        //Si el GameState es Settings se activa este panelç
-        Cursor.visible = (state == GameState.Settings);
+        if (state == GameState.Settings || state == GameState.Lasers)
+        {
+            Cursor.visible = true;
+            Cursor.lockState = CursorLockMode.None;
+        }
     }
 
 
