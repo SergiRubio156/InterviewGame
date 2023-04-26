@@ -31,7 +31,7 @@ public class GameManager : MonoBehaviour
 
     public sceneManager sceneManager;
 
-
+    
     List<string> levelLaser = new List<string>() { "NIVEL 1", "NIVEL 2", "NIVEL 3", "NIVEL 4", "NIVEL 5", "NIVEL 6", "NIVEL 7", "NIVEL 8", "NIVEL 9"};
 
 
@@ -39,9 +39,9 @@ public class GameManager : MonoBehaviour
     //Nosotros utilizaremos el evento para decir que si estas en GameState.menu el objeto PanelMenu se active, un evento te permite comparar scripts con Unity.GameObjects
     public static event Action<GameState> OnGameStateChanged; 
 
-    GameState State = GameState.Playing;
+    GameState State = GameState.Menu;
 
-    bool ejecutar = true;
+    bool lvlCompleted = false;
 
     int  nameLevel = -1;
 
@@ -70,7 +70,7 @@ public class GameManager : MonoBehaviour
 
     void Start() //Solo se entra una vez, pero si el script esta desactivado no entra
     {
-        UpdateGameState(GameState.Playing);//Entro en la funcion UpdateGameState, y ponemos como referencia el GameState.Menu porque es el stado que queremos
+        UpdateGameState(GameState.Menu);//Entro en la funcion UpdateGameState, y ponemos como referencia el GameState.Menu porque es el stado que queremos
         _instance = this;
         DontDestroyOnLoad(this.gameObject); //Esto lo que hace es que no se destruya lobjeto quando se cambia de escena
         //if (managers[1] != null)
@@ -98,7 +98,7 @@ public class GameManager : MonoBehaviour
                     break;
 
                 case GameState.Lasers:
-                    HandlePlayerLasers(NameLevel(State));
+                    HandlePlayerLasers();//NameLevel(State));
                     State = newState;
                     break;
 
@@ -128,13 +128,16 @@ public class GameManager : MonoBehaviour
 
     private string NameLevel(GameState _newState)
     {
-        if(_newState != GameState.Settings)
+        /*if (_newState != GameState.Settings)
+        {
+            Debug.Log(nameLevel);
             nameLevel++;
-        return levelLaser[nameLevel];
+        }*/
+        return "NIVEL 1";//levelLaser[nameLevel];
     }
-    private void HandlePlayerLasers(string _name)
+    private void HandlePlayerLasers()//string _name)
     {
-        sceneManager.ChangeSceneLevel(_name);
+        sceneManager.ChangeSceneLevel("NIVEL 1");
     }
 
     private void HandleMenu()
@@ -149,6 +152,20 @@ public class GameManager : MonoBehaviour
 
     private void HandlePlaying()
     {
-        sceneManager.ChangeScene("Pruebas2");
+        sceneManager.ChangeScene("Play");
     }
+
+    public void LvlCompleted()
+    {
+        lvlCompleted = true;
+    }
+    public bool OpenDoor()
+    {
+        if (lvlCompleted)
+        {
+            return true;
+        }
+        return false;
+    }
+
 }

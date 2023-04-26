@@ -64,8 +64,9 @@ public class FinalCheck : MonoBehaviour
 
     IEnumerator Wait()
     {
-        yield return new WaitForSeconds(1.2f);
-        GameManager.Instance.UpdateGameState(GameState.Lasers);
+        yield return new WaitForSeconds(1f);
+        GameManager.Instance.LvlCompleted();
+        GameManager.Instance.UpdateGameState(GameState.Playing);
 
     }
 }

@@ -41,6 +41,7 @@ public class ReflexiveRay : MonoBehaviour
         layerWalls = 1 << 9;
         LayerStart = 1 << 10;
         LayerFinal = 1 << 11;
+        forwardX = transform.TransformDirection(Vector3.right);
 
         if (ConfirmLine())
         {

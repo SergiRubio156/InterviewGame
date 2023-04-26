@@ -7,16 +7,13 @@ using UnityEngine.SceneManagement;
 
 public class TransitionCamera : MonoBehaviour
 {
-    public GameObject triggerObject;
-    bool StartCameraZoom;
     public GameObject cam1;
     public GameObject cam2;
-    public float transitionTime = 10f;
+    public float transitionTime = 3f;
 
     // Start is called before the first frame update
     void Start()
     {
-        StartCameraZoom = false;
     }
 
     public void transitionScene()
@@ -32,6 +29,7 @@ public class TransitionCamera : MonoBehaviour
 
         yield return new WaitForSeconds(transitionTime);
 
+        Debug.Log("!");
         GameManager.Instance.UpdateGameState(GameState.Lasers);
     }
 

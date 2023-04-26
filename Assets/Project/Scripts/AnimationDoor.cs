@@ -4,30 +4,37 @@ using UnityEngine;
 
 public class AnimationDoor : MonoBehaviour
 {
-    public GameObject animObject;
     public Animator animator;
-    bool hasPlayed = false;
+    public float durationAnimator;
+    public AudioSource audioSource;
+    public AudioClip audioClip;
 
-    void Start()
+    private void Start()
     {
-        animator = animObject.GetComponent<Animator>();
+        audioSource.clip = audioClip;
     }
 
-    void Update()
+    private void OnTriggerEnter(Collider other)
     {
-        if (Input.GetKeyDown(KeyCode.M) && !hasPlayed)
+        if(other.gameObject.CompareTag("Player"))
         {
-            animObject.SetActive(true);
-            animator.Play("door");
-            hasPlayed = true;
-            StartCoroutine(DisableAnimation());
+            if (GameManager.Instance.OpenDoor())
+            {
+                audioSource.Play();
+                animator.SetTrigger("DoorOpen");
+            }
         }
     }
 
-    IEnumerator DisableAnimation()
+    private void OnTriggerExit(Collider other)
     {
-        yield return new WaitForSeconds(animator.GetCurrentAnimatorStateInfo(0) .length);
-        animObject.SetActive(false);
+        if (other.gameObject.CompareTag("Player"))
+        {
+            if (GameManager.Instance.OpenDoor())
+            {
+                audioSource.Play();
+                animator.SetTrigger("DoorClose");
+            }
+        }
     }
-
 }

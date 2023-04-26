@@ -27,7 +27,7 @@ public class LaserManager : MonoBehaviour
         
     //Rigidbody
     Rigidbody rb = null;
-    public bool isPlaying;
+    public bool isPlaying = true;
     float positionIntial = 0f;
 
     void Awake()
@@ -54,7 +54,7 @@ public class LaserManager : MonoBehaviour
             Cursor.lockState = CursorLockMode.None;
         }
         sceneSettings = (state == GameState.Settings);
-        isPlaying = (state != GameState.Settings);
+        isPlaying = (state != GameState.Lasers);
     }
 
 
@@ -68,7 +68,7 @@ public class LaserManager : MonoBehaviour
             if (sceneSettings) GameManager.Instance.UpdateGameState(GameState.Lasers);
             else GameManager.Instance.UpdateGameState(GameState.Settings);
         }
-        if (isPlaying)
+        if (!isPlaying)
         {
             CheckGround();
         }
@@ -82,7 +82,7 @@ public class LaserManager : MonoBehaviour
         if (Physics.Raycast(ray, out hit, Mathf.Infinity, LayerPlane))
         {
             
-            Vector3 curScreenPoint = new Vector3(hit.point.x, hit.point.y + 0.8f, hit.point.z);
+            Vector3 curScreenPoint = new Vector3(hit.point.x, hit.point.y, hit.point.z);
             transform.position = curScreenPoint;
 
             if (Input.GetMouseButtonDown(0))
@@ -138,6 +138,7 @@ public class LaserManager : MonoBehaviour
         Ray ray = mainCamera.ScreenPointToRay(Input.mousePosition);
         if (Physics.Raycast(ray, out hit, maxRayDistance) && !objectSelect)
         {
+            Debug.Log(hit.collider.name);
             if (hit.collider.CompareTag("Interactable"))
             {
                 if (hit.collider.gameObject.layer == 7)
