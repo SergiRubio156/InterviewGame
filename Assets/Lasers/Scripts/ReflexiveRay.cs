@@ -17,14 +17,9 @@ public class ReflexiveRay : MonoBehaviour
 
     public GameObject objectRecvied;
 
-    Vector3 reflectiveRayPoint;
     Vector3 point;
-    Vector3 pointDir;
-    Vector3 transformStart;
-    bool checkBool1;
+    Vector3 forwardX = new Vector3();
     bool checkBool = false;
-    int nameSide;
-    public int num,numRef;
      
     //NECESARIOS
     public RaycastLine raycastLine;
@@ -33,6 +28,8 @@ public class ReflexiveRay : MonoBehaviour
     void Start()
     {
         inputLine = GetComponentInChildren<LineRenderer>();
+        forwardX = transform.TransformDirection(Vector3.right);
+
     }
 
     // Update is called once per frame
@@ -60,7 +57,7 @@ public class ReflexiveRay : MonoBehaviour
 
     void LaserMirror()
     {
-        Tuple<GameObject, Vector3, string, Material, Vector3> objects = raycastLine.GetGameObjectAndPosition(point, transform.forward, layerMirror, inputLine.material);
+        Tuple<GameObject, Vector3, string, Material, Vector3> objects = raycastLine.GetGameObjectAndPosition(point, forwardX, layerMirror, inputLine.material);
 
         if(objects.Item1 != this.gameObject)
             reflexiveCube = objects.Item1;
@@ -78,25 +75,12 @@ public class ReflexiveRay : MonoBehaviour
             reflexiveCube.GetComponent<ReflexiveRay>().ReflexiveMirror(_position, reflectiveRayPoint, true, _mat, transform.position, this.gameObject);
 
         laserReset("Mirror");
-
-        /*if (reflexiveCube != hit.transform.gameObject && reflexiveCube != null)
-        {
-            reflexiveCube.GetComponent<ReflexiveRay>().ReceiveImpactPoint(Vector3.zero, Vector3.zero, false, inputLine.material, transform.position,gameObject);
-            reflexiveCube = null;
-
-        }
-
-        reflexiveCube = hit.transform.gameObject;
-    if (this.gameObject.name != hit.transform.gameObject.name)
-        hit.transform.gameObject.GetComponent<ReflexiveRay>().ReflexiveMirror(_hitPoint, reflectiveRayPoint2, true, inputLine.material, transform.position,gameObject);
-        laserReset("Mirror");*/
-
     }
 
 
     void LaserColor()
     {
-        Tuple<GameObject, Vector3, string, Material, Vector3> objects = raycastLine.GetGameObjectAndPosition(point, transform.forward, layerCylinder, inputLine.material);
+        Tuple<GameObject, Vector3, string, Material, Vector3> objects = raycastLine.GetGameObjectAndPosition(point, forwardX, layerCylinder, inputLine.material);
 
         cubeColor = objects.Item1;
         Vector3 _position = objects.Item2;
@@ -115,7 +99,7 @@ public class ReflexiveRay : MonoBehaviour
     void LaserDivide()
     {
         Debug.Log("!");
-        Tuple<GameObject, Vector3, string, Material, Vector3> objects = raycastLine.GetGameObjectAndPosition(point, transform.forward, layerTriangle, inputLine.material);
+        Tuple<GameObject, Vector3, string, Material, Vector3> objects = raycastLine.GetGameObjectAndPosition(point, forwardX, layerTriangle, inputLine.material);
 
         triangle = objects.Item1;
         Vector3 _position = objects.Item2;
@@ -134,7 +118,7 @@ public class ReflexiveRay : MonoBehaviour
 
     void  LaserWall()
     {
-        Tuple<GameObject, Vector3, string, Material, Vector3> objects = raycastLine.GetGameObjectAndPosition(point, transform.forward, layerWalls, inputLine.material);
+        Tuple<GameObject, Vector3, string, Material, Vector3> objects = raycastLine.GetGameObjectAndPosition(point, forwardX, layerWalls, inputLine.material);
 
         Vector3 _position = objects.Item2;
 
@@ -148,7 +132,7 @@ public class ReflexiveRay : MonoBehaviour
     }
     void LaserStart()
     {
-        Tuple<GameObject, Vector3, string, Material, Vector3> objects = raycastLine.GetGameObjectAndPosition(point, transform.forward, layerWalls, inputLine.material);
+        Tuple<GameObject, Vector3, string, Material, Vector3> objects = raycastLine.GetGameObjectAndPosition(point, forwardX, layerWalls, inputLine.material);
 
         Vector3 _position = objects.Item2;
 
@@ -160,7 +144,18 @@ public class ReflexiveRay : MonoBehaviour
     }
     void LaserFinal()
     {
-       
+        Tuple<GameObject, Vector3, string, Material, Vector3> objects = raycastLine.GetGameObjectAndPosition(point, forwardX, LayerFinal, inputLine.material);
+
+        laserFinal = objects.Item1;
+        Vector3 _position = objects.Item2;
+        Vector3 _posDir = objects.Item5;
+
+        inputLine.SetPosition(0, point);
+        inputLine.SetPosition(1, _position);
+
+        if (laserFinal != null)
+            laserFinal.GetComponent<CheckLaser>().ReceivedLaser(true, inputLine.material);
+        laserReset("Final");
 
     }
 
@@ -168,16 +163,16 @@ public class ReflexiveRay : MonoBehaviour
     void LaserDraw()
     {
 
-        if (checkBool)//(LaserConfirm() && checkBool) || (ReflexConfirm() && checkBool1))
+        if (checkBool)
         {
 
-            switch (raycastLine.SearchLaser(point, transform.forward, this.gameObject))
+            switch (raycastLine.SearchLaser(point, forwardX, this.gameObject))
             {
                 case 6:
                     LaserMirror();
                     break;
                 case 7:
-                    //LaserColor();
+                    LaserColor();
                     break;
                 case 8:
                     LaserDivide();
@@ -189,7 +184,7 @@ public class ReflexiveRay : MonoBehaviour
                     LaserStart();
                     break;
                 case 11:
-                    //LaserFinal();
+                    LaserFinal();
                     break;
             }
         }
@@ -208,11 +203,8 @@ public class ReflexiveRay : MonoBehaviour
         {
             objectRecvied = _gameObject;
             point = _point;
-            reflectiveRayPoint = _reflectiveRayPoint;
-            //pointDir = _reflectiveRayPoint - _point;
             checkBool = _bool;
             inputLine.material = _mat;
-            transformStart = _transformStart;
 
             LaserDraw();
         }
@@ -227,11 +219,8 @@ public class ReflexiveRay : MonoBehaviour
         {
             objectRecvied = _gameObject;
             point = _point;
-            reflectiveRayPoint = _reflectiveRayPoint;
-            //pointDir = _reflectiveRayPoint - _point;
             checkBool = _bool;
             inputLine.material = _mat;
-            transformStart = _transformStart;
 
             LaserDraw();
         }
@@ -253,7 +242,7 @@ public class ReflexiveRay : MonoBehaviour
                 triangle = null;
 
                 if (laserFinal != null)
-                    laserFinal.GetComponent<CheckLaser>().ReceivedLaser(false, inputLine.material.color, Vector3.zero);
+                    laserFinal.GetComponent<CheckLaser>().ReceivedLaser(false, inputLine.material);
                 laserFinal = null;
                 break;
 
@@ -267,7 +256,7 @@ public class ReflexiveRay : MonoBehaviour
                 triangle = null;
 
                 if (laserFinal != null)
-                    laserFinal.GetComponent<CheckLaser>().ReceivedLaser(false, inputLine.material.color, Vector3.zero);
+                    laserFinal.GetComponent<CheckLaser>().ReceivedLaser(false, inputLine.material);
                 laserFinal = null;
                 break;
 
@@ -282,7 +271,7 @@ public class ReflexiveRay : MonoBehaviour
                 cubeColor = null;
 
                 if (laserFinal != null)
-                    laserFinal.GetComponent<CheckLaser>().ReceivedLaser(false, inputLine.material.color, Vector3.zero);
+                    laserFinal.GetComponent<CheckLaser>().ReceivedLaser(false, inputLine.material);
                 laserFinal = null;
                 break;
 
@@ -314,7 +303,7 @@ public class ReflexiveRay : MonoBehaviour
                 triangle = null;
 
                 if (laserFinal != null)
-                    laserFinal.GetComponent<CheckLaser>().ReceivedLaser(false, inputLine.material.color, Vector3.zero);
+                    laserFinal.GetComponent<CheckLaser>().ReceivedLaser(false, inputLine.material);
                 laserFinal = null;
                 break;
 
