@@ -2,7 +2,8 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using System.Linq;
+ 
 
 public enum ObjectState
 {
@@ -13,23 +14,36 @@ public enum ObjectState
     Colors
 };
 
-public class ObjectManager : MonoBehaviour
+public class ObjectManager : Objects
 {
-
-    public Dictionary<GameObject, ObjectState> objectList = new Dictionary<GameObject, ObjectState>();
-
-    
-
+    [SerializeField] public List<Objects> objectList = new List<Objects>();
+    private List<GameObject> a = new List<GameObject>();
     ObjectState State = ObjectState.NoTaked;
 
     // Start is called before the first frame update
     void Start()
     {
-        Debug.Log("!");
+        a = GameObject.FindGameObjectsWithTag("Interactable").ToList();
+        for (int i = 0; i < a.Count; i++)
+        {
+            objectList.Add(a[i].GetComponent<Objects>());
+        }
+
+        for (int i = 0; i < objectList.Count; i++)
+        {
+            objectList[i].id = i;
+        }
     }
-    public bool GetObjectPositionInList(GameObject obj)
+
+    
+    public int GetObjectPositionInList(GameObject _obj)
     {
-        return objectList.ContainsKey(obj);
+        for (int i = 0; i < objectList.Count; i++)
+        {
+            if (objectList[i].name == _obj)
+                return i;
+        }
+        return -1;
     }
 
     public void ObjectGameState(int _index, ObjectState newState)

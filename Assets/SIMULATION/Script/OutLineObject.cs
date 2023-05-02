@@ -37,13 +37,25 @@ public class OutLineObject : MonoBehaviour
         GameObject outlineObject = Instantiate(this.gameObject, positionCube, transform.rotation);
         Renderer rend = outlineObject.GetComponent<Renderer>();
 
-        rend.material = _mat;
-        rend.material.SetColor("_OutlineColor", _color);
-        rend.material.SetFloat("_Scale", _scaleFactor);
+        Material[] materials = rend.materials;
+
+
+        for (int i = 0; i < materials.Length; i++)
+        {
+            materials[i] = _mat;
+            materials[i].SetColor("_OutlineColor", _color);
+            materials[i].SetFloat("_Scale", _scaleFactor);
+        }
+
+        rend.materials = materials;
+
         rend.shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.Off;
 
         outlineObject.GetComponent<OutLineObject>().enabled = false;
         outlineObject.GetComponent<Collider>().enabled = false;
+        outlineObject.tag = "Untagged";
+        //outlineObject.transform.rotation = Quaternion.Euler(-180, 0, 0);
+
         rb = outlineObject.GetComponent<Rigidbody>();
 
         rb.useGravity = false;
