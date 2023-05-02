@@ -10,10 +10,12 @@ public class TransitionCamera : MonoBehaviour
     public GameObject cam1;
     public GameObject cam2;
     public float transitionTime = 3f;
+    OutLineObject outLineObject;
 
     // Start is called before the first frame update
     void Start()
     {
+        outLineObject = GetComponent<OutLineObject>();
     }
 
     public void transitionScene()

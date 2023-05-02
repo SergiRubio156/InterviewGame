@@ -75,13 +75,13 @@ public class MouseManager : MonoBehaviour
             Vector3 curScreenPoint = new Vector3(hit.point.x, hit.point.y + 0.8f, hit.point.z);
             transform.position = curScreenPoint;
 
-            if (hit.collider.tag == "Interactable" && !oneTime && !objectSelect)
+            if ((hit.collider.tag == "Interactable" || hit.collider.tag == "Door") && !oneTime && !objectSelect)
             {
                 objectOutline = hit.transform.gameObject;
                 objectOutline.GetComponent<OutLineObject>().Outline(true, hit.transform.gameObject.transform.position);
                 oneTime = true;
             }
-            else if(hit.collider.tag != "Interactable" && oneTime)
+            else if((hit.collider.tag != "Interactable" || hit.collider.tag == "Door") && oneTime)
             {
                 if (objectOutline != null)
                     objectOutline.GetComponent<OutLineObject>().Outline(false, hit.transform.gameObject.transform.position);
@@ -144,18 +144,26 @@ public class MouseManager : MonoBehaviour
             {
                 if (hit.collider.CompareTag("Interactable"))
                 {
-                    objectOutline.GetComponent<OutLineObject>().Outline(false, hit.transform.gameObject.transform.position);
+                    if (objectOutline != null)
+                        objectOutline.GetComponent<OutLineObject>().Outline(false, hit.transform.gameObject.transform.position);
                     objectHand = hit.collider.gameObject;
-                    if (objectManager.GetObjectPositionInList(objectHand))                  
-                        objectManager.objectList[objectHand] = ObjectState.Taked;
-                    rb = hit.collider.gameObject.GetComponent<Rigidbody>();
-                    rend = hit.collider.gameObject.GetComponent<Renderer>();
-                    rb.constraints = RigidbodyConstraints.FreezeAll;
-                    positionIntial = objectHand.transform.position.y;
-                    objectSelect = true;
-                    oneTime = false;
-                    objectOutline = null;
-                    positionMachine = null;
+                    int i = objectManager.GetObjectPositionInList(objectHand);
+                    if (i != -1)
+                    {
+                        objectManager.objectList[i].state = ObjectState.Taked;
+                        rb = hit.collider.gameObject.GetComponent<Rigidbody>();
+                        rend = hit.collider.gameObject.GetComponent<Renderer>();
+                        rb.constraints = RigidbodyConstraints.FreezeAll;
+                        positionIntial = objectHand.transform.position.y;
+                        objectSelect = true;
+                        oneTime = false;
+                        objectOutline = null;
+                        positionMachine = null;
+                    }
+                    else
+                    {
+                        objectHand = null;
+                    }
                 }
                 else if (hit.collider.CompareTag("Door"))
                 {
@@ -170,20 +178,31 @@ public class MouseManager : MonoBehaviour
             {
                 if (hit.collider.CompareTag("Spawner"))
                 {
-                    positionMachine = hit.transform.gameObject;
-                    positionMachine.GetComponent<SpawnerColor>().ChangeColor(rend,false);
-                    objectSelect = false;
+                    int i = objectManager.GetObjectPositionInList(objectHand);
+                    if (i != -1)
+                    {
+                        objectManager.objectList[i].state = ObjectState.Toppings;
+                        positionMachine = hit.transform.gameObject;
+                        positionMachine.GetComponent<SpawnerColor>().ChangeColor(rend, false);
+                        objectSelect = false;
+                    }
                 }
                 else if (positionMachine == null)
                 {
-                    objectHand.transform.position = new Vector3(objectHand.transform.position.x, positionIntial, objectHand.transform.position.z);
-                    objectHand.GetComponent<Rigidbody>().velocity = objectHand.transform.position * 0f;
-                    rb.constraints = RigidbodyConstraints.None | RigidbodyConstraints.FreezeRotation;
-                    objectSelect = false;
-                    objectHand = null;
-                    oneTime = false;
-                    objectOutline = null;
-                    positionMachine = null;
+                    objectHand = hit.collider.gameObject;
+                    int i = objectManager.GetObjectPositionInList(objectHand);
+                    if (i != -1)
+                    {
+                        objectManager.objectList[i].state = ObjectState.NoTaked;
+                        objectHand.transform.position = new Vector3(objectHand.transform.position.x, positionIntial, objectHand.transform.position.z);
+                        objectHand.GetComponent<Rigidbody>().velocity = objectHand.transform.position * 0f;
+                        rb.constraints = RigidbodyConstraints.None | RigidbodyConstraints.FreezeRotation;
+                        objectSelect = false;
+                        objectHand = null;
+                        oneTime = false;
+                        objectOutline = null;
+                        positionMachine = null;
+                    }
                 }
             }
         }
