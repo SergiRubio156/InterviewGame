@@ -5,25 +5,33 @@ using UnityEngine;
 public class MouseManager : MonoBehaviour
 {
     public Camera mainCamera;
+    public ObjectManager objectManager;
 
-    bool objectSelect;
-    public GameObject objectMove;
-    public GameObject objectSelected;
-    public float velocity = 5f;
-
+    public bool objectSelect;
     public GameObject objectHand;
+    public GameObject objectButtonDoor;
+    float velocity = 5f;
+
+    public GameObject poisitionHand;
+    public GameObject positionMachine;
     Rigidbody rb;
-    GameObject objectOutline;
-    bool oneTime = false;
+
+    //Objeto cogido
+    Renderer rend;
+    public GameObject objectOutline;
+    public bool oneTime = false;
     float positionIntial;
     float distanceMax;
-    bool isPlaying;
 
+
+    bool isPlaying;
+    int layerSpawn;
 
     void Awake()
     {
         GameManager.OnGameStateChanged += GameManager_OnGameStateChanged;   //Esto es el evento del script GameManager
         mainCamera = Camera.main;
+        ObjectManager controller = FindObjectOfType<ObjectManager>();
         //controls = new StarterAssetsInputs();
     }
 
@@ -34,7 +42,7 @@ public class MouseManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
+        objectManager = FindObjectOfType<ObjectManager>();
     }
 
     // Update is called once per frame
@@ -42,11 +50,18 @@ public class MouseManager : MonoBehaviour
     {
         if (!isPlaying)
         {
+            layerSpawn = 1 << 14;
             CheckGround();
             if (objectSelect)
                 distanceMax = Mathf.Infinity;
             else
                 distanceMax = 5;
+            if (Input.GetKeyDown(KeyCode.Q)) 
+            {
+                Debug.Log("!");
+                Cursor.visible = true;
+                Cursor.lockState = CursorLockMode.None;
+            }
         }
     }
 
@@ -68,51 +83,109 @@ public class MouseManager : MonoBehaviour
             }
             else if(hit.collider.tag != "Interactable" && oneTime)
             {
-                objectOutline.GetComponent<OutLineObject>().Outline(false, hit.transform.gameObject.transform.position);
+                if (objectOutline != null)
+                    objectOutline.GetComponent<OutLineObject>().Outline(false, hit.transform.gameObject.transform.position);
                 oneTime = false;
                 objectOutline = null;
             }
-                if (Input.GetMouseButtonDown(0))
+
+            if (Input.GetMouseButtonDown(0))
                 RayObject();
 
             if (objectSelect)
             {
-                Vector3 newPosition2 = objectHand.transform.position - objectMove.transform.position;
-                objectMove.transform.position += newPosition2;//  * Time.deltaTime;
+                Vector3 newPosition2 = poisitionHand.transform.position - objectHand.transform.position;
+                objectHand.transform.position += newPosition2;//  * Time.deltaTime;
+
+                if (hit.collider.tag == "Spawner" && !oneTime)
+                {
+                    objectOutline = hit.transform.gameObject;
+                    objectOutline.GetComponent<OutLineObject>().Outline(true, hit.transform.gameObject.transform.position);
+                    oneTime = true;
+
+                }
+                else if (hit.collider.tag != "Spawner" && oneTime)
+                {
+                    objectOutline.GetComponent<OutLineObject>().Outline(false, hit.transform.gameObject.transform.position);
+                    oneTime = false;
+                    objectOutline = null;
+                }
+            }
+            else if(positionMachine != null)
+            {
+                if (objectOutline != null)
+                    objectOutline.GetComponent<OutLineObject>().Outline(false, hit.transform.gameObject.transform.position);
+                objectOutline = null;
+
+                Vector3 newPosition2 = positionMachine.transform.position - objectHand.transform.position;
+                objectHand.transform.position += newPosition2;//  * Time.deltaTime;
+
+                StartCoroutine(Wait());
             }
         }
     }
 
+
+    IEnumerator Wait()
+    {
+        yield return new WaitForSeconds(1f);
+        objectSelect = false;
+        positionMachine = null;
+        objectHand = null;
+    }
     void RayObject()
     {
         
         RaycastHit hit;
         Ray ray = mainCamera.ScreenPointToRay(Input.mousePosition);
-        if (Physics.Raycast(ray, out hit, Mathf.Infinity) && !objectSelect)
+        if (!objectSelect)
         {
-            if (hit.collider.CompareTag("Interactable"))
+            if (Physics.Raycast(ray, out hit, Mathf.Infinity))
             {
-                objectOutline.GetComponent<OutLineObject>().Outline(false, hit.transform.gameObject.transform.position);
-                objectMove = hit.collider.gameObject;
-                rb = hit.collider.gameObject.GetComponent<Rigidbody>();
-                rb.constraints = RigidbodyConstraints.FreezeAll;
-                positionIntial = objectMove.transform.position.y;
-                objectSelect = true;
-            }
-            else if (hit.collider.CompareTag("Door"))
-            {
-                objectSelected = hit.collider.gameObject;
-                objectSelected.GetComponent<TransitionCamera>().transitionScene();
+                if (hit.collider.CompareTag("Interactable"))
+                {
+                    objectOutline.GetComponent<OutLineObject>().Outline(false, hit.transform.gameObject.transform.position);
+                    objectHand = hit.collider.gameObject;
+                    if (objectManager.GetObjectPositionInList(objectHand))                  
+                        objectManager.objectList[objectHand] = ObjectState.Taked;
+                    rb = hit.collider.gameObject.GetComponent<Rigidbody>();
+                    rend = hit.collider.gameObject.GetComponent<Renderer>();
+                    rb.constraints = RigidbodyConstraints.FreezeAll;
+                    positionIntial = objectHand.transform.position.y;
+                    objectSelect = true;
+                    oneTime = false;
+                    objectOutline = null;
+                    positionMachine = null;
+                }
+                else if (hit.collider.CompareTag("Door"))
+                {
+                    objectButtonDoor = hit.collider.gameObject;
+                    objectButtonDoor.GetComponent<TransitionCamera>().transitionScene();
+                }
             }
         }
         else if (objectSelect)
         {
-            objectMove.transform.position = new Vector3(objectMove.transform.position.x, positionIntial, objectMove.transform.position.z);
-            objectMove.GetComponent<Rigidbody>().velocity = objectMove.transform.position * 0f;
-            rb.constraints = RigidbodyConstraints.None | RigidbodyConstraints.FreezeRotation;
-            objectSelect = false;
-            oneTime = false;
-            objectOutline = null;
+            if (Physics.Raycast(ray, out hit, Mathf.Infinity))
+            {
+                if (hit.collider.CompareTag("Spawner"))
+                {
+                    positionMachine = hit.transform.gameObject;
+                    positionMachine.GetComponent<SpawnerColor>().ChangeColor(rend,false);
+                    objectSelect = false;
+                }
+                else if (positionMachine == null)
+                {
+                    objectHand.transform.position = new Vector3(objectHand.transform.position.x, positionIntial, objectHand.transform.position.z);
+                    objectHand.GetComponent<Rigidbody>().velocity = objectHand.transform.position * 0f;
+                    rb.constraints = RigidbodyConstraints.None | RigidbodyConstraints.FreezeRotation;
+                    objectSelect = false;
+                    objectHand = null;
+                    oneTime = false;
+                    objectOutline = null;
+                    positionMachine = null;
+                }
+            }
         }
     }
 }
