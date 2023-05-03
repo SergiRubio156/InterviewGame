@@ -25,16 +25,21 @@ public class OutLineObject : MonoBehaviour
         if (_bool)
         {
             outlineRenderer.enabled = true;
-            outlineRenderer.transform.position = _position;
         }
         else
             outlineRenderer.enabled = false;
     }
 
+    private void Update()
+    {
+        outlineRenderer.transform.position = transform.position;
+
+    }
     Renderer CreateOutline(Material _mat, float _scaleFactor, Color _color)
     {
 
-        GameObject outlineObject = Instantiate(this.gameObject, positionCube, transform.rotation);
+        GameObject outlineObject = Instantiate(this.gameObject, positionCube, Quaternion.Euler(-270f, transform.rotation.y, transform.rotation.z));
+
         Renderer rend = outlineObject.GetComponent<Renderer>();
 
         Material[] materials = rend.materials;

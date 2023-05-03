@@ -150,7 +150,7 @@ public class MouseManager : MonoBehaviour
                     int i = objectManager.GetObjectPositionInList(objectHand);
                     if (i != -1)
                     {
-                        objectManager.objectList[i].state = ObjectState.Taked;
+                        objectManager.ObjectGameState(i, ObjectState.Taked);
                         rb = hit.collider.gameObject.GetComponent<Rigidbody>();
                         rend = hit.collider.gameObject.GetComponent<Renderer>();
                         rb.constraints = RigidbodyConstraints.FreezeAll;
@@ -181,7 +181,7 @@ public class MouseManager : MonoBehaviour
                     int i = objectManager.GetObjectPositionInList(objectHand);
                     if (i != -1)
                     {
-                        objectManager.objectList[i].state = ObjectState.Toppings;
+                        objectManager.ObjectGameState(i, ObjectState.Toppings);
                         positionMachine = hit.transform.gameObject;
                         positionMachine.GetComponent<SpawnerColor>().ChangeColor(rend, false);
                         objectSelect = false;
@@ -193,7 +193,7 @@ public class MouseManager : MonoBehaviour
                     int i = objectManager.GetObjectPositionInList(objectHand);
                     if (i != -1)
                     {
-                        objectManager.objectList[i].state = ObjectState.NoTaked;
+                        objectManager.ObjectGameState(i, ObjectState.NoTaked);
                         objectHand.transform.position = new Vector3(objectHand.transform.position.x, positionIntial, objectHand.transform.position.z);
                         objectHand.GetComponent<Rigidbody>().velocity = objectHand.transform.position * 0f;
                         rb.constraints = RigidbodyConstraints.None | RigidbodyConstraints.FreezeRotation;
