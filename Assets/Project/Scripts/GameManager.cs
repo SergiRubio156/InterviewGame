@@ -41,7 +41,7 @@ public class GameManager : MonoBehaviour
 
     GameState State = GameState.Playing;
 
-    bool lvlCompleted = false;
+    bool lvlCompleted = true;
 
     int  nameLevel = -1;
 
