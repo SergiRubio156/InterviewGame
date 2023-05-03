@@ -16,7 +16,7 @@ public enum ObjectState
 
 public class ObjectManager : Objects
 {
-    [SerializeField] public List<Objects> objectList = new List<Objects>();
+    [SerializeField] private List<Objects> objectList = new List<Objects>();
     private List<GameObject> a = new List<GameObject>();
     ObjectState State = ObjectState.NoTaked;
 
@@ -48,7 +48,9 @@ public class ObjectManager : Objects
 
     public void ObjectGameState(int _index, ObjectState newState)
     {
-        
+        State = objectList[_index].state;
+        objectList[_index].state = newState;
+
         if (State != newState)
         {
             //Switch es com una argupacion de IFs uitilizando una variable comun, en este caso cogemos los valores de GameState(Playing,Lasers,Settings,Menu)
