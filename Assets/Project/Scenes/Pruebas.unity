@@ -186,6 +186,16 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7054860716486551912, guid: 5b5166f522b75624589d758e4703a1cb,
+        type: 3}
+      propertyPath: m_Name
+      value: LineBlue
+      objectReference: {fileID: 0}
+    - target: {fileID: 7054860716838652249, guid: 5b5166f522b75624589d758e4703a1cb,
+        type: 3}
+      propertyPath: LaserObject
+      value: 
+      objectReference: {fileID: 24958167}
     - target: {fileID: 7054860716838652249, guid: 5b5166f522b75624589d758e4703a1cb,
         type: 3}
       propertyPath: raycastLine
@@ -198,6 +208,12 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 5b5166f522b75624589d758e4703a1cb, type: 3}
+--- !u!1 &24958167 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 7054860716486551912, guid: 5b5166f522b75624589d758e4703a1cb,
+    type: 3}
+  m_PrefabInstance: {fileID: 24958166}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &249110248 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 8857053978329484473, guid: 654d69f83fb98e4429adf5ec285428af,
