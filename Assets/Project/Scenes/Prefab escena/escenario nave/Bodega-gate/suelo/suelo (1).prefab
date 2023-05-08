@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 4192886296739058653}
   - component: {fileID: 981719067955240056}
   - component: {fileID: 3061096462132963506}
+  - component: {fileID: 1534299367669605628}
   m_Layer: 0
   m_Name: suelo (1)
   m_TagString: Untagged
@@ -83,3 +84,16 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!65 &1534299367669605628
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3565671625607891303}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 6, y: 0.0000003051761, z: 6}
+  m_Center: {x: -2.3999987, y: -0.00000005996233, z: 0.6999999}
