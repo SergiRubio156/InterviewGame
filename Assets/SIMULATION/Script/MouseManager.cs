@@ -37,7 +37,7 @@ public class MouseManager : MonoBehaviour
 
     void GameManager_OnGameStateChanged(GameState state)        //Esta funcion depende del Awake del evento, Como he explicado antes nso permite comparar entre Script y GameObjects
     {
-        isPlaying = (state == GameState.Settings);
+        isPlaying = (state == GameState.Settings || state == GameState.Wire);
     }
     // Start is called before the first frame update
     void Start()
@@ -150,7 +150,7 @@ public class MouseManager : MonoBehaviour
                     int i = objectManager.GetObjectPositionInList(objectHand);
                     if (i != -1)
                     {
-                        objectManager.ObjectGameState(i, ObjectState.Taked);
+                        //objectManager.ObjectGameState(i, ObjectState.Taked);
                         rend = hit.collider.gameObject.GetComponent<Renderer>();
                         positionIntial = objectHand.transform.position.y;
                         objectSelect = true;
@@ -178,10 +178,12 @@ public class MouseManager : MonoBehaviour
                 {
                     int i = objectManager.GetObjectPositionInList(objectHand);
                     if (i != -1)
-                    {
-                        objectManager.ObjectGameState(i, ObjectState.Toppings);
+                    { 
                         positionMachine = hit.transform.gameObject;
-                        positionMachine.GetComponent<SpawnerColor>().ChangeColor(rend, false);
+                        if(positionMachine.name == "Wire") { }
+                            //objectManager.ObjectGameState(i, ObjectState.Cables);
+                        else if(positionMachine.name == "Color")
+                            //objectManager.ObjectGameState(i, ObjectState.Colors);
                         objectSelect = false;
                     }
                 }
@@ -191,7 +193,7 @@ public class MouseManager : MonoBehaviour
                     int i = objectManager.GetObjectPositionInList(objectHand);
                     if (i != -1)
                     {
-                        objectManager.ObjectGameState(i, ObjectState.NoTaked);
+                        //objectManager.ObjectGameState(i, ObjectState.NoTaked);
                         objectHand.transform.position = new Vector3(objectHand.transform.position.x, positionIntial, objectHand.transform.position.z);
                         objectSelect = false;
                         objectHand = null;

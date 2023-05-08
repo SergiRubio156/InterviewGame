@@ -7,7 +7,7 @@ public class MenuManager : MonoBehaviour
 {
 
     public GameObject settingsMenu;
-
+    public GameObject WireMenu;
     void Awake()
     {
         GameManager.OnGameStateChanged += GameManager_OnGameStateChanged; //Esto es el evento del script GameManager
@@ -21,8 +21,9 @@ public class MenuManager : MonoBehaviour
     private void GameManager_OnGameStateChanged(GameState state)    //Esta funcion depende del Awake del evento, Como he explicado antes nso permite comparar entre Script y GameObjects
     {
         //panelMenu.SetActive(state == GameState.Menu);   //Si el GameState es Menu se activa este panel
-        settingsMenu.SetActive(state == GameState.Settings);        //Si el GameState es Settings se activa este panelç
-        if (state == GameState.Settings || state == GameState.Lasers || state == GameState.Menu)
+        settingsMenu.SetActive(state == GameState.Settings);
+        WireMenu.SetActive(state == GameState.Wire); //Si el GameState es Settings se activa este panelç
+        if (state == GameState.Settings || state == GameState.Lasers || state == GameState.Menu || state == GameState.Wire)
         {
             Cursor.visible = true;
             Cursor.lockState = CursorLockMode.None;

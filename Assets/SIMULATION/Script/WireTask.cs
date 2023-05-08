@@ -9,11 +9,17 @@ public class WireTask : MonoBehaviour
     public List<Wire> _leftWire = new List<Wire>();
     public List<Wire> _rightWire = new List<Wire>();
 
+    public Wire CurrentDraggedWire;
+    public Wire CurrentHoveredWire;
+
+    public bool isTaskCompleted = false;
+
     private List<Color> _availableColor;
     private List<int> _availableLeftWireIndex;
     private List<int> _availableRightWireIndex;
 
-    private void OnEnable()
+
+    private void Start()
     {
         _availableColor = new List<Color>(_wireColor);
         _availableLeftWireIndex = new List<int>();
@@ -28,27 +34,40 @@ public class WireTask : MonoBehaviour
             _availableRightWireIndex.Add(i);
         }
         // Color picking
-        while (_availableColor.Count > 0 &&
-               _availableLeftWireIndex.Count > 0 &&
-               _availableRightWireIndex.Count > 0)
+        while (_availableColor.Count > 0 && _availableLeftWireIndex.Count > 0 &&  _availableRightWireIndex.Count > 0)
         {
 
-            Color pickedColor =
-                     _availableColor[Random.Range(0,
-                                      _availableColor.Count)];
+            Color pickedColor = _availableColor[Random.Range(0, _availableColor.Count)];
 
-            int pickedLeftWireIndex = Random.Range(0,
-                               _availableLeftWireIndex.Count);
-            int pickedRightWireIndex = Random.Range(0,
-                               _availableRightWireIndex.Count);
+            int pickedLeftWireIndex = Random.Range(0, _availableLeftWireIndex.Count);
+            int pickedRightWireIndex = Random.Range(0, _availableRightWireIndex.Count);
 
-            _leftWire[_availableLeftWireIndex[pickedLeftWireIndex]]
-                                              .SetColor(pickedColor);
-            _rightWire[_availableRightWireIndex[pickedRightWireIndex]]
-                                              .SetColor(pickedColor);
+            _leftWire[_availableLeftWireIndex[pickedLeftWireIndex]].SetColor(pickedColor);
+            _rightWire[_availableRightWireIndex[pickedRightWireIndex]] .SetColor(pickedColor);
+
             _availableColor.Remove(pickedColor);
             _availableLeftWireIndex.RemoveAt(pickedLeftWireIndex);
             _availableRightWireIndex.RemoveAt(pickedRightWireIndex);
         }
+
+        //StartCoroutine(CheckTaskCompleted());
+    }
+
+
+    public void CheckTaskCompleted()
+    {
+            int successfulWires = 0;
+            for (int i = 0; i < _rightWire.Count; i++)
+            {
+                if (_rightWire[i].isSucces) { successfulWires++; }
+            }
+            if (successfulWires >= _rightWire.Count)
+            {
+                GameManager.Instance.UpdateGameState(GameState.Playing);
+            }
+            else
+            {
+                Debug.Log("Task Incompleted");
+            }
     }
 }

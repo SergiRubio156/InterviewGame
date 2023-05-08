@@ -15,6 +15,7 @@ public enum GameState
     Lasers,
     Settings,
     Menu,
+    Wire,
     Exit
 
 
@@ -109,6 +110,9 @@ public class GameManager : MonoBehaviour
 
                 case GameState.Exit:
                     HandleExit();
+                    break;
+                case GameState.Wire:
+                    HandleSettings();
                     break;
                 default: //se entrara aqui si el valor "newState" no coincide con ningun valor anterior
                     throw new ArgumentOutOfRangeException(nameof(newState), newState, null);//pone el valor "newState" a null para que no pete el programa.
