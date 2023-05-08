@@ -93,14 +93,14 @@ public class ObjectManager : Objects
 
     }
 
-    void ObjectNoTaked()
+    public override void ObjectNoTaked()
     {
-        Debug.Log(gameObject.name + " no taked");
+        base.ObjectNoTaked();
     }
 
-    void ObjectTaked()
+    public override void ObjectTaked()
     {
-        Debug.Log(gameObject.name + " taked");
+        base.ObjectTaked();
     }
 
     void ObjectToppings()

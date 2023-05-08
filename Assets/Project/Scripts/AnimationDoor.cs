@@ -12,6 +12,7 @@ public class AnimationDoor : MonoBehaviour
     private void Start()
     {
         audioSource.clip = audioClip;
+
     }
 
     private void OnTriggerEnter(Collider other)

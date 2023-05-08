@@ -151,9 +151,7 @@ public class MouseManager : MonoBehaviour
                     if (i != -1)
                     {
                         objectManager.ObjectGameState(i, ObjectState.Taked);
-                        rb = hit.collider.gameObject.GetComponent<Rigidbody>();
                         rend = hit.collider.gameObject.GetComponent<Renderer>();
-                        rb.constraints = RigidbodyConstraints.FreezeAll;
                         positionIntial = objectHand.transform.position.y;
                         objectSelect = true;
                         oneTime = false;
@@ -195,8 +193,6 @@ public class MouseManager : MonoBehaviour
                     {
                         objectManager.ObjectGameState(i, ObjectState.NoTaked);
                         objectHand.transform.position = new Vector3(objectHand.transform.position.x, positionIntial, objectHand.transform.position.z);
-                        objectHand.GetComponent<Rigidbody>().velocity = objectHand.transform.position * 0f;
-                        rb.constraints = RigidbodyConstraints.None | RigidbodyConstraints.FreezeRotation;
                         objectSelect = false;
                         objectHand = null;
                         oneTime = false;

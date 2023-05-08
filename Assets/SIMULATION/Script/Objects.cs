@@ -18,4 +18,13 @@ public class Objects : MonoBehaviour
         rb = GetComponent<Rigidbody>();
     }
 
+    public virtual void ObjectNoTaked()
+    {
+        rb.constraints = RigidbodyConstraints.None | RigidbodyConstraints.FreezeRotation;
+    }
+
+    public virtual void ObjectTaked()
+    {
+        rb.constraints = RigidbodyConstraints.FreezeAll;
+    }
 }
