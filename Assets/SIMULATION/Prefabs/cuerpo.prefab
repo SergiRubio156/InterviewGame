@@ -11,10 +11,10 @@ GameObject:
   - component: {fileID: 8506493373663392601}
   - component: {fileID: 4729616552564145404}
   - component: {fileID: 7369593764927785014}
+  - component: {fileID: 6793461581371816559}
   - component: {fileID: 8993598416435975039}
   - component: {fileID: 4537426877351632321}
   - component: {fileID: 7197984518823060128}
-  - component: {fileID: 1859075698}
   m_Layer: 0
   m_Name: cuerpo
   m_TagString: Interactable
@@ -89,6 +89,23 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!114 &6793461581371816559
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9027168636327684579}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f86d9227d1be57243a92ff6f02a61960, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  objectList: []
+  id: 0
+  name: {fileID: 0}
+  state: 0
+  CablesCheck: 0
 --- !u!65 &8993598416435975039
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -134,18 +151,3 @@ MonoBehaviour:
   outlineScaleFactor: -1.04
   outlineColor: {r: 0, g: 1, b: 0, a: 0}
   rb: {fileID: 0}
---- !u!114 &1859075698
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 9027168636327684579}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f86d9227d1be57243a92ff6f02a61960, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  id: 0
-  name: {fileID: 0}
-  state: 0

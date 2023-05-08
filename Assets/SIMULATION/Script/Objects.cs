@@ -4,27 +4,49 @@ using UnityEngine;
 
 
 [System.Serializable]
-public class Objects : MonoBehaviour
+public class Objects : ObjectManager
 {
+
     public int id;
     public GameObject name;
     public ObjectState state;
-    BoxCollider boxCollider;
-    Rigidbody rb;
+    //public BoxCollider boxCollider;
+    //public Rigidbody rb;
+
+    public bool CablesCheck = false;
     private void Start()
     {
         name = this.gameObject;
-        boxCollider = GetComponent<BoxCollider>();
-        rb = GetComponent<Rigidbody>();
+        //boxCollider = GetComponent<BoxCollider>();
+        //rb = GetComponent<Rigidbody>();
+        //rb.constraints = RigidbodyConstraints.None | RigidbodyConstraints.FreezeRotation;
     }
 
-    public virtual void ObjectNoTaked()
+    /*public virtual void ObjectNoTaked()
     {
-        rb.constraints = RigidbodyConstraints.None | RigidbodyConstraints.FreezeRotation;
+        //StartCoroutine((wait()));
+        //boxCollider.enabled = true;
+        //this.rb.constraints = RigidbodyConstraints.None | RigidbodyConstraints.FreezeRotation;
     }
 
     public virtual void ObjectTaked()
     {
-        rb.constraints = RigidbodyConstraints.FreezeAll;
+        //StartCoroutine((wait()));
+        //boxCollider.enabled = false;
+        //this.rb.constraints = RigidbodyConstraints.FreezeAll;
     }
+    public virtual void ObjectCables()
+    {
+        if (!CablesCheck)
+        {
+            GameManager.Instance.UpdateGameState(GameState.Wire);
+            CablesCheck = true;
+        }
+    }*/
+
+    IEnumerator wait()
+    {
+        yield return new WaitForSeconds(1.5f);
+    }
+    
 }
