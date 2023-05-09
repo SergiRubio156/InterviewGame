@@ -14,10 +14,9 @@ public class MouseManager : MonoBehaviour
 
     public GameObject poisitionHand;
     public GameObject positionMachine;
-    Rigidbody rb;
 
     //Objeto cogido
-    Renderer rend;
+    public Material outline;
     public GameObject objectOutline;
     public bool oneTime = false;
     float positionIntial;
@@ -75,18 +74,15 @@ public class MouseManager : MonoBehaviour
             Vector3 curScreenPoint = new Vector3(hit.point.x, hit.point.y + 0.8f, hit.point.z);
             transform.position = curScreenPoint;
 
-            if ((hit.collider.tag == "Interactable" || hit.collider.tag == "Door") && !oneTime && !objectSelect)
+            if ((hit.collider.tag == "Interactable" || hit.collider.tag == "Door"))
             {
-                objectOutline = hit.transform.gameObject;
-                objectOutline.GetComponent<OutLineObject>().Outline(true, hit.transform.gameObject.transform.position);
-                oneTime = true;
+                outline = hit.collider.gameObject.GetComponentInChildren<MeshRenderer>().material;
+                outline.SetFloat("_Outline_Thickness", 0.01f);
             }
-            else if((hit.collider.tag != "Interactable" || hit.collider.tag == "Door") && oneTime)
+            else if((hit.collider.tag != "Interactable" || hit.collider.tag == "Door"))
             {
-                if (objectOutline != null)
-                    objectOutline.GetComponent<OutLineObject>().Outline(false, hit.transform.gameObject.transform.position);
-                oneTime = false;
-                objectOutline = null;
+                //outline = hit.collider.gameObject.GetComponentInChildren<MeshRenderer>().material;
+                outline.SetFloat("_Outline_Thickness", 0f);
             }
 
             if (Input.GetMouseButtonDown(0))
@@ -145,13 +141,13 @@ public class MouseManager : MonoBehaviour
                 if (hit.collider.CompareTag("Interactable"))
                 {
                     if (objectOutline != null)
-                        objectOutline.GetComponent<OutLineObject>().Outline(false, hit.transform.gameObject.transform.position);
+                        outline.SetFloat("_Outline_Thickness", 0.0f);
                     objectHand = hit.collider.gameObject;
                     int i = objectManager.GetObjectPositionInList(objectHand);
                     if (i != -1)
                     {
                         //objectManager.ObjectGameState(i, ObjectState.Taked);
-                        rend = hit.collider.gameObject.GetComponent<Renderer>();
+                        //rend = hit.collider.gameObject.GetComponent<Renderer>();
                         positionIntial = objectHand.transform.position.y;
                         objectSelect = true;
                         oneTime = false;

@@ -14,7 +14,6 @@ GameObject:
   - component: {fileID: 6793461581371816559}
   - component: {fileID: 8993598416435975039}
   - component: {fileID: 4537426877351632321}
-  - component: {fileID: 7197984518823060128}
   m_Layer: 0
   m_Name: cuerpo
   m_TagString: Interactable
@@ -135,19 +134,3 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 112
   m_CollisionDetection: 0
---- !u!114 &7197984518823060128
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 9027168636327684579}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e283d37c492619d4ba4636413d7d6402, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  outiLineMaterial: {fileID: 2100000, guid: 4aa8a0f0078f879488cac4679ea36de8, type: 2}
-  outlineScaleFactor: -1.04
-  outlineColor: {r: 0, g: 1, b: 0, a: 0}
-  rb: {fileID: 0}
