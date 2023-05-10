@@ -125,7 +125,7 @@ namespace StarterAssets
 
 
 			sceneSettings = (state == GameState.Settings);
-			isPlaying = (state == GameState.Settings || state == GameState.Wire);
+			isPlaying = (state == GameState.Settings);
 		}
 
 		void Update()
