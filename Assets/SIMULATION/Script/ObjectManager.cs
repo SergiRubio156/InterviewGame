@@ -16,17 +16,19 @@ public enum ObjectState
 
 public class ObjectManager : MonoBehaviour
 {
-    [SerializeField] private List<Objects> objectList = new List<Objects>();
-    private List<Objects> a = new List<Objects>();
+    [SerializeField] private static List<Objects> objectList = new List<Objects>();
+
     ObjectState State = ObjectState.NoTaked;
 
     // Start is called before the first frame update
     void Start()
     {
         objectList = UnityEngine.Object.FindObjectsOfType<Objects>().ToList();//GameObject.FindGameObjectsWithTag("Interactable").ToList();
+        name = this.gameObject.name;
 
         for (int i = 0; i < objectList.Count; i++)
         {
+            objectList[i].state = State;
             objectList[i].id = i;
         }
     }
@@ -34,6 +36,7 @@ public class ObjectManager : MonoBehaviour
     
     public int GetObjectPositionInList(GameObject _obj)
     {
+        _obj = _obj.GetComponent<Objects>().name;
         for (int i = 0; i < objectList.Count; i++)
         {
             if (objectList[i].name == _obj)
@@ -42,7 +45,7 @@ public class ObjectManager : MonoBehaviour
         return -1;
     }
 
-    /*public void ObjectGameState(int _index, ObjectState newState)
+    public void ObjectGameState(int _index, ObjectState newState)
     {
         State = objectList[_index].state;
         objectList[_index].state = newState;
@@ -87,16 +90,15 @@ public class ObjectManager : MonoBehaviour
                                              //Debug.Log("State " + State);
                                              //Debug.Log("Newstate " + newState);
 
-    }*/
-
-    /*public override void ObjectNoTaked()
-    {
-        base.ObjectNoTaked();
     }
 
-    public override void ObjectTaked()
+    public virtual void ObjectNoTaked()
     {
-        base.ObjectTaked();
+    }
+
+    public virtual void ObjectTaked()
+    {
+        
     }
 
     void ObjectToppings()
@@ -104,12 +106,12 @@ public class ObjectManager : MonoBehaviour
         Debug.Log(gameObject.name + " toppings");
     }
 
-    public override void ObjectCables()
+    public virtual void ObjectCables()
     {
-        base.ObjectCables();
+       
     }
     void ObjectColors()
     {
         Debug.Log(gameObject.name + " colors");
-    }*/
+    }
 }
