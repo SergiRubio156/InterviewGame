@@ -23,20 +23,4 @@ public class SpawnerColor : MonoBehaviour
         boxCollider.enabled = _bool;
     }
 
-    public void ChangeColor(Renderer _rend,bool _bool)
-    {
-        Debug.Log("!");
-        objectInside(_bool);
-
-        timeElapsed += Time.deltaTime;
-
-        // Calcula la cantidad de progreso según el tiempo transcurrido
-        float progress = timeElapsed / duration;
-
-        // Usa la función Lerp para interpolar entre el color actual y el color rojo
-        Color newColor = Color.Lerp(_rend.material.color, Color.black, progress);
-
-        // Actualiza el color del objeto
-        _rend.material.color = newColor;
-    }
 }

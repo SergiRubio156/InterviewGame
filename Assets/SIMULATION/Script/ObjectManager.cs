@@ -14,23 +14,21 @@ public enum ObjectState
     Colors
 };
 
-public class ObjectManager : Objects
+public class ObjectManager : MonoBehaviour
 {
-    [SerializeField] private List<Objects> objectList = new List<Objects>();
-    private List<GameObject> a = new List<GameObject>();
+    [SerializeField] private static List<Objects> objectList = new List<Objects>();
+
     ObjectState State = ObjectState.NoTaked;
 
     // Start is called before the first frame update
     void Start()
     {
-        a = GameObject.FindGameObjectsWithTag("Interactable").ToList();
-        for (int i = 0; i < a.Count; i++)
-        {
-            objectList.Add(a[i].GetComponent<Objects>());
-        }
+        objectList = UnityEngine.Object.FindObjectsOfType<Objects>().ToList();//GameObject.FindGameObjectsWithTag("Interactable").ToList();
+        name = this.gameObject.name;
 
         for (int i = 0; i < objectList.Count; i++)
         {
+            objectList[i].state = State;
             objectList[i].id = i;
         }
     }
@@ -38,6 +36,7 @@ public class ObjectManager : Objects
     
     public int GetObjectPositionInList(GameObject _obj)
     {
+        _obj = _obj.GetComponent<Objects>().name;
         for (int i = 0; i < objectList.Count; i++)
         {
             if (objectList[i].name == _obj)
@@ -93,14 +92,13 @@ public class ObjectManager : Objects
 
     }
 
-    public override void ObjectNoTaked()
+    public virtual void ObjectNoTaked()
     {
-        base.ObjectNoTaked();
     }
 
-    public override void ObjectTaked()
+    public virtual void ObjectTaked()
     {
-        base.ObjectTaked();
+        
     }
 
     void ObjectToppings()
@@ -108,9 +106,9 @@ public class ObjectManager : Objects
         Debug.Log(gameObject.name + " toppings");
     }
 
-    void ObjectCables()
+    public virtual void ObjectCables()
     {
-        Debug.Log(gameObject.name + " cables");
+       
     }
     void ObjectColors()
     {
