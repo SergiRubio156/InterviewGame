@@ -4,27 +4,53 @@ using UnityEngine;
 
 
 [System.Serializable]
-public class Objects : MonoBehaviour
+public class Objects : ObjectManager
 {
+
     public int id;
     public GameObject name;
     public ObjectState state;
-    BoxCollider boxCollider;
-    Rigidbody rb;
+    
+    public BoxCollider boxCollider;
+    public Rigidbody rb;
+
+    public bool cablesCheck = false;
+    public bool canMove = false;
+
+    public GameObject arms;
     private void Start()
     {
         name = this.gameObject;
         boxCollider = GetComponent<BoxCollider>();
-        rb = GetComponent<Rigidbody>();
+        //rb = GetComponent<Rigidbody>();
+        //rb.constraints = RigidbodyConstraints.None | RigidbodyConstraints.FreezeRotation;
     }
 
-    public virtual void ObjectNoTaked()
+    public override void ObjectNoTaked()
     {
-        rb.constraints = RigidbodyConstraints.None | RigidbodyConstraints.FreezeRotation;
+        boxCollider.enabled = true;
+        //this.rb.constraints = RigidbodyConstraints.None | RigidbodyConstraints.FreezeRotation;
     }
 
-    public virtual void ObjectTaked()
+    public override void ObjectTaked()
     {
-        rb.constraints = RigidbodyConstraints.FreezeAll;
+        boxCollider.enabled = false;
+        //this.gameObject.layer = LayerMask.NameToLayer("NoInteractable");
+        //this.rb.constraints = RigidbodyConstraints.FreezeAll;
+    }
+    public override void ObjectCables()
+    {
+        if (!cablesCheck)
+        {
+            StartCoroutine(Wait());
+            cablesCheck = true;
+        }
+    }
+
+    IEnumerator Wait()
+    {
+        yield return new WaitUntil(() => canMove);
+        GameManager.Instance.UpdateGameState(GameState.Wire);
+
     }
 }
