@@ -49,7 +49,7 @@ public class Objects : ObjectManager
 
     IEnumerator Wait()
     {
-        yield return new WaitUntil(() => canMove);
+        yield return new WaitUntil(() => canMove);//WaitForSeconds(0.5f);//WaitUntil(() => canMove);
         GameManager.Instance.UpdateGameState(GameState.Wire);
 
     }
