@@ -55,12 +55,6 @@ public class MouseManager : MonoBehaviour
                 distanceMax = Mathf.Infinity;
             else
                 distanceMax = 5;
-            if (Input.GetKeyDown(KeyCode.Q)) 
-            {
-                Debug.Log("!");
-                Cursor.visible = true;
-                Cursor.lockState = CursorLockMode.None;
-            }
         }
     }
 
@@ -135,31 +129,33 @@ public class MouseManager : MonoBehaviour
         {
             if (Physics.Raycast(ray, out hit, Mathf.Infinity))
             {
-                if (hit.collider.CompareTag("Interactable"))
+                if (!objectSelect)
                 {
-                    if (outline != null)
-                        outline.SetFloat("_Outline_Thickness", 0f);
-                    objectHand = hit.collider.gameObject;
-                    int i = objectManager.GetObjectPositionInList(objectHand);
-                    if (i != -1)
+                    if (hit.collider.CompareTag("Interactable"))
                     {
-                        objectManager.ObjectGameState(i, ObjectState.Taked);
-
-                        positionIntial = objectHand.transform.position.y;
-                        objectSelect = true;
-                        oneTime = false;
-                        objectOutline = null;
-                        positionMachine = null;
+                        if (outline != null)
+                            outline.SetFloat("_Outline_Thickness", 0f);
+                        objectHand = hit.collider.gameObject;
+                        int i = objectManager.GetObjectPositionInList(objectHand);
+                        if (i != -1)
+                        {
+                            objectManager.ObjectGameState(i, ObjectState.Taked);
+                            positionIntial = objectHand.transform.position.y;
+                            objectSelect = true;
+                            oneTime = false;
+                            objectOutline = null;
+                            positionMachine = null;
+                        }
+                        else
+                        {
+                            objectHand = poisitionHand;
+                        }
                     }
-                    else
+                    else if (hit.collider.CompareTag("Door"))
                     {
-                        objectHand = poisitionHand;
+                        objectButtonDoor = hit.collider.gameObject;
+                        objectButtonDoor.GetComponent<TransitionCamera>().transitionScene("Door");
                     }
-                }
-                else if (hit.collider.CompareTag("Door"))
-                {
-                    objectButtonDoor = hit.collider.gameObject;
-                    objectButtonDoor.GetComponent<TransitionCamera>().transitionScene("Door");
                 }
             }
         }

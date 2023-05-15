@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Rendering.Universal;
 
 
 [System.Serializable]
@@ -15,13 +16,22 @@ public class Objects : ObjectManager
     public Rigidbody rb;
 
     public bool cablesCheck = false;
+
     public bool canMove = false;
 
-    public GameObject arms;
+    //COLOR
+
+    public bool colorCheck = false;
+    float durationColor = 20f;
+    public Gradient gradient;
+    float time = 0f;
+    public Renderer rend;
+    public Color currentColor;
     private void Start()
     {
         name = this.gameObject;
         boxCollider = GetComponent<BoxCollider>();
+        rend = GetComponentInChildren<Renderer>();
         //rb = GetComponent<Rigidbody>();
         //rb.constraints = RigidbodyConstraints.None | RigidbodyConstraints.FreezeRotation;
     }
@@ -47,10 +57,46 @@ public class Objects : ObjectManager
         }
     }
 
+    public override void ObjectColors()
+    {
+        boxCollider.enabled = true;
+        colorCheck = false;
+        StartCoroutine(WaitColor());
+    }
+
     IEnumerator Wait()
     {
-        yield return new WaitUntil(() => canMove);//WaitForSeconds(0.5f);//WaitUntil(() => canMove);
+        yield return new WaitUntil(() => canMove);
+        boxCollider.enabled = true;
         GameManager.Instance.UpdateGameState(GameState.Wire);
 
+    }
+    private IEnumerator WaitColor()
+    {
+        yield return StartCoroutine(LerpPosition());
+
+    }
+
+    private IEnumerator LerpPosition()
+    {
+  
+        while (!colorCheck && (time < durationColor))
+        {
+            Debug.Log(state);
+            currentColor = gradient.Evaluate(time / durationColor);
+
+            time += Time.deltaTime;
+
+            // Combinar el color del gradiente y el color de la textura
+
+            rend.materials[1].color = currentColor;
+
+            if(state == ObjectState.Taked)
+            {
+                Debug.Log("!");
+                colorCheck = true;
+            }
+            yield return null;
+        }
     }
 }

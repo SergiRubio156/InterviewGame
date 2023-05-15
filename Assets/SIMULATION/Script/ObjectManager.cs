@@ -110,8 +110,7 @@ public class ObjectManager : MonoBehaviour
     {
        
     }
-    void ObjectColors()
+    public virtual void ObjectColors()
     {
-        Debug.Log(gameObject.name + " colors");
     }
 }
