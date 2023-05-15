@@ -16,7 +16,7 @@ GameObject:
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 2147483647
   m_IsActive: 1
 --- !u!4 &921471509129471694
 Transform:
@@ -61,7 +61,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: -2310514774154243031, guid: d08fdb41b52e5f9408a753fa81d9405b, type: 3}
+  - {fileID: 2100000, guid: 36f00d2dd58097a43a08738fb8fbb9c9, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -99,7 +99,7 @@ GameObject:
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 2147483647
   m_IsActive: 1
 --- !u!4 &8957852281646004656
 Transform:
@@ -144,7 +144,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: -2310514774154243031, guid: d08fdb41b52e5f9408a753fa81d9405b, type: 3}
+  - {fileID: 2100000, guid: 36f00d2dd58097a43a08738fb8fbb9c9, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -180,7 +180,7 @@ GameObject:
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 2147483647
   m_IsActive: 1
 --- !u!4 &3621980548303821327
 Transform:
@@ -191,7 +191,7 @@ Transform:
   m_GameObject: {fileID: 4109548621969899701}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 12.611088, y: 0.4399996, z: 6.687472}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 0.8773055, y: 0.87730557, z: 0.8773055}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 4511636289119014435}
@@ -213,7 +213,7 @@ GameObject:
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 2147483647
   m_IsActive: 1
 --- !u!4 &4511636289119014435
 Transform:
@@ -239,12 +239,13 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1484580838515745472}
+  - component: {fileID: 9188567360962190972}
   m_Layer: 0
   m_Name: Kiste_Rig
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 2147483647
   m_IsActive: 1
 --- !u!4 &1484580838515745472
 Transform:
@@ -264,6 +265,19 @@ Transform:
   m_Father: {fileID: 3621980548303821327}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!65 &9188567360962190972
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8511528920478631375}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 1.9147538, y: 1.8420669, z: 2.6467254}
+  m_Center: {x: -0.057405032, y: 1.1372223, z: -0.010716332}
 --- !u!1 &8691818943543394140
 GameObject:
   m_ObjectHideFlags: 0
@@ -280,7 +294,7 @@ GameObject:
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 2147483647
   m_IsActive: 1
 --- !u!4 &3022451770344621098
 Transform:
@@ -325,7 +339,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: -2310514774154243031, guid: d08fdb41b52e5f9408a753fa81d9405b, type: 3}
+  - {fileID: 2100000, guid: 36f00d2dd58097a43a08738fb8fbb9c9, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
