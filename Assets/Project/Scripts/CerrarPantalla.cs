@@ -4,26 +4,32 @@ using UnityEngine.UI;
 public class CerrarPantalla : MonoBehaviour
 {
     public GameObject pantalla;
-    public Button botonabrir;
-    public Button botonControl;
+    public GameObject abrirbotton;
+    public Button cerrarControl;
+    public Button abrirControl;
     private bool pantallaVisible;
 
     void Start()
     {
+        pantalla.SetActive(false);
+        abrirbotton.SetActive(true);
         pantallaVisible = false;
-        botonControl.onClick.AddListener(ControlarPantalla); 
-        botonabrir.onClick.AddListener(AbrirPantalla);
+        cerrarControl.onClick.AddListener(CruzPantalla); 
+        abrirControl.onClick.AddListener(interrogantePantalla); 
 
     }
 
-    void ControlarPantalla()
+    void interrogantePantalla()
     {
         pantallaVisible = !pantallaVisible;
-        pantalla.SetActive(pantallaVisible);
-    }
-    void AbrirPantalla()
+        pantalla.SetActive (true);
+        abrirbotton.SetActive (false);
+    }    void CruzPantalla()
     {
         pantallaVisible = !pantallaVisible;
-        pantalla.SetActive(pantallaVisible);
+        abrirbotton.SetActive(true);
+        pantalla.SetActive (false);
+    
+
     }
 }
