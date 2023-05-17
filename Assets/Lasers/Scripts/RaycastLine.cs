@@ -15,7 +15,7 @@ public class RaycastLine : MonoBehaviour
 
     int layerMirror = 6;
     int layerCylinder = 7;
-    int layerTriangle = 8;
+    int layerTriangle = 8; 
     int LayerStart = 10;
     int LayerFinal = 11;
 
