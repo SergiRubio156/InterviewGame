@@ -16,7 +16,7 @@ public class Objects : ObjectManager
     public Rigidbody rb;
 
     public bool cablesCheck = false;
-
+    public bool toppingCheck = false;
     public bool canMove = false;
 
     //COLOR
@@ -27,26 +27,30 @@ public class Objects : ObjectManager
     float time = 0f;
     public Renderer rend;
     public Color currentColor;
+    public Material outline;
+
     private void Start()
     {
         name = this.gameObject;
         boxCollider = GetComponent<BoxCollider>();
         rend = GetComponentInChildren<Renderer>();
-        //rb = GetComponent<Rigidbody>();
-        //rb.constraints = RigidbodyConstraints.None | RigidbodyConstraints.FreezeRotation;
+        outline = GetComponentInChildren<MeshRenderer>().material;
+        rb = GetComponent<Rigidbody>();
+        rb.constraints = RigidbodyConstraints.None | RigidbodyConstraints.None;
     }
 
     public override void ObjectNoTaked()
     {
         boxCollider.enabled = true;
-        //this.rb.constraints = RigidbodyConstraints.None | RigidbodyConstraints.FreezeRotation;
+        rb.constraints = RigidbodyConstraints.None | RigidbodyConstraints.None;
+        outline.SetFloat("_Outline_Thickness", 0.01f);
     }
 
     public override void ObjectTaked()
     {
         boxCollider.enabled = false;
-        //this.gameObject.layer = LayerMask.NameToLayer("NoInteractable");
-        //this.rb.constraints = RigidbodyConstraints.FreezeAll;
+        transform.rotation = Quaternion.Euler(0, 0, 0);
+        rb.constraints = RigidbodyConstraints.FreezeAll;
     }
     public override void ObjectCables()
     {
@@ -55,6 +59,7 @@ public class Objects : ObjectManager
             StartCoroutine(Wait());
             cablesCheck = true;
         }
+        cablesCheck = true;
     }
 
     public override void ObjectColors()
@@ -99,4 +104,5 @@ public class Objects : ObjectManager
             yield return null;
         }
     }
+
 }
