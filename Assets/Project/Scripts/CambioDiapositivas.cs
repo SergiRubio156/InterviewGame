@@ -8,6 +8,7 @@ public class CambioDiapositivas : MonoBehaviour
     private int totalDiapositivas;
 
     public Button nextButton; // Referencia al botón "NEXT DERECHO"
+    public Button prevButton; // Referencia al botón "PREV IZQUIERDO"
 
     void Start()
     {
@@ -23,8 +24,9 @@ public class CambioDiapositivas : MonoBehaviour
             diapositivas[i].SetActive(false);
         }
 
-        // Asignar la función OnNextButtonClick() al evento de clic del botón "NEXT DERECHO"
+        // Asignar las funciones OnNextButtonClick() y OnPrevButtonClick() a los eventos de clic de los botones
         nextButton.onClick.AddListener(OnNextButtonClick);
+        prevButton.onClick.AddListener(OnPrevButtonClick);
     }
 
     void OnNextButtonClick()
@@ -37,6 +39,22 @@ public class CambioDiapositivas : MonoBehaviour
         if (diapositivaActual >= totalDiapositivas)
         {
             diapositivaActual = 0;
+        }
+
+        // Mostrar la nueva diapositiva
+        MostrarDiapositiva(diapositivaActual);
+    }
+
+    void OnPrevButtonClick()
+    {
+        // Ocultar la diapositiva actual
+        diapositivas[diapositivaActual].SetActive(false);
+
+        // Retroceder a la diapositiva anterior
+        diapositivaActual--;
+        if (diapositivaActual < 0)
+        {
+            diapositivaActual = totalDiapositivas - 1;
         }
 
         // Mostrar la nueva diapositiva
