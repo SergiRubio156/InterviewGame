@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 464081915}
   - component: {fileID: 464081914}
   m_Layer: 5
-  m_Name: Image
+  m_Name: Background
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1909,7 +1909,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -2.9500122, y: -40.20996}
+  m_AnchoredPosition: {x: -2.9500122, y: -40.20999}
   m_SizeDelta: {x: -435.69995, y: -214.02002}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &422941059128045624
@@ -2135,9 +2135,9 @@ Canvas:
   m_GameObject: {fileID: 422941059299295740}
   m_Enabled: 1
   serializedVersion: 3
-  m_RenderMode: 1
+  m_RenderMode: 0
   m_Camera: {fileID: 0}
-  m_PlaneDistance: 1
+  m_PlaneDistance: 100
   m_PixelPerfect: 0
   m_ReceivesEvents: 1
   m_OverrideSorting: 0
@@ -2145,7 +2145,7 @@ Canvas:
   m_SortingBucketNormalizedSize: 0
   m_AdditionalShaderChannelsFlag: 0
   m_SortingLayerID: 0
-  m_SortingOrder: 1
+  m_SortingOrder: 0
   m_TargetDisplay: 0
 --- !u!114 &422941059299295714
 MonoBehaviour:

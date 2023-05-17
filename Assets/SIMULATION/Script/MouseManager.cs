@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
 
 public class MouseManager : MonoBehaviour
 {
@@ -24,7 +25,7 @@ public class MouseManager : MonoBehaviour
 
 
     bool isPlaying;
-    int layerSpawn;
+    //int layerSpawn;
 
     void Awake()
     {
@@ -38,7 +39,7 @@ public class MouseManager : MonoBehaviour
     {
         isPlaying = (state == GameState.Settings || state == GameState.Wire);
     }
-    // Start is called before the first frame update
+
     void Start()
     {
         objectManager = FindObjectOfType<ObjectManager>();
@@ -49,18 +50,12 @@ public class MouseManager : MonoBehaviour
     {
         if (!isPlaying)
         {
-            layerSpawn = 1 << 14;
+            //layerSpawn = 1 << 14;
             CheckGround();
             if (objectSelect)
                 distanceMax = Mathf.Infinity;
             else
                 distanceMax = 5;
-            if (Input.GetKeyDown(KeyCode.Q)) 
-            {
-                Debug.Log("!");
-                Cursor.visible = true;
-                Cursor.lockState = CursorLockMode.None;
-            }
         }
     }
 
@@ -74,49 +69,47 @@ public class MouseManager : MonoBehaviour
             Vector3 curScreenPoint = new Vector3(hit.point.x, hit.point.y + 0.8f, hit.point.z);
             transform.position = curScreenPoint;
 
-            if ((hit.collider.tag == "Interactable" || hit.collider.tag == "Door"))
+            if ((hit.collider.tag == "Interactable" || hit.collider.tag == "Door") && !objectSelect)
             {
                 outline = hit.collider.gameObject.GetComponentInChildren<MeshRenderer>().material;
                 outline.SetFloat("_Outline_Thickness", 0.01f);
             }
-            else if((hit.collider.tag != "Interactable" || hit.collider.tag == "Door"))
+            else if ((hit.collider.tag != "Interactable" || hit.collider.tag == "Door") && !objectSelect)
             {
-                //outline = hit.collider.gameObject.GetComponentInChildren<MeshRenderer>().material;
                 outline.SetFloat("_Outline_Thickness", 0f);
             }
 
-            if (Input.GetMouseButtonDown(0))
-                RayObject();
-
             if (objectSelect)
             {
-                Vector3 newPosition2 = poisitionHand.transform.position - objectHand.transform.position;
-                objectHand.transform.position += newPosition2;//  * Time.deltaTime;
+                Vector3 newPosition2 = Vector3.Lerp(objectHand.transform.position, poisitionHand.transform.position, Time.deltaTime * 50);
+                objectHand.transform.position = newPosition2;//  * Time.deltaTime;
 
-                if (hit.collider.tag == "Spawner" && !oneTime)
+                if (hit.collider.tag == "Spawner")
                 {
-                    objectOutline = hit.transform.gameObject;
-                    objectOutline.GetComponent<OutLineObject>().Outline(true, hit.transform.gameObject.transform.position);
-                    oneTime = true;
+                    outline = hit.collider.gameObject.GetComponentInChildren<MeshRenderer>().material;
+                    outline.SetColor("_Outline_Color", Color.green);
 
                 }
-                else if (hit.collider.tag != "Spawner" && oneTime)
+                else if (hit.collider.tag != "Spawner")
                 {
-                    objectOutline.GetComponent<OutLineObject>().Outline(false, hit.transform.gameObject.transform.position);
-                    oneTime = false;
-                    objectOutline = null;
+                    if(objectHand.tag != "Interactable")
+                        outline.SetColor("_Outline_Color", Color.white);
+                    positionMachine = null;
                 }
             }
-            else if(positionMachine != null)
+            else if (positionMachine != null)
             {
-                if (objectOutline != null)
-                    objectOutline.GetComponent<OutLineObject>().Outline(false, hit.transform.gameObject.transform.position);
-                objectOutline = null;
 
                 Vector3 newPosition2 = positionMachine.transform.position - objectHand.transform.position;
                 objectHand.transform.position += newPosition2;//  * Time.deltaTime;
 
                 StartCoroutine(Wait());
+            }
+
+            if (Input.GetMouseButtonDown(0))
+            {
+                Tuple<GameObject, string> objects = HitGameObject();
+                SwitchList(objects.Item1, objects.Item2);
             }
         }
     }
@@ -129,6 +122,116 @@ public class MouseManager : MonoBehaviour
         positionMachine = null;
         objectHand = null;
     }
+
+    Tuple<GameObject,string> HitGameObject()
+    {
+        RaycastHit hit;
+        Ray ray = mainCamera.ScreenPointToRay(Input.mousePosition);
+
+        string _tag = "";
+        GameObject _object = null;
+
+        if (Physics.Raycast(ray, out hit, Mathf.Infinity))
+        {
+            _tag = hit.collider.tag;
+            _object = hit.collider.gameObject;
+
+            return Tuple.Create(_object, _tag);
+        }
+
+        return Tuple.Create(_object, _tag);
+    }
+
+    void SwitchList(GameObject _object,string _tag)
+    {
+        switch(_tag)
+        {
+            case "Interactable":
+                if (!objectSelect)
+                {
+                    int i = objectManager.GetObjectPositionInList(_object);
+                    if (i != -1)
+                    {
+                        if (objectManager.GetObjectStateInList(_object) != ObjectState.Taked)
+                        {
+                            if (outline != null)
+                                outline.SetFloat("_Outline_Thickness", 0f);
+                            objectManager.ObjectGameState(i, ObjectState.Taked);
+                            objectHand = _object;
+                            objectSelect = true;
+                        }
+                    }
+                }
+                break;
+            case "Spawner":
+                if (objectSelect)
+                {
+
+                    if (_object.name == "Wire")
+                    {
+                        int w = objectManager.GetObjectPositionInList(objectHand);
+                        if (w != -1)
+                        {
+                            if (!objectManager.GetObjectBoolInList(w, "Wire"))
+                            {
+                                positionMachine = _object;
+                                objectSelect = false;
+                                objectManager.ObjectGameState(w, ObjectState.Cables);
+                            }
+                        }
+                    }
+                    else if (_object.name == "Color")
+                    {
+                        int w = objectManager.GetObjectPositionInList(objectHand);
+                        if (w != -1)
+                        {
+                            if (!objectManager.GetObjectBoolInList(w, "Color"))
+                            {
+                                positionMachine = _object;
+                                objectSelect = false;
+                                objectManager.ObjectGameState(w, ObjectState.Color);
+                            }
+                        }
+                    }
+                    else if (_object.name == "Toppings")
+                    {
+                        int w = objectManager.GetObjectPositionInList(objectHand);
+                        if (w != -1)
+                        {
+                            if (!objectManager.GetObjectBoolInList(w, "Toppings"))
+                            {
+                                positionMachine = _object;
+                                objectSelect = false;
+                                objectManager.ObjectGameState(w, ObjectState.Toppings);
+                            }
+                        }
+                    }
+                }
+                break;
+               
+            case "Door":
+                _object.GetComponent<TransitionCamera>().transitionScene("Door");
+                break;
+
+            default:
+                if(objectSelect)
+                { 
+                    int d = objectManager.GetObjectPositionInList(objectHand);
+                    if (d != -1)
+                    {
+                        if (objectManager.GetObjectStateInList(objectHand) == ObjectState.Taked)
+                        {
+                            objectManager.ObjectGameState(d, ObjectState.NoTaked);
+                            objectHand.transform.position = new Vector3(objectHand.transform.position.x, positionIntial, objectHand.transform.position.z);
+                            objectSelect = false;
+                            objectHand = null;
+                        }
+                    }
+                }
+                break;
+        }
+    }
+
     void RayObject()
     {
         
@@ -138,31 +241,33 @@ public class MouseManager : MonoBehaviour
         {
             if (Physics.Raycast(ray, out hit, Mathf.Infinity))
             {
-                if (hit.collider.CompareTag("Interactable"))
+                if (!objectSelect)
                 {
-                    if (objectOutline != null)
-                        outline.SetFloat("_Outline_Thickness", 0.0f);
-                    objectHand = hit.collider.gameObject;
-                    int i = objectManager.GetObjectPositionInList(objectHand);
-                    if (i != -1)
+                    if (hit.collider.CompareTag("Interactable"))
                     {
-                        //objectManager.ObjectGameState(i, ObjectState.Taked);
-                        //rend = hit.collider.gameObject.GetComponent<Renderer>();
-                        positionIntial = objectHand.transform.position.y;
-                        objectSelect = true;
-                        oneTime = false;
-                        objectOutline = null;
-                        positionMachine = null;
+                        if (outline != null)
+                            outline.SetFloat("_Outline_Thickness", 0f);
+                        objectHand = hit.collider.gameObject;
+                        int i = objectManager.GetObjectPositionInList(objectHand);
+                        if (i != -1)
+                        {
+                            objectManager.ObjectGameState(i, ObjectState.Taked);
+                            positionIntial = objectHand.transform.position.y;
+                            objectSelect = true;
+                            oneTime = false;
+                            objectOutline = null;
+                            positionMachine = null;
+                        }
+                        else
+                        {
+                            objectHand = poisitionHand;
+                        }
                     }
-                    else
+                    else if (hit.collider.CompareTag("Door"))
                     {
-                        objectHand = null;
+                        objectButtonDoor = hit.collider.gameObject;
+                        objectButtonDoor.GetComponent<TransitionCamera>().transitionScene("Door");
                     }
-                }
-                else if (hit.collider.CompareTag("Door"))
-                {
-                    objectButtonDoor = hit.collider.gameObject;
-                    objectButtonDoor.GetComponent<TransitionCamera>().transitionScene();
                 }
             }
         }
@@ -176,12 +281,13 @@ public class MouseManager : MonoBehaviour
                     if (i != -1)
                     { 
                         positionMachine = hit.transform.gameObject;
-                        if(positionMachine.name == "Wire") { }
-                            //objectManager.ObjectGameState(i, ObjectState.Cables);
+                        if(positionMachine.name == "Wire")
+                            objectManager.ObjectGameState(i, ObjectState.Cables);
                         else if(positionMachine.name == "Color")
-                            //objectManager.ObjectGameState(i, ObjectState.Colors);
+                            objectManager.ObjectGameState(i, ObjectState.Color);
                         objectSelect = false;
                     }
+                    objectHand = null;
                 }
                 else if (positionMachine == null)
                 {
@@ -189,7 +295,7 @@ public class MouseManager : MonoBehaviour
                     int i = objectManager.GetObjectPositionInList(objectHand);
                     if (i != -1)
                     {
-                        //objectManager.ObjectGameState(i, ObjectState.NoTaked);
+                        objectManager.ObjectGameState(i, ObjectState.NoTaked);
                         objectHand.transform.position = new Vector3(objectHand.transform.position.x, positionIntial, objectHand.transform.position.z);
                         objectSelect = false;
                         objectHand = null;
@@ -197,6 +303,7 @@ public class MouseManager : MonoBehaviour
                         objectOutline = null;
                         positionMachine = null;
                     }
+                    objectHand = null;
                 }
             }
         }
