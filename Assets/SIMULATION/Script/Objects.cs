@@ -73,7 +73,7 @@ public class Objects : ObjectManager
     {
         yield return new WaitUntil(() => canMove);
         boxCollider.enabled = true;
-        GameManager.Instance.UpdateGameState(GameState.Wire);
+        GameManager.Instance.State = GameState.Wire;
 
     }
     private IEnumerator WaitColor()

@@ -23,14 +23,15 @@ public class LevelsLaser : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        //GameManager.Instance.ChooseLevels(name);
-        GameManager.Instance.UpdateGameState(GameState.Lasers);
+        GameManager.Instance.State = GameState.Lasers;
+
     }
 
     IEnumerator Wait()
     {
         yield return new WaitForSeconds(.1f);
-        GameManager.Instance.UpdateGameState(GameState.Lasers);
+        GameManager.Instance.State = GameState.Lasers;
+
     }
 
 }

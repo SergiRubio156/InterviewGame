@@ -65,8 +65,8 @@ public class LaserManager : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.Escape)) //Cuando le damos click al Escape entra a esta funcion
         {
-            if (sceneSettings) GameManager.Instance.UpdateGameState(GameState.Lasers);
-            else GameManager.Instance.UpdateGameState(GameState.Settings);
+            if (sceneSettings) GameManager.Instance.State = GameState.Lasers;
+            else GameManager.Instance.State = GameState.Settings;
         }
         if (!isPlaying)
         {

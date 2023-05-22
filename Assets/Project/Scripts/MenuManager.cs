@@ -8,48 +8,67 @@ public class MenuManager : MonoBehaviour
 
     public GameObject settingsMenu;
     public GameObject WireMenu;
-    void Awake()
+    private void OnEnable()
     {
-        GameManager.OnGameStateChanged += GameManager_OnGameStateChanged; //Esto es el evento del script GameManager
+        GameManager.OnGameStateChanged += HandleGameStateChanged;
     }
 
-    void OnDestroy()
+    private void OnDisable()
     {
-        GameManager.OnGameStateChanged -= GameManager_OnGameStateChanged; //La funcion "OnDestroy" se activa cuando destruimos el objeto, una vez destruido se activa el evento,
+        GameManager.OnGameStateChanged -= HandleGameStateChanged;
     }
 
-    private void GameManager_OnGameStateChanged(GameState state)    //Esta funcion depende del Awake del evento, Como he explicado antes nso permite comparar entre Script y GameObjects
+    private void HandleGameStateChanged(GameState newState)    //Esta funcion depende del Awake del evento, Como he explicado antes nso permite comparar entre Script y GameObjects
     {
-        //panelMenu.SetActive(state == GameState.Menu);   //Si el GameState es Menu se activa este panel
-        settingsMenu.SetActive(state == GameState.Settings);
-        WireMenu.SetActive(state == GameState.Wire); //Si el GameState es Settings se activa este panelç
-        if (state == GameState.Settings || state == GameState.Lasers || state == GameState.Menu || state == GameState.Wire)
+        switch (newState)
         {
-            Cursor.visible = true;
-            Cursor.lockState = CursorLockMode.None;
+            case GameState.Playing:
+                settingsMenu.SetActive(false);
+                WireMenu.SetActive(false);
+                break;
+            case GameState.Lasers:
+                settingsMenu.SetActive(false);
+                break;
+            case GameState.Settings:
+                settingsMenu.SetActive(true);
+                Cursor.visible = true;
+                Cursor.lockState = CursorLockMode.None;
+                break;
+            case GameState.Menu:
+                Cursor.visible = true;
+                Cursor.lockState = CursorLockMode.None;
+                break;
+            case GameState.Wire:
+                WireMenu.SetActive(true);
+                Cursor.visible = true;
+                Cursor.lockState = CursorLockMode.None;
+                break;
+            case GameState.Exit:
+                // Acciones a realizar cuando el estado de juego es "Exit"
+                break;
         }
     }
 
 
     public void StartGame() //Esta funcion se llama cuando le damos click al botton del Menu
     {
-        GameManager.Instance.UpdateGameState(GameState.Playing);//Utilizando la instancia del GameManager, entramos a la funcion UpdateGameState, y cambiamos el State a Lasers
+        GameManager.Instance.State = GameState.Playing;
     }
 
     public void StartSettings() //Esta funcion se llama cuando le damos click al botton del Menu
     {
-        GameManager.Instance.UpdateGameState(GameState.Settings);//Utilizando la instancia del GameManager, entramos a la funcion UpdateGameState, y cambiamos el State a Lasers
+        GameManager.Instance.State = GameState.Settings;
     }
     public void StartMenu() //Esta funcion se llama cuando le damos click al botton del Menu
     {
-        GameManager.Instance.UpdateGameState(GameState.Menu);//Utilizando la instancia del GameManager, entramos a la funcion UpdateGameState, y cambiamos el State a Lasers
+        GameManager.Instance.State = GameState.Menu;
     }
     public void ExitToGame() 
     {
-        GameManager.Instance.UpdateGameState(GameState.Exit);
+        GameManager.Instance.State = GameState.Exit;
     }
     public void ExitToPlay()
     {
-        GameManager.Instance.UpdateGameState(GameState.Playing);
+        GameManager.Instance.State = GameState.Playing;
     }
 }                                                                                                                                                                                                                                                                                    

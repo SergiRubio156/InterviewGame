@@ -24,101 +24,121 @@ public enum GameState
 
 public class GameManager : MonoBehaviour
 {
-    public static GameManager _instance;
+    private  static GameManager instance;
 
-    public GameObject[] managers =  new GameObject[] { null,null};
-
-    public static GameObject instance;
+    public static GameObject _instance;
 
     public sceneManager sceneManager;
 
     
-    List<string> levelLaser = new List<string>() { "NIVEL 1", "NIVEL 2", "NIVEL 3", "NIVEL 4", "NIVEL 5", "NIVEL 6", "NIVEL 7", "NIVEL 8", "NIVEL 9"};
+    public List<string> levelLaser = new List<string>() { "NIVEL 1", "NIVEL 2", "NIVEL 3", "NIVEL 4", "NIVEL 5", "NIVEL 6", "NIVEL 7", "NIVEL 8", "NIVEL 9"};
 
 
-    public static event Action<GameState> OnGameStateChanged; 
+    public static event Action<GameState> OnGameStateChanged;
 
-    GameState State = GameState.Playing;
+    private GameState state;
 
     bool lvlCompleted = true;
 
     int  nameLevel = -1;
 
     public static GameManager Instance
-    {    
+    {
         get
         {
-            if (_instance == null)
-                Debug.LogError("GameManager is Null!!!!"); 
-            return _instance;
-        }
-
-
-    }
-
-    void Awake() //El awake se entra igualmente que el script esta desactivado
-    {
-        managers = GameObject.FindGameObjectsWithTag("GameManager");
-        sceneManager = GetComponentInChildren<sceneManager>();
-        
-    }
-
-    void Start() 
-    {
-        UpdateGameState(GameState.Playing);
-        _instance = this;
-        DontDestroyOnLoad(this.gameObject); 
-       
-    }
-
-
-    public void UpdateGameState(GameState newState)
-    {
-        if (State != newState)
-        {
-            //Switch es com una argupacion de IFs uitilizando una variable comun, en este caso cogemos los valores de GameState(Playing,Lasers,Settings,Menu)
-            //y le decimos que dependiendo del valor de "newState" entrara al valor correspondiente, por ejemplo, si "newState" = a GameState.Menu, entrara al Menu
-
-            switch (newState)
+            if (instance == null)
             {
-                case GameState.Menu:
-                    HandleMenu();
-                    State = newState;
-                    break;//break se utiliza para romper el "IF"
+                // Si no hay instancia existente, buscarla en la escena
+                instance = FindObjectOfType<GameManager>();
 
-                case GameState.Playing:
-                    if (State == GameState.Wire)
-                    {
+                if (instance == null)
+                {
+                    // Si no se encuentra en la escena, crear una nueva instancia
+                    GameObject go = new GameObject("GameManager");
+                    instance = go.AddComponent<GameManager>();
+                }
 
-                    }
-                    HandlePlaying();
-                    State = newState;
-                    break;
+                DontDestroyOnLoad(instance.gameObject);
+            }
 
-                case GameState.Lasers:
-                    HandlePlayerLasers();//NameLevel(State));
-                    State = newState;
-                    break;
+            return instance;
+        }
+    }
 
-                case GameState.Settings:
-                    HandleSettings();
-                    State = newState;
-                    break;
-
-                case GameState.Exit:
-                    HandleExit();
-                    break;
-                case GameState.Wire:
-                    HandleSettings();
-                    break;
-                default: //se entrara aqui si el valor "newState" no coincide con ningun valor anterior
-                    throw new ArgumentOutOfRangeException(nameof(newState), newState, null);//pone el valor "newState" a null para que no pete el programa.
+    void Awake()
+    {
+        sceneManager = GetComponentInChildren<sceneManager>();
+        GameManager[] gameManagers = FindObjectsOfType<GameManager>();
+        if (gameManagers.Length > 1)
+        {
+            // Hay más de un objeto GameManager, eliminar los duplicados
+            for (int i = 1; i < gameManagers.Length; i++)
+            {
+                Destroy(gameManagers[i].gameObject);
             }
         }
-        OnGameStateChanged?.Invoke(newState);//Esta linia comprueba si el estado ha cambiado y si es true entonces va a todos los scripts y cambia el estado.
-        //Debug.Log("State " + State);
-        //Debug.Log("Newstate " + newState);
-        
+    }
+    void Start() 
+    {
+        sceneManager = GetComponentInChildren<sceneManager>();
+
+        state = GameState.Playing;
+
+        DontDestroyOnLoad(this.gameObject);
+
+        _instance = this.gameObject;       
+    }
+
+
+    public GameState State
+    {
+        get { return state; }
+        set
+        {
+            if (state != value)
+            {
+                //Switch es com una argupacion de IFs uitilizando una variable comun, en este caso cogemos los valores de GameState(Playing,Lasers,Settings,Menu)
+                //y le decimos que dependiendo del valor de "newState" entrara al valor correspondiente, por ejemplo, si "newState" = a GameState.Menu, entrara al Menu
+
+                switch (value)
+                {
+                    case GameState.Menu:
+                        HandleMenu();
+                        state = value;
+                        break;//break se utiliza para romper el "IF"
+
+                    case GameState.Playing:
+                        HandlePlaying();
+                        state = value;
+                        break;
+
+                    case GameState.Lasers:
+                        if (State == GameState.Playing)
+                        {
+                            HandlePlayerLasers();
+                        }
+                        state = value;
+                        break;
+
+                    case GameState.Settings:
+                        HandleSettings();
+                        state = value;
+                        break;
+
+                    case GameState.Exit:
+                        HandleExit();
+                        break;
+
+                    case GameState.Wire:
+                        HandleSettings();
+                        state = value;
+                        break;
+                    default: //se entrara aqui si el valor "newState" no coincide con ningun valor anterior
+                        throw new ArgumentOutOfRangeException(nameof(value), value, null);//pone el valor "newState" a null para que no pete el programa.
+                }
+            }
+            OnGameStateChanged?.Invoke(state);//Esta linia comprueba si el estado ha cambiado y si es true entonces va a todos los scripts y cambia el estado.
+        }
     }
 
     private void HandleExit()
@@ -127,18 +147,15 @@ public class GameManager : MonoBehaviour
     }
 
 
-    private string NameLevel(GameState _newState)
+    private string NameLevel()
     {
-        /*if (_newState != GameState.Settings)
-        {
-            Debug.Log(nameLevel);
-            nameLevel++;
-        }*/
-        return "NIVEL 1";//levelLaser[nameLevel];
+        nameLevel++;
+        Debug.Log(nameLevel);
+        return levelLaser[nameLevel];
     }
     private void HandlePlayerLasers()//string _name)
     {
-        sceneManager.ChangeSceneLevel("NIVEL 1");
+        sceneManager.ChangeSceneLevel(NameLevel());
     }
 
     private void HandleMenu()

@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class CerrarPantalla : MonoBehaviour
 {
@@ -9,9 +10,17 @@ public class CerrarPantalla : MonoBehaviour
     public Button abrirControl;
     private bool pantallaVisible;
 
+
     void Start()
     {
-        pantalla.SetActive(false);
+        if (GetCurrentSceneName() == "NIVEL 1")
+        {
+            pantalla.SetActive(true);
+        }
+        else
+        {
+            pantalla.SetActive(false);
+        }
         abrirbotton.SetActive(true);
         pantallaVisible = false;
         cerrarControl.onClick.AddListener(CruzPantalla); 
@@ -31,5 +40,11 @@ public class CerrarPantalla : MonoBehaviour
         pantalla.SetActive (false);
     
 
+    }
+
+    public string GetCurrentSceneName()
+    {
+        Scene currentScene = SceneManager.GetActiveScene();
+        return currentScene.name;
     }
 }

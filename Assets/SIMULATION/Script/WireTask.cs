@@ -63,7 +63,7 @@ public class WireTask : MonoBehaviour
             }
             if (successfulWires >= _rightWire.Count)
             {
-                GameManager.Instance.UpdateGameState(GameState.Playing);
+            GameManager.Instance.State = GameState.Playing;
             }
             else
             {
