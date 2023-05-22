@@ -9,7 +9,7 @@ public class TransitionCamera : MonoBehaviour
 {
     public GameObject cam1;
     public GameObject cam2;
-    public float transitionTimeDoor = 3f;
+    public float transitionTimeDoor = 1f;
     public float transitionTimeSpawn = 3f;
 
     OutLineObject outLineObject;
@@ -25,7 +25,7 @@ public class TransitionCamera : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        outLineObject = GetComponent<OutLineObject>();
+        cam2 = GetComponentInChildren<GameObject>().gameObject;
     }
 
     public void transitionScene(string _name)
@@ -46,6 +46,6 @@ public class TransitionCamera : MonoBehaviour
     IEnumerator WaitDoor()
     {
         yield return new WaitForSeconds(transitionTimeDoor);
-        GameManager.Instance.UpdateGameState(GameState.Lasers);
+        GameManager.Instance.State = GameState.Lasers;
     }
 }

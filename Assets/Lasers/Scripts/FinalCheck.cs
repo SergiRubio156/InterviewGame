@@ -66,7 +66,7 @@ public class FinalCheck : MonoBehaviour
     {
         yield return new WaitForSeconds(1f);
         GameManager.Instance.LvlCompleted();
-        GameManager.Instance.UpdateGameState(GameState.Playing);
+        GameManager.Instance.State = GameState.Playing;
 
     }
 }
