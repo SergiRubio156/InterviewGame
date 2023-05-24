@@ -30,35 +30,53 @@ public class LaserManager : MonoBehaviour
     public bool isPlaying = true;
     float positionIntial = 0f;
 
-    void Awake()
+    void OnEnable()
     {
-        GameManager.OnGameStateChanged += GameManager_OnGameStateChanged;   //Esto es el evento del script GameManager
+        GameManager.OnGameStateChanged += HandleGameStateChanged;   //Esto es el evento del script GameManager
         mainCamera = Camera.main;
                 //controls = new StarterAssetsInputs();
     }
 
     private void OnDestroy()
     {
-        GameManager.OnGameStateChanged -= GameManager_OnGameStateChanged;   //La funcion "OnDestroy" se activa cuando destruimos el objeto, una vez destruido se activa el evento,
+        GameManager.OnGameStateChanged -= HandleGameStateChanged;   //La funcion "OnDestroy" se activa cuando destruimos el objeto, una vez destruido se activa el evento,
     }
     private void Start()
     {
         objectSelect = false;
     }
 
-    void GameManager_OnGameStateChanged(GameState state)        //Esta funcion depende del Awake del evento, Como he explicado antes nso permite comparar entre Script y GameObjects
+    private void HandleGameStateChanged(GameState newState)        //Esta funcion depende del Awake del evento, Como he explicado antes nso permite comparar entre Script y GameObjects
     {
-        if (state == GameState.Settings || state == GameState.Lasers)
+
+        switch (newState)
         {
-            Cursor.visible = true;
-            Cursor.lockState = CursorLockMode.None;
+            case GameState.Playing:
+                break;
+            case GameState.Lasers:
+                sceneSettings = false;
+                isPlaying = true;
+                Cursor.visible = true;
+                Cursor.lockState = CursorLockMode.None;
+                break;
+            case GameState.Settings:
+                sceneSettings = true;
+                isPlaying = false;
+                Cursor.visible = true;
+                Cursor.lockState = CursorLockMode.None;
+                break;
+            case GameState.Menu:
+                break;
+            case GameState.Wire:
+                break;
+            case GameState.Exit:
+                // Acciones a realizar cuando el estado de juego es "Exit"
+                break;
         }
-        sceneSettings = (state == GameState.Settings);
-        isPlaying = (state != GameState.Lasers);
     }
 
 
-    // Update is called once per frame
+
     void Update()
     {
         LayerPlane = 1 << 13;
@@ -68,7 +86,7 @@ public class LaserManager : MonoBehaviour
             if (sceneSettings) GameManager.Instance.State = GameState.Lasers;
             else GameManager.Instance.State = GameState.Settings;
         }
-        if (!isPlaying)
+        if (isPlaying)
         {
             CheckGround();
         }
@@ -138,7 +156,6 @@ public class LaserManager : MonoBehaviour
         Ray ray = mainCamera.ScreenPointToRay(Input.mousePosition);
         if (Physics.Raycast(ray, out hit, maxRayDistance) && !objectSelect)
         {
-            Debug.Log(hit.collider.name);
             if (hit.collider.CompareTag("Interactable"))
             {
                 if (hit.collider.gameObject.layer == 7)

@@ -13,53 +13,14 @@ public class RaycastLine : MonoBehaviour
     public List<GameObject> objectStart = new List<GameObject>();
     public List<GameObject> objectFinish = new List<GameObject>();
 
-    int layerMirror = 6;
+    /*int layerMirror = 6;
     int layerCylinder = 7;
     int layerTriangle = 8; 
     int LayerStart = 10;
-    int LayerFinal = 11;
+    int LayerFinal = 11;*/
 
     void Awake()
     {
-
-        /*foreach (GameObject go in FindObjectsOfType<GameObject>())
-        {
-            if (layerMirror == go.layer)
-            {
-                if (!objectMirror.Contains(go))
-                {
-                    objectMirror.Add(go);
-                }
-            }
-            else if (layerCylinder == go.layer)
-            {
-                if (!objectColor.Contains(go))
-                {
-                    objectColor.Add(go);
-                }
-            }
-            else if (layerTriangle == go.layer)
-            {
-                if (!objectDivide.Contains(go))
-                {
-                    objectDivide.Add(go);
-                }
-            }
-            else if (LayerStart == go.layer)
-            {
-                if (!objectStart.Contains(go))
-                {
-                    objectStart.Add(go);
-                }
-            }
-            else if (LayerFinal == go.layer)
-            {
-                if (!objectFinish.Contains(go))
-                {
-                    objectFinish.Add(go);
-                }
-            }
-        }*/
     }
 
     public int SearchLaser(Vector3 point, Vector3 Dir , GameObject _obj)

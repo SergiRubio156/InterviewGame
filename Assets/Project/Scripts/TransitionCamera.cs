@@ -7,9 +7,9 @@ using UnityEngine.SceneManagement;
 
 public class TransitionCamera : MonoBehaviour
 {
-    public GameObject cam1;
-    public GameObject cam2;
-    public float transitionTimeDoor = 1f;
+    public CinemachineVirtualCamera cam1;
+    public CinemachineVirtualCamera cam2;
+    public float transitionTimeDoor = 0.5f;
     public float transitionTimeSpawn = 3f;
 
     OutLineObject outLineObject;
@@ -25,22 +25,21 @@ public class TransitionCamera : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        cam2 = GetComponentInChildren<GameObject>().gameObject;
+        cam2 = GetComponentInChildren<CinemachineVirtualCamera>();
     }
 
     public void transitionScene(string _name)
     {
-        cam1.SetActive(false);
-        cam2.SetActive(true);
+        cam1.enabled = false;
+        cam2.enabled = true;
 
-        Debug.Log("!");
         if(_name == "Door")
             StartCoroutine(WaitDoor());
     }
     public void returntransitionScene()
     {
-        cam2.SetActive(false);
-        cam1.SetActive(true);
+        cam2.enabled = false;
+        cam1.enabled = true;
 
     }
     IEnumerator WaitDoor()

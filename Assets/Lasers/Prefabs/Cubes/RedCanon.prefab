@@ -26,12 +26,12 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2274248314887862775}
   m_LocalRotation: {x: -4.3297806e-17, y: 0.7071068, z: 0.7071068, w: -4.3297806e-17}
-  m_LocalPosition: {x: -0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 6976931455222013452}
-  m_RootOrder: 0
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!33 &5339503541658649191
 MeshFilter:
@@ -108,13 +108,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7054860716486551912}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0.067, y: 1.197, z: -0.048}
+  m_LocalRotation: {x: 4.3297806e-17, y: -0.7071068, z: -0.7071068, w: -4.3297806e-17}
+  m_LocalPosition: {x: 0.06700005, y: -0.048000097, z: 1.1970001}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 6976931455222013452}
-  m_RootOrder: 2
+  m_Father: {fileID: 705519289001705991}
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!120 &7054860716486551914
 LineRenderer:
@@ -226,7 +226,6 @@ GameObject:
   - component: {fileID: 6976931455222013452}
   - component: {fileID: 7054860716838652255}
   - component: {fileID: 7054860716838652248}
-  - component: {fileID: 7054860716838652249}
   m_Layer: 10
   m_Name: RedCanon
   m_TagString: Untagged
@@ -246,9 +245,8 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 6913643239713333322}
   - {fileID: 705519289001705991}
-  - {fileID: 7054860716486551913}
+  - {fileID: 6913643239713333322}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -281,27 +279,6 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1.0479274, y: 2.086987, z: 1.7641487}
   m_Center: {x: -0.02396369, y: 0.5434935, z: 0.38207436}
---- !u!114 &7054860716838652249
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7753187130262783158}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 952e9c632601bf54999351640ac3b059, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  inputLine: {fileID: 7054860716486551914}
-  cubeColor: {fileID: 0}
-  reflexive: {fileID: 0}
-  triangle: {fileID: 0}
-  laserFinal: {fileID: 0}
-  LaserObject: {fileID: 7054860716486551912}
-  rotationSpeed: 0
-  isRotation: 1
-  raycastLine: {fileID: 0}
 --- !u!1 &8902428892062881174
 GameObject:
   m_ObjectHideFlags: 0
@@ -313,6 +290,7 @@ GameObject:
   - component: {fileID: 705519289001705991}
   - component: {fileID: 1364250137470754508}
   - component: {fileID: 1408702640046215321}
+  - component: {fileID: 8777614159154368910}
   m_Layer: 0
   m_Name: Cube.003
   m_TagString: Untagged
@@ -331,9 +309,10 @@ Transform:
   m_LocalPosition: {x: -0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 7054860716486551913}
   m_Father: {fileID: 6976931455222013452}
-  m_RootOrder: 1
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!33 &1364250137470754508
 MeshFilter:
@@ -388,3 +367,25 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!114 &8777614159154368910
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8902428892062881174}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 952e9c632601bf54999351640ac3b059, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  inputLine: {fileID: 7054860716486551914}
+  cubeColor: {fileID: 0}
+  reflexive: {fileID: 0}
+  triangle: {fileID: 0}
+  laserFinal: {fileID: 0}
+  LaserObject: {fileID: 0}
+  rotationSpeed: 0
+  isRotation: 1
+  rotate: {fileID: 0}
+  raycastLine: {fileID: 0}
