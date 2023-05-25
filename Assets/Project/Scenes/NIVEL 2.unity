@@ -927,8 +927,24 @@ PrefabInstance:
       propertyPath: m_Name
       value: RedCanon
       objectReference: {fileID: 0}
+    - target: {fileID: 8777614159154368910, guid: 668e5be778ea3764cad60d36bd327d4c,
+        type: 3}
+      propertyPath: LaserObject
+      value: 
+      objectReference: {fileID: 967436797}
+    - target: {fileID: 8777614159154368910, guid: 668e5be778ea3764cad60d36bd327d4c,
+        type: 3}
+      propertyPath: raycastLine
+      value: 
+      objectReference: {fileID: 1418670179}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 668e5be778ea3764cad60d36bd327d4c, type: 3}
+--- !u!1 &967436797 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 7054860716486551912, guid: 668e5be778ea3764cad60d36bd327d4c,
+    type: 3}
+  m_PrefabInstance: {fileID: 967436796}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &978225952 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 2858089343872997037, guid: 87386a0dbc1b86944a4b22e96a80da6c,

@@ -36,7 +36,7 @@ public class GameManager : MonoBehaviour
 
     public static event Action<GameState> OnGameStateChanged;
 
-    private GameState state = GameState.Lasers;
+    private GameState state = GameState.Playing;
 
     bool lvlCompleted = true;
 
