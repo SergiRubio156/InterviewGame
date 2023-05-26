@@ -7,16 +7,21 @@ using System;
 public class LaserRay : MonoBehaviour
 {
     int layerWalls,layerMirror,layerCylinder,layerTriangle, LayerStart, LayerFinal;
-
+    
     public LineRenderer inputLine;
 
     RaycastHit hit;
 
     //GameObjects
-     public GameObject cubeColor = null;
-     public GameObject reflexive = null;
-     public GameObject triangle = null;
-     public GameObject laserFinal = null;
+    [SerializeField]
+    private GameObject cubeColor = null;
+    [SerializeField]
+    private GameObject reflexive = null;
+    [SerializeField]
+    private GameObject triangle = null;
+    [SerializeField]
+    private GameObject laserFinal = null;
+    [SerializeField]
     public GameObject LaserObject = null;
 
     Vector3 positionLaser;
@@ -32,6 +37,7 @@ public class LaserRay : MonoBehaviour
         GameManager.OnGameStateChanged += HandleGameStateChanged;
         positionLaser = LaserObject.transform.position;
         inputLine = LaserObject.GetComponentInChildren<LineRenderer>();
+
     }
 
     private void OnDisable()
@@ -169,7 +175,14 @@ public class LaserRay : MonoBehaviour
 
         if (cubeColor != null)
         {
-            rotationSpeed = 15;
+            if (RotationSpeed())
+            {
+                rotationSpeed = 5;
+            }
+            else
+            {
+                rotationSpeed = -5;
+            }
             cubeColor.GetComponentInParent<CubeColors>().RecivedColors(_mat, true, _name);
         }
         laserReset("Color");                
@@ -189,7 +202,14 @@ public class LaserRay : MonoBehaviour
 
         if (triangle != null)
         {
-            rotationSpeed = 15;
+            if (RotationSpeed())
+            {
+                rotationSpeed = 5;
+            }
+            else
+            {
+                rotationSpeed = -5;
+            }
             triangle.GetComponentInParent<TriangleScript>().CheckPlane(_position, _name, true, _mat, this.gameObject);
         }
         laserReset("Divide");
@@ -206,9 +226,6 @@ public class LaserRay : MonoBehaviour
 
         laserReset("all");
 
-
-
-
     }
     void LaserFinal()
     {
@@ -223,7 +240,14 @@ public class LaserRay : MonoBehaviour
 
         if (laserFinal != null)
         {
-            rotationSpeed = 15;
+            if (RotationSpeed())
+            {
+                rotationSpeed = 5;
+            }
+            else
+            {
+                rotationSpeed = -5;
+            }
             laserFinal.GetComponent<CheckLaser>().ReceivedLaser(true, inputLine.material);
         }
         laserReset("Final");
