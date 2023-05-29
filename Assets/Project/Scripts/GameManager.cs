@@ -36,7 +36,7 @@ public class GameManager : MonoBehaviour
 
     public static event Action<GameState> OnGameStateChanged;
 
-    private GameState state = GameState.Playing;
+    private GameState state;
 
     bool lvlCompleted = true;
 
@@ -67,12 +67,7 @@ public class GameManager : MonoBehaviour
 
     void Awake()
     {
-        DontDestroyOnLoad(this.gameObject);
-
-        _instance = this.gameObject;
-
-        sceneManager = GameObject.FindObjectOfType<sceneManager>();
-
+        sceneManager = GetComponentInChildren<sceneManager>();
         GameManager[] gameManagers = FindObjectsOfType<GameManager>();
         if (gameManagers.Length > 1)
         {
@@ -82,10 +77,15 @@ public class GameManager : MonoBehaviour
                 Destroy(gameManagers[i].gameObject);
             }
         }
-
     }
     void Start() 
     {
+        sceneManager = GetComponentInChildren<sceneManager>();
+
+        state = GameState.Playing;
+
+        DontDestroyOnLoad(this.gameObject);
+
         _instance = this.gameObject;       
     }
 
@@ -95,9 +95,6 @@ public class GameManager : MonoBehaviour
         get { return state; }
         set
         {
-            Debug.Log("value " + value);
-            Debug.Log("State " + state);
-
             if (state != value)
             {
                 //Switch es com una argupacion de IFs uitilizando una variable comun, en este caso cogemos los valores de GameState(Playing,Lasers,Settings,Menu)
@@ -113,14 +110,11 @@ public class GameManager : MonoBehaviour
                     case GameState.Playing:
                         HandlePlaying();
                         state = value;
-                        Debug.Log("State " + state);
-
                         break;
 
                     case GameState.Lasers:
-                        if (state == GameState.Playing)
+                        if (State == GameState.Playing)
                         {
-                            state = value;
                             HandlePlayerLasers();
                         }
                         state = value;
