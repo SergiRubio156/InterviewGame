@@ -24,10 +24,14 @@ public class MenuManager : MonoBehaviour
         {
             case GameState.Playing:
                 settingsMenu.SetActive(false);
-                WireMenu.SetActive(false);
+                WireMenu = GameObject.FindGameObjectWithTag("WirePanel");
+                if (WireMenu != null)
+                    WireMenu.SetActive(false);
                 break;
             case GameState.Lasers:
                 settingsMenu.SetActive(false);
+                Cursor.visible = true;
+                Cursor.lockState = CursorLockMode.None;
                 break;
             case GameState.Settings:
                 settingsMenu.SetActive(true);

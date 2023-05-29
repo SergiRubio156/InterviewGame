@@ -183,7 +183,7 @@ GameObject:
   - component: {fileID: 9043597374409782594}
   m_Layer: 8
   m_Name: 2
-  m_TagString: Untagged
+  m_TagString: Interactable
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -267,8 +267,8 @@ BoxCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 0.74468046, y: 1.2954478, z: 0}
-  m_Center: {x: 0.021271762, y: 0.034365732, z: -0.010822804}
+  m_Size: {x: 0.7811634, y: 1.295448, z: 0}
+  m_Center: {x: 0.03951322, y: 0.034365725, z: -0.010822785}
 --- !u!120 &7468609868317829141
 LineRenderer:
   m_ObjectHideFlags: 0
@@ -395,7 +395,6 @@ GameObject:
   - component: {fileID: 6986440721413075404}
   - component: {fileID: 3122608383988917598}
   - component: {fileID: 8008177981595159286}
-  - component: {fileID: 42519511}
   m_Layer: 0
   m_Name: prisma 2
   m_TagString: Interactable
@@ -466,19 +465,6 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 126
   m_CollisionDetection: 0
---- !u!65 &42519511
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7763927025459800950}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 1.1763307, y: 0.28545776, z: 1.0236571}
-  m_Center: {x: 0.08816465, y: 1.7924054, z: 0.01182848}
 --- !u!1 &8013613644318435247
 GameObject:
   m_ObjectHideFlags: 0
@@ -494,7 +480,7 @@ GameObject:
   - component: {fileID: 8968792889056067559}
   m_Layer: 8
   m_Name: 3
-  m_TagString: Untagged
+  m_TagString: Interactable
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -578,8 +564,8 @@ BoxCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 0.74468046, y: 1.2954478, z: 0}
-  m_Center: {x: 0.021271762, y: 0.034365732, z: -0.010822804}
+  m_Size: {x: 0.76364684, y: 1.295448, z: 0}
+  m_Center: {x: 0.021772383, y: 0.034365725, z: -0.010822803}
 --- !u!120 &1029688807468106031
 LineRenderer:
   m_ObjectHideFlags: 0
@@ -710,7 +696,7 @@ GameObject:
   - component: {fileID: 8662543695946671880}
   m_Layer: 8
   m_Name: 1
-  m_TagString: Untagged
+  m_TagString: Interactable
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -794,8 +780,8 @@ BoxCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 0.74468046, y: 1.2954478, z: 0}
-  m_Center: {x: 0.021271762, y: 0.034365732, z: -0.010822804}
+  m_Size: {x: 0.82511115, y: 1.295448, z: 0}
+  m_Center: {x: 0.02473324, y: 0.034365725, z: -0.010822815}
 --- !u!120 &2480942420923978978
 LineRenderer:
   m_ObjectHideFlags: 0
