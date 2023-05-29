@@ -11,8 +11,8 @@ GameObject:
   - component: {fileID: 7302027072938952261}
   - component: {fileID: 7302027072938952263}
   - component: {fileID: 7302027072938952262}
-  - component: {fileID: 6662890843108171844}
   - component: {fileID: 4813039238209929396}
+  - component: {fileID: 285508789625454163}
   m_Layer: 0
   m_Name: teleport
   m_TagString: Door
@@ -85,24 +85,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!114 &6662890843108171844
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7302027072938952260}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 52ed6bc0346cf454280a16e411e5a45d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  characterController: {fileID: 0}
-  teleportKey: 114
-  teleportPoint: {fileID: 0}
-  originalPoint: {fileID: 0}
-  animator: {fileID: 0}
-  destination: {x: 0, y: 0, z: 0}
 --- !u!64 &4813039238209929396
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -117,3 +99,16 @@ MeshCollider:
   m_Convex: 0
   m_CookingOptions: 30
   m_Mesh: {fileID: -951608786083511892, guid: a071431e7050f0245baee159aecbe2f8, type: 3}
+--- !u!114 &285508789625454163
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7302027072938952260}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a4aa147e8086c0245a55ee6423411e1d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  "pesta\xF1a": {fileID: 0}
