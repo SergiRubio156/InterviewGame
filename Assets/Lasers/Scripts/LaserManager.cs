@@ -11,8 +11,8 @@ public class LaserManager : MonoBehaviour
     public Transform objectSun;
 
     //Raycast
-    float maxRayDistance = 100.0f;
-
+    RaycastHit hit;
+    Vector3 curScreenPoint;
     //Mouse
     bool sceneSettings;
     Vector3 worldPosition;
@@ -30,35 +30,53 @@ public class LaserManager : MonoBehaviour
     public bool isPlaying = true;
     float positionIntial = 0f;
 
-    void Awake()
+    void OnEnable()
     {
-        GameManager.OnGameStateChanged += GameManager_OnGameStateChanged;   //Esto es el evento del script GameManager
+        GameManager.OnGameStateChanged += HandleGameStateChanged;   //Esto es el evento del script GameManager
         mainCamera = Camera.main;
                 //controls = new StarterAssetsInputs();
     }
 
     private void OnDestroy()
     {
-        GameManager.OnGameStateChanged -= GameManager_OnGameStateChanged;   //La funcion "OnDestroy" se activa cuando destruimos el objeto, una vez destruido se activa el evento,
+        GameManager.OnGameStateChanged -= HandleGameStateChanged;   //La funcion "OnDestroy" se activa cuando destruimos el objeto, una vez destruido se activa el evento,
     }
     private void Start()
     {
         objectSelect = false;
     }
 
-    void GameManager_OnGameStateChanged(GameState state)        //Esta funcion depende del Awake del evento, Como he explicado antes nso permite comparar entre Script y GameObjects
+    private void HandleGameStateChanged(GameState newState)        //Esta funcion depende del Awake del evento, Como he explicado antes nso permite comparar entre Script y GameObjects
     {
-        if (state == GameState.Settings || state == GameState.Lasers)
+
+        switch (newState)
         {
-            Cursor.visible = true;
-            Cursor.lockState = CursorLockMode.None;
+            case GameState.Playing:
+                break;
+            case GameState.Lasers:
+                sceneSettings = false;
+                isPlaying = true;
+                Cursor.visible = true;
+                Cursor.lockState = CursorLockMode.None;
+                break;
+            case GameState.Settings:
+                sceneSettings = true;
+                isPlaying = false;
+                Cursor.visible = true;
+                Cursor.lockState = CursorLockMode.None;
+                break;
+            case GameState.Menu:
+                break;
+            case GameState.Wire:
+                break;
+            case GameState.Exit:
+                // Acciones a realizar cuando el estado de juego es "Exit"
+                break;
         }
-        sceneSettings = (state == GameState.Settings);
-        isPlaying = (state != GameState.Lasers);
     }
 
 
-    // Update is called once per frame
+
     void Update()
     {
         LayerPlane = 1 << 13;
@@ -68,7 +86,7 @@ public class LaserManager : MonoBehaviour
             if (sceneSettings) GameManager.Instance.State = GameState.Lasers;
             else GameManager.Instance.State = GameState.Settings;
         }
-        if (!isPlaying)
+        if (isPlaying)
         {
             CheckGround();
         }
@@ -77,13 +95,9 @@ public class LaserManager : MonoBehaviour
 
     void CheckGround()
     {
-        RaycastHit hit;
         Ray ray = mainCamera.ScreenPointToRay(Input.mousePosition);
         if (Physics.Raycast(ray, out hit, Mathf.Infinity, LayerPlane))
         {
-            
-            Vector3 curScreenPoint = new Vector3(hit.point.x, hit.point.y, hit.point.z);
-            transform.position = curScreenPoint;
 
             if (Input.GetMouseButtonDown(0))
                 RayObject();
@@ -94,8 +108,9 @@ public class LaserManager : MonoBehaviour
                 {
                     if (positionIntial >= ObjectMove.transform.position.y)
                     {
-                        Vector3 newPosition2 = new Vector3(hit.point.x, positionIntial, hit.point.z) - ObjectMove.transform.position;
-                        ObjectMove.GetComponent<Rigidbody>().velocity = newPosition2 * velocity;
+                        Vector3 newPosition = new Vector3(hit.point.x, positionIntial, hit.point.z);
+                        Vector3 velocitys = (newPosition - ObjectMove.transform.position) * velocity;
+                        ObjectMove.GetComponent<Rigidbody>().velocity = velocitys;
                         currentRotation = ObjectMove.transform.rotation;
                     }
                 }
@@ -114,46 +129,62 @@ public class LaserManager : MonoBehaviour
         if (Input.GetKey(KeyCode.E))
         {
             targetQuaternion = Quaternion.Euler(0, targetRotation, 0) * currentRotation;
-            Quaternion newRotation = Quaternion.Lerp(currentRotation, targetQuaternion, Time.deltaTime * rotationSpeed);
-            if (ObjectMove != null)
-                ObjectMove.transform.rotation = newRotation;
-            else if (objectSun != null)
-                objectSun.rotation = newRotation;
+            ApplyRotation(targetQuaternion);
         }
         if (Input.GetKey(KeyCode.Q))
         {
             targetQuaternion = Quaternion.Euler(0, -targetRotation, 0) * currentRotation;
-            Quaternion newRotation = Quaternion.Lerp(currentRotation, targetQuaternion, Time.deltaTime * rotationSpeed);
-            if (ObjectMove != null)
-                ObjectMove.transform.rotation = newRotation;
-            else if (objectSun != null)
-                objectSun.rotation = newRotation;
+            ApplyRotation(targetQuaternion);
         }
     }
 
+    void ApplyRotation(Quaternion targetRotation)
+    {
+        Quaternion newRotation = Quaternion.Slerp(currentRotation, targetRotation, rotationSpeed * Time.deltaTime);
+
+        if (objectSun != null)
+            objectSun.rotation = newRotation;
+        else if (ObjectMove != null)
+            ObjectMove.transform.rotation = newRotation;
+    }
     void RayObject()
     {
-                
+
         RaycastHit hit;
         Ray ray = mainCamera.ScreenPointToRay(Input.mousePosition);
-        if (Physics.Raycast(ray, out hit, maxRayDistance) && !objectSelect)
+        if (Physics.Raycast(ray, out hit, Mathf.Infinity) && !objectSelect)
         {
-            Debug.Log(hit.collider.name);
             if (hit.collider.CompareTag("Interactable"))
             {
+                // Ajuste de la posición del rayo del mouse
+                Vector3 objectToHit = hit.point - hit.collider.gameObject.transform.position;
+                ray = new Ray(hit.collider.gameObject.transform.position, objectToHit.normalized);
+            }
+        }
+        if (Physics.Raycast(ray, out hit, Mathf.Infinity) && !objectSelect)
+        {
+            if (hit.collider.CompareTag("Interactable"))
+            {
+
                 if (hit.collider.gameObject.layer == 7)
                 {
                     objectSun = hit.collider.transform.Find("LaserSun");
                 }
-                else
+                else if (hit.collider.gameObject.layer == 8)
+                {
+                    ObjectMove = hit.collider.transform.parent.gameObject;
+                }
+                else if (hit.collider.gameObject.layer == 9)
+                {
+                    ObjectMove = hit.collider.transform.parent.gameObject;
+                }
+                else 
                 {
                     ObjectMove = hit.collider.gameObject;
-                    positionIntial = ObjectMove.transform.position.y;
-
                 }
-                rb = hit.collider.gameObject.GetComponent<Rigidbody>();
+                positionIntial = ObjectMove.transform.position.y;
+                rb = ObjectMove.GetComponent<Rigidbody>();
                 rb.constraints = RigidbodyConstraints.None | RigidbodyConstraints.FreezeRotation;
-                //rb.drag = 9.9f;
                 objectSelect = true;
             }
         }

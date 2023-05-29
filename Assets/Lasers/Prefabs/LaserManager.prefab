@@ -47,10 +47,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   mainCamera: {fileID: 0}
   ObjectMove: {fileID: 0}
+  objectSun: {fileID: 0}
   velocity: 10
   rotationSpeed: 1
   targetRotation: 45
-  isPlaying: 0
+  isPlaying: 1
 --- !u!65 &7557379515390727433
 BoxCollider:
   m_ObjectHideFlags: 0
