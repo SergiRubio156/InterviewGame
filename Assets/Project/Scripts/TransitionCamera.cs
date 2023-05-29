@@ -13,14 +13,8 @@ public class TransitionCamera : MonoBehaviour
     public float transitionTimeSpawn = 3f;
 
     public bool lvlComplete = false;
-    public int doorInt;
 
-    //ANIMATION
-    [SerializeField]
     Animator doorAnimator;
-    public float durationAnimator;
-    public AudioSource audioSource;
-    public AudioClip audioClip;
 
     void Awake()
     {
@@ -36,12 +30,11 @@ public class TransitionCamera : MonoBehaviour
     {
         cam2 = GetComponentInChildren<CinemachineVirtualCamera>();
         doorAnimator = GetComponentInParent<Animator>();
-        audioSource = GetComponentInParent<AudioSource>();
     }
 
     void CheckDoor()
     {
-        lvlComplete = GameManager.Instance.OpenDoor(doorInt);
+
     }
 
     public void transitionScene(string _name)
@@ -51,42 +44,21 @@ public class TransitionCamera : MonoBehaviour
             cam1.enabled = false;
             cam2.enabled = true;
 
+            lvlComplete = true;
 
             if (_name == "Door")
                 StartCoroutine(WaitDoor());
         }
-        else
-        {
-            
-        }
+    }
+    public void returntransitionScene()
+    {
+        cam2.enabled = false;
+        cam1.enabled = true;
+
     }
     IEnumerator WaitDoor()
     {
         yield return new WaitForSeconds(transitionTimeDoor);
         GameManager.Instance.State = GameState.Lasers;
-    }
-
-    private void OnTriggerEnter(Collider other)
-    {
-        if (lvlComplete)
-        {
-            if (other.gameObject.CompareTag("Player"))
-            {
-                audioSource.Play();
-                doorAnimator.SetBool("Open", true);
-            }
-        }
-    }
-
-    private void OnTriggerExit(Collider other)
-    {
-        if (lvlComplete)
-        {
-            if (other.gameObject.CompareTag("Player"))
-            {
-                audioSource.Play();
-                doorAnimator.SetBool("Close", true);
-            }
-        }
     }
 }

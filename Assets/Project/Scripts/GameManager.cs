@@ -28,18 +28,17 @@ public class GameManager : MonoBehaviour
 
     public static GameObject _instance;
 
-    [SerializeField]
-    private sceneManager sceneManager;
+    public sceneManager sceneManager;
 
-    [SerializeField]
-    private List<string> levelLaser = new List<string>() { "NIVEL 1", "NIVEL 2", "NIVEL 3", "NIVEL 4", "NIVEL 5", "NIVEL 6", "NIVEL 7", "NIVEL 8", "NIVEL 9"};
-    [SerializeField]
-    private List<bool> lvlBool = new List<bool>() {false,false,false,false,false,false,false,false,false};
+    
+    public List<string> levelLaser = new List<string>() { "NIVEL 1", "NIVEL 2", "NIVEL 3", "NIVEL 4", "NIVEL 5", "NIVEL 6", "NIVEL 7", "NIVEL 8", "NIVEL 9"};
+
 
     public static event Action<GameState> OnGameStateChanged;
 
-    [SerializeField]
     private GameState state = GameState.Playing;
+
+    bool lvlCompleted = true;
 
     int  nameLevel = -1;
 
@@ -180,42 +179,13 @@ public class GameManager : MonoBehaviour
         sceneManager.ChangeScene("Pruebas2");
     }
 
-    public void LvlCompleted(string _name)
+    public void LvlCompleted()
     {
-        switch(_name)
-        {
-            case "NIVEL 1":
-                lvlBool[0] = true; 
-                break;
-            case "NIVEL 2":
-                lvlBool[1] = true;
-                break;
-            case "NIVEL 3":
-                lvlBool[2] = true;
-                break;
-            case "NIVEL 4":
-                lvlBool[3] = true;
-                break;
-            case "NIVEL 5":
-                lvlBool[4] = true;
-                break;
-            case "NIVEL 6":
-                lvlBool[5] = true;
-                break;
-            case "NIVEL 7":
-                lvlBool[6] = true;
-                break;
-            case "NIVEL 8":
-                lvlBool[7] = true;
-                break;
-            case "NIVEL 9":
-                lvlBool[8] = true;
-                break;
-        }
+        lvlCompleted = true;
     }
-    public bool OpenDoor(int _int)
+    public bool OpenDoor()
     {
-        if (lvlBool[_int])
+        if (lvlCompleted)
         {
             return true;
         }
