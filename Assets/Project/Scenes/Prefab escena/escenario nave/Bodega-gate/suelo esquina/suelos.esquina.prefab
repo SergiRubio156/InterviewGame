@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 6906515584940298958}
   - component: {fileID: 7527490526096907627}
   - component: {fileID: 5734194522994190753}
+  - component: {fileID: 7311370436916609267}
   - component: {fileID: 3774075841024939230}
   m_Layer: 0
   m_Name: suelos.esquina
@@ -84,6 +85,20 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!64 &7311370436916609267
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6094232285410789492}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 4
+  m_Convex: 1
+  m_CookingOptions: 30
+  m_Mesh: {fileID: 509655495917776254, guid: c4cf98fa5290d7144a5b9283a4500885, type: 3}
 --- !u!64 &3774075841024939230
 MeshCollider:
   m_ObjectHideFlags: 0

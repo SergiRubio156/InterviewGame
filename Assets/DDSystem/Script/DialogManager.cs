@@ -45,20 +45,18 @@ namespace Doublsb.Dialog
             EndButton.interactable = false;
         }
 
-        private void Update()
+        public void Click_Window()
         {
-            if (Input.GetKeyDown(KeyCode.P))
+            switch (state)
             {
-                if (state == State.Active)
-                {
-                    StopCoroutine(_textingRoutine);
-                    Printer_Text.text = _current_Data.PrintText + _current_Data.Format.CloseTagger;
-                }
-                else if (state == State.Wait)
-                {
+                case State.Active:
+                    StartCoroutine(_skip());
+                    break;
+
+                case State.Wait:
                     if (_current_Data.SelectList.Count <= 0)
                         Hide();
-                }
+                    break;
             }
         }
 

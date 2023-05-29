@@ -11,7 +11,6 @@ GameObject:
   - component: {fileID: 2198566638927663427}
   - component: {fileID: 2967092742129311462}
   - component: {fileID: 1065607538265893420}
-  - component: {fileID: 225028601995595782}
   m_Layer: 0
   m_Name: soporte puerta
   m_TagString: Untagged
@@ -26,14 +25,14 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1569838829903186937}
-  m_LocalRotation: {x: -0.7069834, y: 0, z: 0, w: 0.7072302}
+  m_LocalRotation: {x: -0.7071068, y: 0, z: -0, w: 0.7071067}
   m_LocalPosition: {x: -5.096555, y: -0.5239379, z: 1.136869}
-  m_LocalScale: {x: 50.643867, y: 95.72241, z: 95.72243}
+  m_LocalScale: {x: 100, y: 100, z: 100}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: -89.98, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!33 &2967092742129311462
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -84,16 +83,3 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!65 &225028601995595782
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1569838829903186937}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 0.006399744, y: 0.002682332, z: 0.013622415}
-  m_Center: {x: 0.011419841, y: 0.061608277, z: 0.003664765}

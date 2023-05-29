@@ -7,15 +7,12 @@ using UnityEngine.SceneManagement;
 
 public class TransitionCamera : MonoBehaviour
 {
-    public CinemachineVirtualCamera cam1;
-    public CinemachineVirtualCamera cam2;
-    public float transitionTimeDoor = 0.5f;
+    public GameObject cam1;
+    public GameObject cam2;
+    public float transitionTimeDoor = 1f;
     public float transitionTimeSpawn = 3f;
 
-    public bool lvlComplete = false;
-
-    Animator doorAnimator;
-
+    OutLineObject outLineObject;
     void Awake()
     {
         GameManager.OnGameStateChanged += GameManager_OnGameStateChanged; //Esto es el evento del script GameManager
@@ -28,32 +25,22 @@ public class TransitionCamera : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        cam2 = GetComponentInChildren<CinemachineVirtualCamera>();
-        doorAnimator = GetComponentInParent<Animator>();
-    }
-
-    void CheckDoor()
-    {
-
+        cam2 = GetComponentInChildren<GameObject>().gameObject;
     }
 
     public void transitionScene(string _name)
     {
-        if (!lvlComplete)
-        {
-            cam1.enabled = false;
-            cam2.enabled = true;
+        cam1.SetActive(false);
+        cam2.SetActive(true);
 
-            lvlComplete = true;
-
-            if (_name == "Door")
-                StartCoroutine(WaitDoor());
-        }
+        Debug.Log("!");
+        if(_name == "Door")
+            StartCoroutine(WaitDoor());
     }
     public void returntransitionScene()
     {
-        cam2.enabled = false;
-        cam1.enabled = true;
+        cam2.SetActive(false);
+        cam1.SetActive(true);
 
     }
     IEnumerator WaitDoor()
