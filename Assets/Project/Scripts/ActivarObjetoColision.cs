@@ -1,59 +1,74 @@
 using UnityEngine;
+using UnityEngine.UI;
 
 public class ActivarObjetoColision : MonoBehaviour
 {
-    public CharacterController characterController; // Referencia al CharacterController del jugador
-    public KeyCode teleportKey = KeyCode.R; // Tecla para activar el teletransportador
-    public Transform teleportPoint; // Punto de teletransportación
-    public Transform originalPoint; // Punto original de regreso
-    public Animator animator; // Referencia al componente Animator para reproducir la animación
-    public Vector3 destination;
-    private bool myTeleported;
+    public GameObject objetoActivar;
+    public GameObject referencia;
+    public string jugadorTag;
 
-    private bool teleported = false; // Variable para controlar si el jugador se ha teletransportado
+    private Vector3 posicionInicial;
 
-    private void Start()
+    public Button botonTeletransporte;
+
+    private bool jugadorTeletransportado;
+
+    private void OnCollisionEnter(Collision collision)
     {
-        animator = GameObject.Find("PanelAnimator").GetComponent<Animator>();
-        myTeleported = false;
-    }
-
-    private void Update()
-    {
-        if (Input.GetKeyDown(teleportKey))
+        if (collision.collider.CompareTag(jugadorTag))
         {
-            if (!teleported)
-            {
-                //TeleportToDestination(teleportPoint.position); // Teletransporta al jugador al punto de teletransportación
-                destination = teleportPoint.position;
-                teleported = true; // Marca el jugador como teletransportado
-                if (animator != null)
-                {
-                    animator.Play("teleport"); // Activa la animación asignada al activador
-                }
-            }
-            else
-            {
-                //TeleportToDestination(originalPoint.position); // Teletransporta al jugador al punto original
-                destination = originalPoint.position;
-                teleported = false; // Marca el jugador como no teletransportado
-                if (animator != null)
-                {
-                    animator.Play("teleport"); // Activa la animación asignada al activador
-                }
-            }
+            objetoActivar.SetActive(true);
         }
     }
 
-    public void TeleportToDestination()
+    private void Start()
     {
-        characterController.enabled = false; // Deshabilita el CharacterController para evitar movimientos durante el teletransporte
-        characterController.transform.position = destination; // Establece la posición del jugador al destino
-        characterController.transform.rotation = Quaternion.identity; // Reinicia la rotación del jugador
-        characterController.enabled = true; // Habilita nuevamente el CharacterController
+        GameObject jugador = GameObject.FindGameObjectWithTag(jugadorTag);
+        if (jugador != null)
+        {
+            posicionInicial = jugador.transform.position;
+            jugadorTeletransportado = false;
+        }
+        else
+        {
+            Debug.LogError("No se encontró un objeto con la etiqueta de jugador: " + jugadorTag);
+        }
+
+        if (botonTeletransporte != null)
+        {
+            botonTeletransporte.onClick.AddListener(ResetearJugador);
+        }
+        else
+        {
+            Debug.LogError("No se asignó un botón de teletransporte en el script ActivarObjetoColision.");
+        }
     }
-    public void ChangeTeleportedValue()
+
+    public void MoverAJugador()
     {
-        myTeleported = !myTeleported;
+        GameObject jugador = GameObject.FindGameObjectWithTag(jugadorTag);
+        if (jugador != null)
+        {
+            jugador.transform.position = referencia.transform.position;
+            jugadorTeletransportado = true;
+        }
+        else
+        {
+            Debug.LogError("No se encontró un objeto con la etiqueta de jugador: " + jugadorTag);
+        }
+    }
+
+    public void ResetearJugador()
+    {
+        GameObject jugador = GameObject.FindGameObjectWithTag(jugadorTag);
+        if (jugador != null)
+        {
+            jugador.transform.position = posicionInicial;
+            jugadorTeletransportado = false;
+        }
+        else
+        {
+            Debug.LogError("No se encontró un objeto con la etiqueta de jugador: " + jugadorTag);
+        }
     }
 }
