@@ -5,22 +5,25 @@ using Unity.Mathematics;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
+
 public class TransitionCamera : MonoBehaviour
 {
     public CinemachineVirtualCamera cam1;
     public CinemachineVirtualCamera cam2;
     public float transitionTimeDoor = 0.5f;
-    public float transitionTimeSpawn = 3f;
 
     public bool lvlComplete = false;
 
-    Animator doorAnimator;
-
+    [SerializeField]
+    private string nameDoor;
+  
     void Awake()
     {
         GameManager.OnGameStateChanged += GameManager_OnGameStateChanged; //Esto es el evento del script GameManager
+        nameDoor = transform.parent.gameObject.name;
+        CheckDoor();
     }
-    private void GameManager_OnGameStateChanged(GameState state)  
+    private void GameManager_OnGameStateChanged(GameState state)
     {
 
     }
@@ -29,12 +32,11 @@ public class TransitionCamera : MonoBehaviour
     void Start()
     {
         cam2 = GetComponentInChildren<CinemachineVirtualCamera>();
-        doorAnimator = GetComponentInParent<Animator>();
     }
 
     void CheckDoor()
     {
-
+        lvlComplete = GameManager.Instance.OpenDoor(nameDoor);
     }
 
     public void transitionScene(string _name)
@@ -44,16 +46,13 @@ public class TransitionCamera : MonoBehaviour
             cam1.enabled = false;
             cam2.enabled = true;
 
-            lvlComplete = true;
 
             if (_name == "Door")
+            {
+                CheckDoor();
                 StartCoroutine(WaitDoor());
+            }
         }
-    }
-    public void returntransitionScene()
-    {
-        cam2.enabled = false;
-        cam1.enabled = true;
 
     }
     IEnumerator WaitDoor()
@@ -61,4 +60,6 @@ public class TransitionCamera : MonoBehaviour
         yield return new WaitForSeconds(transitionTimeDoor);
         GameManager.Instance.State = GameState.Lasers;
     }
+
+
 }
