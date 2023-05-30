@@ -27,6 +27,9 @@ namespace Doublsb.Dialog
         private Coroutine _printingRoutine;
         private State state;
         private string Result;
+        private bool instantPrint = false;
+        private bool isPrinting = false;
+
 
         public void Show(DialogData Data)
         {
@@ -49,10 +52,13 @@ namespace Doublsb.Dialog
         {
             if (Input.GetKeyDown(KeyCode.P))
             {
-                if (state == State.Active)
+                instantPrint = !instantPrint;
+
+                if (state == State.Active && !instantPrint && isPrinting)
                 {
-                    StopCoroutine(_textingRoutine);
-                    Printer_Text.text = _current_Data.PrintText + _current_Data.Format.CloseTagger;
+                    // Si instantPrint es false y se estaba imprimiendo texto,
+                    // establece isPrinting en false para que el texto se imprima de uno en uno.
+                    isPrinting = false;
                 }
                 else if (state == State.Wait)
                 {
@@ -60,7 +66,9 @@ namespace Doublsb.Dialog
                         Hide();
                 }
             }
+
         }
+
 
         public void Hide()
         {
@@ -87,8 +95,6 @@ namespace Doublsb.Dialog
                 EndButton.interactable = true;
             }
         }
-
-
 
         public void Select(int index)
         {
@@ -275,7 +281,7 @@ namespace Doublsb.Dialog
             {
                 yield return null;
             }
-            _currentDelay = _lastDelay;
+            _lastDelay = _currentDelay;
         }
 
         private IEnumerator _print(string Text)
@@ -291,11 +297,12 @@ namespace Doublsb.Dialog
                 {
                     Play_ChatSE();
                 }
-                if (_currentDelay != 0)
+                if (!instantPrint && _currentDelay != 0)
                 {
                     yield return new WaitForSeconds(_currentDelay);
                 }
             }
+
 
             _current_Data.PrintText += _current_Data.Format.CloseTagger;
         }
