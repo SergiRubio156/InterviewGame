@@ -9,6 +9,7 @@ public class FinalCheck : MonoBehaviour
     public bool[] CheckBool;
 
     public GameObject panelVictory;
+    private sceneManager sceneManager;
 
     // Start is called before the first frame update
     void Awake()
@@ -16,6 +17,7 @@ public class FinalCheck : MonoBehaviour
         FinalLaser = GameObject.FindGameObjectsWithTag("LaserFinal");
         CheckBool = new bool[FinalLaser.Length];
         GameManager.OnGameStateChanged += GameManager_OnGameStateChanged;   //Esto es el evento del script GameManager
+        sceneManager = GameObject.FindObjectOfType<sceneManager>();
 
     }
 
@@ -26,21 +28,21 @@ public class FinalCheck : MonoBehaviour
     }
     void GameManager_OnGameStateChanged(GameState state)        //Esta funcion depende del Awake del evento, Como he explicado antes nso permite comparar entre Script y GameObjects
     {
-        
+
     }
 
-        public void CheckList(bool _bool, string _name)
+    public void CheckList(bool _bool, string _name)
     {
-        for(int i = 0; i < FinalLaser.Length; i++)
+        for (int i = 0; i < FinalLaser.Length; i++)
         {
-            if(FinalLaser[i].name == _name)
+            if (FinalLaser[i].name == _name)
             {
                 CheckBool[i] = _bool;
                 if (CheckBools())
                 {
                     Victory();
                 }
-                    
+
             }
 
         }
@@ -59,13 +61,13 @@ public class FinalCheck : MonoBehaviour
     void Victory()
     {
         panelVictory.SetActive(true);
+        GameManager.Instance.LvlCompleted(sceneManager.GetCurrentSceneName());
         StartCoroutine(Wait());
     }
 
     IEnumerator Wait()
     {
         yield return new WaitForSeconds(1f);
-        GameManager.Instance.LvlCompleted();
         GameManager.Instance.State = GameState.Playing;
 
     }

@@ -20,28 +20,32 @@ public enum GameState
 
 
 };
-
-
+[Serializable]
 public class GameManager : MonoBehaviour
 {
-    private  static GameManager instance;
+    private static GameManager instance;
 
     public static GameObject _instance;
 
-    public sceneManager sceneManager;
+    [SerializeField]
+    private sceneManager sceneManager;
 
-    
-    public List<string> levelLaser = new List<string>() { "NIVEL 1", "NIVEL 2", "NIVEL 3", "NIVEL 4", "NIVEL 5", "NIVEL 6", "NIVEL 7", "NIVEL 8", "NIVEL 9"};
+    [SerializeField]
+    private List<string> levelLaser = new List<string>() { "NIVEL 1", "NIVEL 2", "NIVEL 3", "NIVEL 4", "NIVEL 5", "NIVEL 6", "NIVEL 7", "NIVEL 8", "NIVEL 9" };
 
+    [SerializeField]
+    private List<string> doorObjects = new List<string>();
+
+    public GameManagerData gameManagerData;
 
     public static event Action<GameState> OnGameStateChanged;
 
-    private GameState state = GameState.Playing;
+    string[] gameObjects;
 
-    bool lvlCompleted = true;
+    private GameState state;
 
-    int  nameLevel = -1;
-
+    int nameLevel = 0;
+    bool doorFindComplete = false;
     public static GameManager Instance
     {
         get
@@ -67,11 +71,15 @@ public class GameManager : MonoBehaviour
 
     void Awake()
     {
+        Debug.Log("!");
+        state = GameState.Playing;
+
         DontDestroyOnLoad(this.gameObject);
 
         _instance = this.gameObject;
 
-        sceneManager = GameObject.FindObjectOfType<sceneManager>();
+        if (sceneManager == null)
+            sceneManager = GameObject.FindObjectOfType<sceneManager>();
 
         GameManager[] gameManagers = FindObjectsOfType<GameManager>();
         if (gameManagers.Length > 1)
@@ -84,9 +92,10 @@ public class GameManager : MonoBehaviour
         }
 
     }
-    void Start() 
+    private void Start()
     {
-        _instance = this.gameObject;       
+        //doorObjects = gameManagerData.objectList;
+        _instance = this.gameObject;
     }
 
 
@@ -95,8 +104,8 @@ public class GameManager : MonoBehaviour
         get { return state; }
         set
         {
-            Debug.Log("value " + value);
-            Debug.Log("State " + state);
+            if (sceneManager == null)
+                sceneManager = GameObject.FindObjectOfType<sceneManager>();
 
             if (state != value)
             {
@@ -112,15 +121,13 @@ public class GameManager : MonoBehaviour
 
                     case GameState.Playing:
                         HandlePlaying();
-                        state = value;
                         Debug.Log("State " + state);
-
+                        state = value;
                         break;
 
                     case GameState.Lasers:
                         if (state == GameState.Playing)
                         {
-                            state = value;
                             HandlePlayerLasers();
                         }
                         state = value;
@@ -142,6 +149,7 @@ public class GameManager : MonoBehaviour
                     default: //se entrara aqui si el valor "newState" no coincide con ningun valor anterior
                         throw new ArgumentOutOfRangeException(nameof(value), value, null);//pone el valor "newState" a null para que no pete el programa.
                 }
+
             }
             OnGameStateChanged?.Invoke(state);//Esta linia comprueba si el estado ha cambiado y si es true entonces va a todos los scripts y cambia el estado.
         }
@@ -155,8 +163,6 @@ public class GameManager : MonoBehaviour
 
     private string NameLevel()
     {
-        nameLevel++;
-        Debug.Log(nameLevel);
         return levelLaser[nameLevel];
     }
     private void HandlePlayerLasers()//string _name)
@@ -171,7 +177,7 @@ public class GameManager : MonoBehaviour
 
     private void HandleSettings()
     {
-        
+
     }
 
     private void HandlePlaying()
@@ -179,16 +185,45 @@ public class GameManager : MonoBehaviour
         sceneManager.ChangeScene("Pruebas2");
     }
 
-    public void LvlCompleted()
+    void DoorFind()
     {
-        lvlCompleted = true;
-    }
-    public bool OpenDoor()
-    {
-        if (lvlCompleted)
+        GameObject[] gameObjects = GameObject.FindGameObjectsWithTag("FinalDoor");
+
+        foreach (GameObject obj in gameObjects)
         {
-            return true;
+            doorObjects.Add(obj.name);
         }
+
+        gameManagerData.objectList = new List<string>(doorObjects);
+
+        doorFindComplete = true;
+    }
+
+    public void LvlCompleted(string _name)
+    {
+        foreach (string elemento in levelLaser)
+        {
+            if (elemento == _name)
+            {
+                levelLaser.Remove(elemento);
+                break;
+            }
+        }
+    }
+
+    public bool OpenDoor(string _name)
+    {
+
+        foreach (string elemento in doorObjects)
+        {
+            if (elemento == _name)
+            {
+                return true;
+            }
+        }
+
+        if (levelLaser[0] == "NIVEL 1" && !doorFindComplete)
+            DoorFind();
         return false;
     }
 
