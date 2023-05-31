@@ -71,7 +71,6 @@ public class GameManager : MonoBehaviour
 
     void Awake()
     {
-        Debug.Log("!");
         state = GameState.Playing;
 
         DontDestroyOnLoad(this.gameObject);
@@ -182,7 +181,7 @@ public class GameManager : MonoBehaviour
 
     private void HandlePlaying()
     {
-        sceneManager.ChangeScene("Pruebas2");
+        sceneManager.ChangeScene("Play");
     }
 
     void DoorFind()
@@ -214,17 +213,21 @@ public class GameManager : MonoBehaviour
     public bool OpenDoor(string _name)
     {
 
+        if (levelLaser[0] == "NIVEL 1" && !doorFindComplete)
+            DoorFind();
+
+
         foreach (string elemento in doorObjects)
         {
             if (elemento == _name)
             {
-                return true;
+                Debug.Log("!");
+                return false;
             }
         }
 
-        if (levelLaser[0] == "NIVEL 1" && !doorFindComplete)
-            DoorFind();
-        return false;
+        Debug.Log("?");
+        return true;
     }
 
 }

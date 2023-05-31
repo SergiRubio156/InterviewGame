@@ -31,7 +31,7 @@ public class sceneManager : MonoBehaviour
                     SceneManager.LoadScene(_name);
 
                     break;
-                case "Pruebas2":
+                case "Play":
                     SceneManager.LoadScene(_name);
 
                     break;

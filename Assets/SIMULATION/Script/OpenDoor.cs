@@ -8,10 +8,8 @@ public class OpenDoor : MonoBehaviour
     private TransitionCamera transitionCamera;
 
     public bool lvlComplete;
-    public string namePanel;
     [SerializeField]
     Animator doorAnimator;
-    public float durationAnimator;
     public AudioSource audioSource;
     public AudioClip audioClip;
 
@@ -19,11 +17,17 @@ public class OpenDoor : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        transitionCamera = GameObject.Find(namePanel).GetComponent<TransitionCamera>();
+        transitionCamera = GetComponentInChildren<TransitionCamera>();
         lvlComplete = transitionCamera.lvlComplete;
-        doorAnimator = GetComponentInParent<Animator>();
+        doorAnimator = GetComponentInChildren<Animator>();
         audioSource = GetComponent<AudioSource>();
-
+        audioSource.enabled = false;
+        if (lvlComplete)
+        {
+            audioSource.enabled = true;
+            audioSource.Play();
+            doorAnimator.SetBool("OpenDoor", true);
+        }
     }
 
     private void OnTriggerEnter(Collider other)
@@ -32,9 +36,9 @@ public class OpenDoor : MonoBehaviour
         {
             if (other.gameObject.CompareTag("Player"))
             {
-                //audioSource.Play();
-                doorAnimator.SetBool("Close", false);
-                doorAnimator.SetBool("Open", true);
+                audioSource.Play();
+                doorAnimator.SetBool("OpenDoor", true);
+
             }
         }
     }
@@ -45,9 +49,8 @@ public class OpenDoor : MonoBehaviour
         {
             if (other.gameObject.CompareTag("Player"))
             {
-                //audioSource.Play();
-                doorAnimator.SetBool("Open", false);
-                doorAnimator.SetBool("Close", true);
+                audioSource.Play();
+                doorAnimator.SetBool("OpenDoor", false);
             }
         }
     }
