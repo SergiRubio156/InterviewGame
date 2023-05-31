@@ -13,7 +13,7 @@ public class TestMessage : MonoBehaviour
     {
         var dialogTexts = new List<DialogData>();
 
-        dialogTexts.Add(new DialogData("/size:up/Hola!, /size:init/Sóc en Falko, el teu fidel company robòtic per a aquesta missió.", "Li"));
+        dialogTexts.Add(new DialogData("/size:up/Hola!, /size:init/Sóc en F4I_C0, el teu fidel company robòtic per a aquesta missió.", "Li"));
 
         dialogTexts.Add(new DialogData("Estic aquí per ajudar-te en tot moment mentre investiguem els problemes que pateix la nau espacial.", "Sa"));
         
