@@ -2667,10 +2667,36 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+<<<<<<< Updated upstream
     - target: {fileID: 4514194544314094310, guid: 596a8c89d89d03349be06278aa04dccb,
         type: 3}
       propertyPath: m_LocalPosition.z
       value: -33.31
+=======
+    - target: {fileID: 78904729, guid: 596a8c89d89d03349be06278aa04dccb, type: 3}
+      propertyPath: Priority
+      value: 118
+      objectReference: {fileID: 0}
+    - target: {fileID: 78904729, guid: 596a8c89d89d03349be06278aa04dccb, type: 3}
+      propertyPath: MinDistance
+      value: 3.6341352
+      objectReference: {fileID: 0}
+    - target: {fileID: 78904729, guid: 596a8c89d89d03349be06278aa04dccb, type: 3}
+      propertyPath: m_PlayOnAwake
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1311758898, guid: 596a8c89d89d03349be06278aa04dccb, type: 3}
+      propertyPath: cam1
+      value: 
+      objectReference: {fileID: 1948864698}
+    - target: {fileID: 1864220794, guid: 596a8c89d89d03349be06278aa04dccb, type: 3}
+      propertyPath: namePanel
+      value: namePanel
+      objectReference: {fileID: 0}
+    - target: {fileID: 1000012318594399, guid: 596a8c89d89d03349be06278aa04dccb, type: 3}
+      propertyPath: m_Name
+      value: ATM_Door1
+>>>>>>> Stashed changes
       objectReference: {fileID: 0}
     - target: {fileID: 6986395547389916250, guid: 596a8c89d89d03349be06278aa04dccb,
         type: 3}
