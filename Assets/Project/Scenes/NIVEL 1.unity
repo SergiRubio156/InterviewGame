@@ -125,12 +125,6 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
---- !u!1 &31205572 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 5091091464387383203, guid: fb6c2ac0282e855418e3a9234a66cf1a,
-    type: 3}
-  m_PrefabInstance: {fileID: 1108471715}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &38766253
 GameObject:
   m_ObjectHideFlags: 0
@@ -809,16 +803,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: Suelo
       objectReference: {fileID: 0}
-    - target: {fileID: 5091091464387383203, guid: fb6c2ac0282e855418e3a9234a66cf1a,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 5091091464387383212, guid: fb6c2ac0282e855418e3a9234a66cf1a,
-        type: 3}
-      propertyPath: m_Convex
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 5091091464387383215, guid: fb6c2ac0282e855418e3a9234a66cf1a,
         type: 3}
       propertyPath: m_RootOrder
@@ -882,19 +866,6 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 1108471715}
   m_PrefabAsset: {fileID: 0}
---- !u!65 &1108471719
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 31205572}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 9.999999, y: 2.2204459e-16, z: 10}
-  m_Center: {x: 0, y: 0, z: 0.000000029802322}
 --- !u!1001 &1124929761
 PrefabInstance:
   m_ObjectHideFlags: 0
