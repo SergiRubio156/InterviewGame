@@ -71,7 +71,7 @@ public class GameManager : MonoBehaviour
 
     void Awake()
     {
-        state = GameState.Playing;
+        state = GameState.Menu;
 
         DontDestroyOnLoad(this.gameObject);
 
