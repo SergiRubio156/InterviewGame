@@ -642,25 +642,14 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 114005679, guid: 5b5166f522b75624589d758e4703a1cb, type: 3}
+      propertyPath: raycastLine
+      value: 
+      objectReference: {fileID: 1418670179}
     - target: {fileID: 6976931455222013452, guid: 5b5166f522b75624589d758e4703a1cb,
         type: 3}
       propertyPath: m_RootOrder
       value: 12
-      objectReference: {fileID: 0}
-    - target: {fileID: 6976931455222013452, guid: 5b5166f522b75624589d758e4703a1cb,
-        type: 3}
-      propertyPath: m_LocalScale.x
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 6976931455222013452, guid: 5b5166f522b75624589d758e4703a1cb,
-        type: 3}
-      propertyPath: m_LocalScale.y
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 6976931455222013452, guid: 5b5166f522b75624589d758e4703a1cb,
-        type: 3}
-      propertyPath: m_LocalScale.z
-      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 6976931455222013452, guid: 5b5166f522b75624589d758e4703a1cb,
         type: 3}
@@ -712,16 +701,6 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 7054860716486551912, guid: 5b5166f522b75624589d758e4703a1cb,
-        type: 3}
-      propertyPath: m_Name
-      value: LineBlue
-      objectReference: {fileID: 0}
-    - target: {fileID: 7054860716838652249, guid: 5b5166f522b75624589d758e4703a1cb,
-        type: 3}
-      propertyPath: LaserObject
-      value: 
-      objectReference: {fileID: 1522259077}
     - target: {fileID: 7054860716838652249, guid: 5b5166f522b75624589d758e4703a1cb,
         type: 3}
       propertyPath: raycastLine
@@ -850,6 +829,12 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 9178440120670491581, guid: b8630bdaf3f311243824bea5ae7b74aa,
     type: 3}
   m_PrefabInstance: {fileID: 66953694}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &723502049 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 7753187130262783158, guid: 668e5be778ea3764cad60d36bd327d4c,
+    type: 3}
+  m_PrefabInstance: {fileID: 967436796}
   m_PrefabAsset: {fileID: 0}
 --- !u!4 &734929453 stripped
 Transform:
@@ -1296,6 +1281,21 @@ PrefabInstance:
       propertyPath: m_Name
       value: RedCanon
       objectReference: {fileID: 0}
+    - target: {fileID: 7753187130262783158, guid: 668e5be778ea3764cad60d36bd327d4c,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8777614159154368910, guid: 668e5be778ea3764cad60d36bd327d4c,
+        type: 3}
+      propertyPath: LaserObject
+      value: 
+      objectReference: {fileID: 1933374900}
+    - target: {fileID: 8777614159154368910, guid: 668e5be778ea3764cad60d36bd327d4c,
+        type: 3}
+      propertyPath: raycastLine
+      value: 
+      objectReference: {fileID: 1418670179}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 668e5be778ea3764cad60d36bd327d4c, type: 3}
 --- !u!1001 &1026994319
@@ -1900,12 +1900,6 @@ GameObject:
     type: 3}
   m_PrefabInstance: {fileID: 54689903}
   m_PrefabAsset: {fileID: 0}
---- !u!1 &1522259077 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 7054860716486551912, guid: 5b5166f522b75624589d758e4703a1cb,
-    type: 3}
-  m_PrefabInstance: {fileID: 243333737}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1538202471
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2308,6 +2302,27 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 967436796}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &1780266716
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 723502049}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 952e9c632601bf54999351640ac3b059, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  inputLine: {fileID: 0}
+  cubeColor: {fileID: 0}
+  reflexive: {fileID: 0}
+  triangle: {fileID: 0}
+  laserFinal: {fileID: 0}
+  LaserObject: {fileID: 0}
+  rotationSpeed: 0
+  isRotation: 1
+  raycastLine: {fileID: 1418670179}
 --- !u!1 &1820749170
 GameObject:
   m_ObjectHideFlags: 0
@@ -2393,6 +2408,12 @@ MonoBehaviour:
   FinalLaser: []
   CheckBool: 
   panelVictory: {fileID: 1460926579}
+--- !u!1 &1933374900 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 7054860716486551912, guid: 668e5be778ea3764cad60d36bd327d4c,
+    type: 3}
+  m_PrefabInstance: {fileID: 967436796}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1944225510
 PrefabInstance:
   m_ObjectHideFlags: 0
