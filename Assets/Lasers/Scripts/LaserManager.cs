@@ -165,7 +165,7 @@ public class LaserManager : MonoBehaviour
         {
             if (hit.collider.CompareTag("Interactable"))
             {
-
+                Debug.Log(hit.collider.gameObject.layer);
                 if (hit.collider.gameObject.layer == 7)
                 {
                     objectSun = hit.collider.transform.Find("LaserSun");

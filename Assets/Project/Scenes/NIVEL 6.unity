@@ -524,6 +524,25 @@ GameObject:
     type: 3}
   m_PrefabInstance: {fileID: 54689903}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &163640869 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 7763927025459800950, guid: 679b96d072adb424fafdb81ae7445435,
+    type: 3}
+  m_PrefabInstance: {fileID: 1983213076}
+  m_PrefabAsset: {fileID: 0}
+--- !u!65 &163640873
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 163640869}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 1, y: 1, z: 1}
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1001 &243333737
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1179,6 +1198,16 @@ PrefabInstance:
       propertyPath: m_Name
       value: RedCanon
       objectReference: {fileID: 0}
+    - target: {fileID: 7753187130262783158, guid: 668e5be778ea3764cad60d36bd327d4c,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8777614159154368910, guid: 668e5be778ea3764cad60d36bd327d4c,
+        type: 3}
+      propertyPath: raycastLine
+      value: 
+      objectReference: {fileID: 1418670179}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 668e5be778ea3764cad60d36bd327d4c, type: 3}
 --- !u!1001 &1026994319
@@ -2172,22 +2201,22 @@ PrefabInstance:
     - target: {fileID: 6986440721413075404, guid: 679b96d072adb424fafdb81ae7445435,
         type: 3}
       propertyPath: m_LocalScale.x
-      value: 2
+      value: 2.9016
       objectReference: {fileID: 0}
     - target: {fileID: 6986440721413075404, guid: 679b96d072adb424fafdb81ae7445435,
         type: 3}
       propertyPath: m_LocalScale.y
-      value: 2
+      value: 2.9016
       objectReference: {fileID: 0}
     - target: {fileID: 6986440721413075404, guid: 679b96d072adb424fafdb81ae7445435,
         type: 3}
       propertyPath: m_LocalScale.z
-      value: 2
+      value: 2.9016
       objectReference: {fileID: 0}
     - target: {fileID: 6986440721413075404, guid: 679b96d072adb424fafdb81ae7445435,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: 14.59
+      value: 12.99
       objectReference: {fileID: 0}
     - target: {fileID: 6986440721413075404, guid: 679b96d072adb424fafdb81ae7445435,
         type: 3}
