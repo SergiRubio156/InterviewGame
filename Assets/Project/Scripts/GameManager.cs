@@ -221,12 +221,10 @@ public class GameManager : MonoBehaviour
         {
             if (elemento == _name)
             {
-                Debug.Log("!");
                 return false;
             }
         }
 
-        Debug.Log("?");
         return true;
     }
 
