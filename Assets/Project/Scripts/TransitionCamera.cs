@@ -38,7 +38,10 @@ public class TransitionCamera : MonoBehaviour
     {
         lvlComplete = GameManager.Instance.OpenDoor(nameDoor);
     }
-
+    void FinalCheck()
+    {
+        GameManager.Instance.DoorDelete(nameDoor);
+    }
     public void transitionScene(string _name)
     {
         if (!lvlComplete)
@@ -49,7 +52,7 @@ public class TransitionCamera : MonoBehaviour
 
             if (_name == "Door")
             {
-                CheckDoor();
+                FinalCheck();
                 StartCoroutine(WaitDoor());
             }
         }

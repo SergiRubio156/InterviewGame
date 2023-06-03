@@ -44,8 +44,10 @@ public class GameManager : MonoBehaviour
 
     private GameState state;
 
+    private Transform playerPos;
+
     int nameLevel = 0;
-    bool doorFindComplete = false;
+    public bool doorFindComplete = false;
     public static GameManager Instance
     {
         get
@@ -121,6 +123,7 @@ public class GameManager : MonoBehaviour
                     case GameState.Playing:
                         HandlePlaying();
                         Debug.Log("State " + state);
+                        //playerPos = GameObject.FindGameObjectWithTag("Player").transform;
                         state = value;
                         break;
 
@@ -197,14 +200,28 @@ public class GameManager : MonoBehaviour
 
         doorFindComplete = true;
     }
-
+    public void DoorDelete(string _name)
+    {
+        Debug.Log(_name);
+        foreach (string elemento in doorObjects)
+        {
+            Debug.Log(elemento);
+            if (elemento == _name)
+            {
+                doorObjects.Remove(_name);
+                gameManagerData.objectList = new List<string>(doorObjects);
+                //gameManagerData.positionPlayer = playerPos;
+                break;
+            }
+        }
+    }
     public void LvlCompleted(string _name)
     {
         foreach (string elemento in levelLaser)
         {
             if (elemento == _name)
             {
-                levelLaser.Remove(elemento);
+                levelLaser.Remove(_name);
                 break;
             }
         }
@@ -224,7 +241,7 @@ public class GameManager : MonoBehaviour
                 return false;
             }
         }
-
+        //playerPos = gameManagerData.positionPlayer;
         return true;
     }
 

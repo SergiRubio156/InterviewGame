@@ -44,8 +44,8 @@ namespace Doublsb.Dialog
 
         public void Show(List<DialogData> Data)
         {
-            StartCoroutine(Activate_List(Data));
-            EndButton.interactable = false;
+                StartCoroutine(Activate_List(Data));
+                EndButton.interactable = false;
         }
 
         private void Update()

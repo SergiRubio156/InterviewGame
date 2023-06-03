@@ -5,4 +5,6 @@ using System.Collections.Generic;
 public class GameManagerData : ScriptableObject
 {
     public List<string> objectList = new List<string>();
+
+    public Transform positionPlayer;
 }
