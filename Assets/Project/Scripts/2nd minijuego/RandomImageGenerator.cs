@@ -8,6 +8,8 @@ public class RandomImageGenerator : MonoBehaviour
     public RawImage rawImage; // Referencia al componente RawImage para mostrar las imágenes
     public Texture2D[] pinturas; // Array que contiene las pinturas que quieres mostrar
     public RawImage pinturaImage; // Referencia al componente RawImage para mostrar las pinturas
+    public Texture2D[] cpu; // Array que contiene las imágenes de CPU que quieres mostrar
+    public RawImage cpuImage; // Referencia al componente RawImage para mostrar las imágenes de CPU
     public TextMeshProUGUI countText; // Referencia al componente de TextMeshProUGUI para el contador
     public Button fetButton; // Referencia al botón
     private string randomNumTextTag = "text"; // Tag del objeto de texto para el número aleatorio
@@ -19,6 +21,7 @@ public class RandomImageGenerator : MonoBehaviour
         fetButton.onClick.AddListener(OnClickFetButton);
         GenerateRandomImage();
         GenerateRandomPintura();
+        GenerateRandomCPU();
         count = 0;
     }
 
@@ -29,6 +32,7 @@ public class RandomImageGenerator : MonoBehaviour
             IncrementCount();
             GenerateRandomImage();
             GenerateRandomPintura();
+            GenerateRandomCPU();
             GenerateRandomNumberWithTag();
         }
     }
@@ -38,6 +42,7 @@ public class RandomImageGenerator : MonoBehaviour
         IncrementCount();
         GenerateRandomImage();
         GenerateRandomPintura();
+        GenerateRandomCPU();
         GenerateRandomNumberWithTag();
     }
 
@@ -53,6 +58,12 @@ public class RandomImageGenerator : MonoBehaviour
         pinturaImage.texture = pinturas[randomIndex];
     }
 
+    public void GenerateRandomCPU()
+    {
+        int randomIndex = Random.Range(0, cpu.Length);
+        cpuImage.texture = cpu[randomIndex];
+    }
+
     public void IncrementCount()
     {
         count++;
@@ -65,7 +76,7 @@ public class RandomImageGenerator : MonoBehaviour
 
         foreach (TextMeshProUGUI text in randomNumTexts)
         {
-            if (text.CompareTag(randomNumTextTag))
+            if (text.tag == randomNumTextTag)
             {
                 float randomNumber = Random.Range(1f, 5f);
                 randomNumber = Mathf.Round(randomNumber * 2f) / 2f; // Redondea al número más cercano con incremento de 0.5 o 1
