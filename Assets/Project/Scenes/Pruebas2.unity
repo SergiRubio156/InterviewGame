@@ -3230,6 +3230,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: MenuCanvasPLAY
       objectReference: {fileID: 0}
+    - target: {fileID: 422941059897123139, guid: 01b71e31af7d1d04a84a693c8d4fe73c,
+        type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 14.170044
+      objectReference: {fileID: 0}
     - target: {fileID: 587386443270630310, guid: 01b71e31af7d1d04a84a693c8d4fe73c,
         type: 3}
       propertyPath: m_AnchorMax.y
@@ -3571,6 +3576,21 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 3517631452007880521, guid: e8e0e8b9c4b94a04c904b8f4c2479ed9,
+        type: 3}
+      propertyPath: m_Materials.Array.size
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 3517631452007880521, guid: e8e0e8b9c4b94a04c904b8f4c2479ed9,
+        type: 3}
+      propertyPath: m_Materials.Array.data[1]
+      value: 
+      objectReference: {fileID: 2100000, guid: b679e44ff42d8d74485d14bef8fad8b6, type: 2}
+    - target: {fileID: 3517631452007880521, guid: e8e0e8b9c4b94a04c904b8f4c2479ed9,
+        type: 3}
+      propertyPath: m_Materials.Array.data[2]
+      value: 
+      objectReference: {fileID: 2100000, guid: 63e6d0f79f4c45e49959c7f05422a69e, type: 2}
     - target: {fileID: 4876386081171191597, guid: e8e0e8b9c4b94a04c904b8f4c2479ed9,
         type: 3}
       propertyPath: m_LocalPosition.x

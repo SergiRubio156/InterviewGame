@@ -11,14 +11,14 @@ public class Cintamovement : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        rb= GetComponent<Rigidbody>();
+        rb = GetComponent<Rigidbody>();
         randomImageGenerator = GameObject.Find("RawImageRandomGenerator").GetComponent<RandomImageGenerator>();
     }
 
     // Update is called once per frame
     void Update()
     {
-        
+
     }
     private void OnCollisionStay(Collision collision)
     {
@@ -27,9 +27,15 @@ public class Cintamovement : MonoBehaviour
             rb.velocity = transform.forward * velocidad;
         }
     }
-    private void OnCollisionExit(Collision collision)
+    private void OnTriggerEnter(Collider other)
     {
-        randomImageGenerator.GenerateNewRobot();
-        Destroy(this.gameObject);
+        {
+            if (other.gameObject.CompareTag("Plane"))
+            {
+                randomImageGenerator.GenerateNewRobot();
+                randomImageGenerator.GenerateNewRobot();
+                Destroy(this.gameObject);
+            }
+        }
     }
 }
