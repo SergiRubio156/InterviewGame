@@ -5,10 +5,12 @@ using UnityEngine.SceneManagement;
 
 public class sceneManager : MonoBehaviour
 {
+    [SerializeField]
+    private LevelManager levelManager;
     // Start is called before the first frame update
     void Start()
     {
-        
+        levelManager = GameObject.FindObjectOfType<LevelManager>();
     }
 
 
@@ -33,56 +35,18 @@ public class sceneManager : MonoBehaviour
                     break;
                 case "Play":
                     SceneManager.LoadScene(_name);
+                    break;
 
+                case "Laser":
+                    levelManager.ChooseLevel();
                     break;
 
             }
         }
     }
 
-    public void ChangeSceneLevel(string _name)
+    public void RemoveLevel()
     {
-
-        if (_name != GetCurrentSceneName())
-        {
-            switch (_name)
-            {
-                case "NIVEL 1":
-                    SceneManager.LoadScene(_name);
-                    break;
-
-                case "NIVEL 2":
-                    SceneManager.LoadScene(_name);
-                    break;
-
-                case "NIVEL 3":
-                    SceneManager.LoadScene(_name);
-                    break;
-
-                case "NIVEL 4":
-                    SceneManager.LoadScene(_name);
-                    break;
-
-                case "NIVEL 5":
-                    SceneManager.LoadScene(_name);
-                    break;
-
-                case "NIVEL 6":
-                    SceneManager.LoadScene(_name);
-                    break;
-
-                case "NIVEL 7":
-                    SceneManager.LoadScene(_name);
-                    break;
-
-                case "NIVEL 8":
-                    SceneManager.LoadScene(_name);
-                    break;
-                case "NIVEL 9":
-                    SceneManager.LoadScene(_name);
-                    break;
-
-            }
-        }
+        levelManager.RemoveLevel();
     }
 }
