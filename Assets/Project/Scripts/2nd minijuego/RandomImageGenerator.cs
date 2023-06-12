@@ -10,7 +10,7 @@ public class RandomImageGenerator : MonoBehaviour
     public RawImage pinturaImage; // Referencia al componente RawImage para mostrar las pinturas
     public Texture2D[] cpu; // Array que contiene las imágenes de CPU que quieres mostrar
     public TextMeshProUGUI countText; // Referencia al componente de TextMeshProUGUI para el contador
-    public Button fetButton; // Referencia al botón
+    //public Button fetButton; // Referencia al botón
     private string randomNumTextTag = "text"; // Tag del objeto de texto para el número aleatorio
 
     private int count;
@@ -18,7 +18,7 @@ public class RandomImageGenerator : MonoBehaviour
 
     private void Start()
     {
-        fetButton.onClick.AddListener(OnClickFetButton);
+        //fetButton.onClick.AddListener(OnClickFetButton);
         GenerateRandomImage();
         GenerateRandomPintura();
         count = 0;
@@ -26,16 +26,19 @@ public class RandomImageGenerator : MonoBehaviour
 
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.A))
+        //if (Input.GetKeyDown(KeyCode.A))
         {
-            IncrementCount();
-            GenerateRandomImage();
-            GenerateRandomPintura();
-            GenerateRandomCPU();
-            GenerateRandomNumberWithTag();
+            //GenerateNewRobot();
         }
     }
-
+    public void GenerateNewRobot()
+    {
+        IncrementCount();
+        GenerateRandomImage();
+        GenerateRandomPintura();
+        GenerateRandomCPU();
+        GenerateRandomNumberWithTag();
+    }
     private void OnClickFetButton()
     {
         IncrementCount();
