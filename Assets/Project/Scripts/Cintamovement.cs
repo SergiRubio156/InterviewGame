@@ -12,7 +12,7 @@ public class Cintamovement : MonoBehaviour
     void Start()
     {
         rb = GetComponent<Rigidbody>();
-        randomImageGenerator = GameObject.Find("TUTORIALrobot").GetComponent<RandomImageGenerator>();
+        randomImageGenerator = GameObject.Find("RawImageRandomGenerator").GetComponent<RandomImageGenerator>();
     }
 
     // Update is called once per frame
