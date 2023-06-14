@@ -51,11 +51,9 @@ public class CambioDiapositivas : MonoBehaviour
         // Mostrar la nueva diapositiva
         MostrarDiapositiva(diapositivaActual);
 
-        // Verificar si es la quinta diapositiva y desactivar el botón con el tag "text"
+        // Verificar si es la quinta diapositiva y desactivar el panel "tuto" y activar el panel "juego"
         if (diapositivaActual == 4)
         {
-            DesactivarBotonText();
-            // Desactivar el panel actual y activar el panel siguiente
             tuto.SetActive(false);
             juego.SetActive(true);
         }
@@ -66,16 +64,5 @@ public class CambioDiapositivas : MonoBehaviour
         diapositivas[index].SetActive(true);
     }
 
-    void DesactivarBotonText()
-    {
-        Button[] buttons = FindObjectsOfType<Button>();
-
-        foreach (Button button in buttons)
-        {
-            if (button.CompareTag("text"))
-            {
-                button.gameObject.SetActive(false);
-            }
-        }
-    }
+    // Activar el panel "TUTORIALrobot" y desactivar el panel "COMANDA PANEL SINO NO SE ACTIVARÁ"
 }
