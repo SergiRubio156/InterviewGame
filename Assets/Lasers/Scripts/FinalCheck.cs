@@ -61,7 +61,7 @@ public class FinalCheck : MonoBehaviour
     void Victory()
     {
         panelVictory.SetActive(true);
-        GameManager.Instance.LvlCompleted(sceneManager.GetCurrentSceneName());
+        GameManager.Instance.LvlCompleted();
         StartCoroutine(Wait());
     }
 

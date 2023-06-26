@@ -91,7 +91,6 @@ namespace StarterAssets
 
 		void Awake()
 		{
-			GameManager.OnGameStateChanged += GameManager_OnGameStateChanged;   //Esto es el evento del script GameManager
 			// get a reference to our main camera
 			if (_mainCamera == null)
 			{
@@ -115,18 +114,43 @@ namespace StarterAssets
 
 		}
 
+		void OnEnable()
+		{
+			GameManager.OnGameStateChanged += HandleGameStateChanged;  
+		}
+
 		private void OnDestroy()
 		{
-			GameManager.OnGameStateChanged -= GameManager_OnGameStateChanged;   //La funcion "OnDestroy" se activa cuando destruimos el objeto, una vez destruido se activa el evento,
-		}
-		void GameManager_OnGameStateChanged(GameState state)        //Esta funcion depende del Awake del evento, Como he explicado antes nso permite comparar entre Script y GameObjects
+			GameManager.OnGameStateChanged -= HandleGameStateChanged;   
+		}     
+		private void HandleGameStateChanged(GameState newState)        
 		{
-			if (state == GameState.Settings)
-				Cursor.lockState = CursorLockMode.None;
 
-
-			sceneSettings = (state == GameState.Settings);
-			isPlaying = (state == GameState.Settings || state == GameState.Wire);
+			switch (newState)
+			{
+				case GameState.Lasers:
+					break;
+				case GameState.Playing:
+					sceneSettings = false;
+					isPlaying = false;
+					Cursor.visible = false;
+					Cursor.lockState = CursorLockMode.Confined;
+					Cursor.lockState = CursorLockMode.Locked;
+					break;
+				case GameState.Settings:
+					sceneSettings = true;
+					isPlaying = true;
+					Cursor.visible = true;
+					Cursor.lockState = CursorLockMode.None;
+					break;
+				case GameState.Menu:
+					break;
+				case GameState.Wire:
+					break;
+				case GameState.Exit:
+					// Acciones a realizar cuando el estado de juego es "Exit"
+					break;
+			}
 		}
 
 		void Update()
@@ -139,7 +163,7 @@ namespace StarterAssets
 			if (!isPlaying && _camera.activeSelf)
 			{
 				Cursor.visible = false;
-				if (!Cursor.visible)
+				if (Cursor.visible)
 				{
 					Cursor.lockState = CursorLockMode.Confined;
 					Cursor.lockState = CursorLockMode.Locked;
