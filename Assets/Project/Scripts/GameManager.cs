@@ -42,14 +42,9 @@ public class GameManager : MonoBehaviour
 
     public static event Action<GameState> OnGameStateChanged;
 
-    string[] gameObjects;
-
     private GameState state;
 
-    private Transform playerPos;
-
-    int nameLevel = 0;
-    public bool doorFind = false;
+    public bool doorFind;
     public static GameManager Instance
     {
         get
@@ -126,6 +121,7 @@ public class GameManager : MonoBehaviour
                         if(state == GameState.Menu)
                             HandlePlaying();
                         state = value;
+                        Debug.Log("State " + state);
                         break;
 
                     case GameState.Lasers:
@@ -134,6 +130,7 @@ public class GameManager : MonoBehaviour
                             HandlePlayerLasers();
                         }
                         state = value;
+                        Debug.Log("State " + state);
                         break;
 
                     case GameState.Settings:
@@ -175,13 +172,9 @@ public class GameManager : MonoBehaviour
         Application.Quit();
     }
 
-
-    private string NameLevel()
-    {
-        return levelLaser[nameLevel];
-    }
     private void HandlePlayerLasers()//string _name)
     {
+        sceneManager.ChangeScene("Laser");
     }
 
     private void HandleMenu()
@@ -201,6 +194,7 @@ public class GameManager : MonoBehaviour
 
     void DoorFind()
     {
+        Debug.Log("!");
 
         GameObject[] gameObjects = GameObject.FindGameObjectsWithTag("FinalDoor");
 
@@ -209,32 +203,30 @@ public class GameManager : MonoBehaviour
             doorObjects.Add(obj.name);
         }
 
-        gameManagerData.objectList = new List<string>(doorObjects);
-
         doorFind = true;
     }
     public void DoorDelete(string _name)
     {
-        Debug.Log(_name);
         foreach (string elemento in doorObjects)
         {
-            Debug.Log(elemento);
             if (elemento == _name)
             {
                 doorObjects.Remove(_name);
-                gameManagerData.objectList = new List<string>(doorObjects);
-                //gameManagerData.positionPlayer = playerPos;
                 break;
             }
         }
     }
-    public void LvlCompleted(string _name)
+    public void LvlCompleted()
     {
+        string _name = sceneManager.GetLevelName();
+        Debug.Log(_name);
+
         foreach (string elemento in levelLaser)
         {
             if (elemento == _name)
             {
                 levelLaser.Remove(_name);
+                sceneManager.RemoveLevel(_name);
                 break;
             }
         }
