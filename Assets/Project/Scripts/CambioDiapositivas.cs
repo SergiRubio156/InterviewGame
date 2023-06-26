@@ -7,6 +7,9 @@ public class CambioDiapositivas : MonoBehaviour
     private int diapositivaActual;
     private int totalDiapositivas;
 
+    public Button nextButton; // Referencia al botón "NEXT DERECHO"
+    public Button prevButton; // Referencia al botón "PREV IZQUIERDO"
+
     public GameObject tuto;
     public GameObject juego;
 
@@ -26,22 +29,18 @@ public class CambioDiapositivas : MonoBehaviour
         {
             diapositivas[i].SetActive(false);
         }
+
+        // Asignar las funciones OnNextButtonClick() y OnPrevButtonClick() a los eventos de clic de los botones
+        nextButton.onClick.AddListener(OnNextButtonClick);
+        prevButton.onClick.AddListener(OnPrevButtonClick);
     }
 
-    void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.R))
-        {
-            CambiarDiapositiva();
-        }
-    }
-
-    void CambiarDiapositiva()
+    void OnNextButtonClick()
     {
         // Ocultar la diapositiva actual
         diapositivas[diapositivaActual].SetActive(false);
 
-        // Avanzar a la siguiente diapositiva o volver a la primera si alcanza el final
+        // Avanzar a la siguiente diapositiva
         diapositivaActual++;
         if (diapositivaActual >= totalDiapositivas)
         {
@@ -51,9 +50,36 @@ public class CambioDiapositivas : MonoBehaviour
         // Mostrar la nueva diapositiva
         MostrarDiapositiva(diapositivaActual);
 
-        // Verificar si es la quinta diapositiva y desactivar el panel "tuto" y activar el panel "juego"
+        // Verificar si es la quinta diapositiva y desactivar el botón con el tag "text"
         if (diapositivaActual == 4)
         {
+            DesactivarBotonText();
+            // Desactivar el panel actual y activar el panel siguiente
+            tuto.SetActive(false);
+            juego.SetActive(true);
+        }
+    }
+
+    void OnPrevButtonClick()
+    {
+        // Ocultar la diapositiva actual
+        diapositivas[diapositivaActual].SetActive(false);
+
+        // Retroceder a la diapositiva anterior
+        diapositivaActual--;
+        if (diapositivaActual < 0)
+        {
+            diapositivaActual = totalDiapositivas - 1;
+        }
+
+        // Mostrar la nueva diapositiva
+        MostrarDiapositiva(diapositivaActual);
+
+        // Verificar si es la quinta diapositiva y desactivar el botón con el tag "text"
+        if (diapositivaActual == 4)
+        {
+            DesactivarBotonText();
+            // Desactivar el panel actual y activar el panel siguiente
             tuto.SetActive(false);
             juego.SetActive(true);
         }
@@ -64,5 +90,16 @@ public class CambioDiapositivas : MonoBehaviour
         diapositivas[index].SetActive(true);
     }
 
-    // Activar el panel "TUTORIALrobot" y desactivar el panel "COMANDA PANEL SINO NO SE ACTIVARÁ"
+    void DesactivarBotonText()
+    {
+        Button[] buttons = FindObjectsOfType<Button>();
+
+        foreach (Button button in buttons)
+        {
+            if (button.CompareTag("text"))
+            {
+                button.gameObject.SetActive(false);
+            }
+        }
+    }
 }

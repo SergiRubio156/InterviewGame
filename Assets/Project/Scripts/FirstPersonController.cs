@@ -1,4 +1,6 @@
 ﻿using UnityEngine;
+using Cinemachine;
+
 #if ENABLE_INPUT_SYSTEM && STARTER_ASSETS_PACKAGES_CHECKED
 using UnityEngine.InputSystem;
 #endif
@@ -71,11 +73,14 @@ namespace StarterAssets
 		private CharacterController _controller;
 		private StarterAssetsInputs _input;
 		private GameObject _mainCamera;
-
 		public GameObject _camera;
 
+		public  CinemachineBrain cinemachineBrain;
+		public CinemachineVirtualCameraBase cinemachineVirtualCameraBase;
+		[SerializeField]
+
 		private const float _threshold = 0.01f;
-		bool sceneSettings, isPlaying;
+		public bool sceneSettings, isPlaying;
 
 		private bool IsCurrentDeviceMouse
 		{
@@ -95,6 +100,7 @@ namespace StarterAssets
 			if (_mainCamera == null)
 			{
 				_mainCamera = GameObject.FindGameObjectWithTag("MainCamera");
+				cinemachineBrain = _mainCamera.GetComponent<CinemachineBrain>();
 			}
 		}
 
@@ -111,6 +117,11 @@ namespace StarterAssets
 			// reset our timeouts on start
 			_jumpTimeoutDelta = JumpTimeout;
 			_fallTimeoutDelta = FallTimeout;
+
+			Cursor.visible = false;
+			Cursor.lockState = CursorLockMode.Confined;
+			Cursor.lockState = CursorLockMode.Locked;
+
 
 		}
 
@@ -129,6 +140,7 @@ namespace StarterAssets
 			switch (newState)
 			{
 				case GameState.Lasers:
+					isPlaying = true;
 					break;
 				case GameState.Playing:
 					sceneSettings = false;
@@ -138,14 +150,18 @@ namespace StarterAssets
 					Cursor.lockState = CursorLockMode.Locked;
 					break;
 				case GameState.Settings:
-					sceneSettings = true;
 					isPlaying = true;
-					Cursor.visible = true;
-					Cursor.lockState = CursorLockMode.None;
 					break;
 				case GameState.Menu:
 					break;
 				case GameState.Wire:
+					isPlaying = true;
+					break;
+				case GameState.Topping:
+					isPlaying = true;
+					break;
+				case GameState.Color:
+					isPlaying = true;
 					break;
 				case GameState.Exit:
 					// Acciones a realizar cuando el estado de juego es "Exit"
@@ -155,31 +171,24 @@ namespace StarterAssets
 
 		void Update()
 		{
-			if (Input.GetKeyDown(KeyCode.Escape)) //Cuando le damos click al Escape entra a esta funcion
-			{
-				if (sceneSettings) GameManager.Instance.State = GameState.Playing;
-				else GameManager.Instance.State = GameState.Settings;
-			}
-			if (!isPlaying && _camera.activeSelf)
-			{
-				Cursor.visible = false;
-				if (Cursor.visible)
+
+				if (!isPlaying && cinemachineVirtualCameraBase == cinemachineBrain.ActiveVirtualCamera)
 				{
-					Cursor.lockState = CursorLockMode.Confined;
-					Cursor.lockState = CursorLockMode.Locked;
+					JumpAndGravity();
+					GroundedCheck();
+					Move();
 				}
-				JumpAndGravity();
-				GroundedCheck();
-				Move();
-			}
+			
 		}
 
 		private void LateUpdate()
 		{
-			if (!isPlaying && _camera.activeSelf)
-			{
-				CameraRotation();
-			}
+
+				if (!isPlaying && cinemachineBrain.ActiveVirtualCamera == cinemachineVirtualCameraBase)
+				{
+					CameraRotation();
+				}
+			
 		}
 
 		private void GroundedCheck()
