@@ -4,15 +4,12 @@ using UnityEngine;
 
 public class Cintamovement : MonoBehaviour
 {
-    Rigidbody rb;
+    public Rigidbody rb;
     public float velocidad;
-    RandomImageGenerator randomImageGenerator;
 
     // Start is called before the first frame update
     void Start()
     {
-        rb = GetComponent<Rigidbody>();
-        randomImageGenerator = GameObject.Find("TUTORIALrobot").GetComponent<RandomImageGenerator>();
     }
 
     // Update is called once per frame
@@ -20,22 +17,13 @@ public class Cintamovement : MonoBehaviour
     {
 
     }
-    private void OnCollisionStay(Collision collision)
+    private void OnTriggerEnter(Collider collision)
     {
-        if (collision.gameObject.CompareTag("cinta"))
+        if (collision.gameObject.CompareTag("Interactable"))
         {
+            rb = collision.gameObject.GetComponent<Rigidbody>();
             rb.velocity = transform.forward * velocidad;
         }
     }
-    private void OnTriggerEnter(Collider other)
-    {
-        {
-            if (other.gameObject.CompareTag("Plane"))
-            {
-                randomImageGenerator.GenerateNewRobot();
-                randomImageGenerator.GenerateNewRobot();
-                Destroy(this.gameObject);
-            }
-        }
-    }
+ 
 }

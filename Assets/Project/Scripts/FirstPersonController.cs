@@ -1,4 +1,6 @@
 ﻿using UnityEngine;
+using Cinemachine;
+
 #if ENABLE_INPUT_SYSTEM && STARTER_ASSETS_PACKAGES_CHECKED
 using UnityEngine.InputSystem;
 #endif
@@ -71,11 +73,14 @@ namespace StarterAssets
 		private CharacterController _controller;
 		private StarterAssetsInputs _input;
 		private GameObject _mainCamera;
-
 		public GameObject _camera;
 
+		public  CinemachineBrain cinemachineBrain;
+		public CinemachineVirtualCameraBase cinemachineVirtualCameraBase;
+		[SerializeField]
+
 		private const float _threshold = 0.01f;
-		bool sceneSettings, isPlaying;
+		public bool sceneSettings, isPlaying;
 
 		private bool IsCurrentDeviceMouse
 		{
@@ -91,10 +96,12 @@ namespace StarterAssets
 
 		void Awake()
 		{
+			GameManager.OnGameStateChanged += GameManager_OnGameStateChanged;   //Esto es el evento del script GameManager
 			// get a reference to our main camera
 			if (_mainCamera == null)
 			{
 				_mainCamera = GameObject.FindGameObjectWithTag("MainCamera");
+				cinemachineBrain = _mainCamera.GetComponent<CinemachineBrain>();
 			}
 		}
 
@@ -112,23 +119,23 @@ namespace StarterAssets
 			_jumpTimeoutDelta = JumpTimeout;
 			_fallTimeoutDelta = FallTimeout;
 
-		}
+			Cursor.visible = false;
+			Cursor.lockState = CursorLockMode.Confined;
+			Cursor.lockState = CursorLockMode.Locked;
 
-		void OnEnable()
-		{
-			GameManager.OnGameStateChanged += HandleGameStateChanged;  
+
 		}
 
 		private void OnDestroy()
 		{
-			GameManager.OnGameStateChanged -= HandleGameStateChanged;   
-		}     
-		private void HandleGameStateChanged(GameState newState)        
+			GameManager.OnGameStateChanged -= GameManager_OnGameStateChanged;   //La funcion "OnDestroy" se activa cuando destruimos el objeto, una vez destruido se activa el evento,
+		}
+		void GameManager_OnGameStateChanged(GameState newState)        //Esta funcion depende del Awake del evento, Como he explicado antes nso permite comparar entre Script y GameObjects
 		{
-
 			switch (newState)
 			{
 				case GameState.Lasers:
+					isPlaying = true;
 					break;
 				case GameState.Playing:
 					sceneSettings = false;
@@ -138,14 +145,18 @@ namespace StarterAssets
 					Cursor.lockState = CursorLockMode.Locked;
 					break;
 				case GameState.Settings:
-					sceneSettings = true;
 					isPlaying = true;
-					Cursor.visible = true;
-					Cursor.lockState = CursorLockMode.None;
 					break;
 				case GameState.Menu:
 					break;
 				case GameState.Wire:
+					isPlaying = true;
+					break;
+				case GameState.Topping:
+					isPlaying = true;
+					break;
+				case GameState.Color:
+					isPlaying = true;
 					break;
 				case GameState.Exit:
 					// Acciones a realizar cuando el estado de juego es "Exit"
@@ -155,31 +166,22 @@ namespace StarterAssets
 
 		void Update()
 		{
-			if (Input.GetKeyDown(KeyCode.Escape)) //Cuando le damos click al Escape entra a esta funcion
+			if (!isPlaying && cinemachineVirtualCameraBase == cinemachineBrain.ActiveVirtualCamera)
 			{
-				if (sceneSettings) GameManager.Instance.State = GameState.Playing;
-				else GameManager.Instance.State = GameState.Settings;
-			}
-			if (!isPlaying && _camera.activeSelf)
-			{
-				Cursor.visible = false;
-				if (Cursor.visible)
-				{
-					Cursor.lockState = CursorLockMode.Confined;
-					Cursor.lockState = CursorLockMode.Locked;
-				}
 				JumpAndGravity();
 				GroundedCheck();
 				Move();
-			}
+			}		
 		}
 
 		private void LateUpdate()
 		{
-			if (!isPlaying && _camera.activeSelf)
-			{
-				CameraRotation();
-			}
+
+				if (!isPlaying && cinemachineBrain.ActiveVirtualCamera == cinemachineVirtualCameraBase)
+				{
+					CameraRotation();
+				}
+			
 		}
 
 		private void GroundedCheck()

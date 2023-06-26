@@ -16,31 +16,19 @@ public class Animationcomanda : MonoBehaviour
         {
             animatorController = GetComponent<Animator>();
         }
-    }
 
-    private void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.P))
-        {
-            PlayCloseAnimation();
-        }
-        else if (Input.GetKeyDown(KeyCode.O))
-        {
-            PlayOpenAnimation();
-        }
+        PlayOpenAnimation();
     }
 
     public void PlayOpenAnimation()
     {
         // Activa el trigger correspondiente a la animación de abrir.
         animatorController.SetTrigger(animationOpen);
-        panelTuto.SetActive(false);
     }
 
     public void PlayCloseAnimation()
     {
         // Activa el trigger correspondiente a la animación de cerrar.
         animatorController.SetTrigger(animationClose);
-        panelTuto.SetActive(true);
     }
 }

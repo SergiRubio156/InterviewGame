@@ -11,19 +11,37 @@ public class FinalCheck : MonoBehaviour
     public GameObject panelVictory;
     private sceneManager sceneManager;
 
+    bool victoryBool;
     // Start is called before the first frame update
     void Awake()
     {
         FinalLaser = GameObject.FindGameObjectsWithTag("LaserFinal");
+        panelVictory = GameObject.Find("PanelVictory");
         CheckBool = new bool[FinalLaser.Length];
         GameManager.OnGameStateChanged += GameManager_OnGameStateChanged;   //Esto es el evento del script GameManager
         sceneManager = GameObject.FindObjectOfType<sceneManager>();
 
     }
 
+    private void Start()
+    {
+        var allObjects = Resources.FindObjectsOfTypeAll<GameObject>();
+        var taggedObjects = new List<GameObject>();
+
+        for (int i = 0; i < allObjects.Length; i++)
+        {
+            var obj = allObjects[i];
+            if (obj.CompareTag("PanelVictory"))
+            {
+                panelVictory = obj;
+            }
+        }
+    }
     // Update is called once per frame
     void Update()
     {
+        if (Input.GetKeyDown(KeyCode.M))
+            Victory();
 
     }
     void GameManager_OnGameStateChanged(GameState state)        //Esta funcion depende del Awake del evento, Como he explicado antes nso permite comparar entre Script y GameObjects
@@ -40,7 +58,8 @@ public class FinalCheck : MonoBehaviour
                 CheckBool[i] = _bool;
                 if (CheckBools())
                 {
-                    Victory();
+                    if(!victoryBool)
+                        Victory();
                 }
 
             }
@@ -60,14 +79,15 @@ public class FinalCheck : MonoBehaviour
 
     void Victory()
     {
+        victoryBool = true;
         panelVictory.SetActive(true);
-        GameManager.Instance.LvlCompleted();
         StartCoroutine(Wait());
     }
 
     IEnumerator Wait()
     {
-        yield return new WaitForSeconds(1f);
+        yield return new WaitForSeconds(0.5f);
+        GameManager.Instance.LvlCompleted(sceneManager.GetLevelName());
         GameManager.Instance.State = GameState.Playing;
 
     }
