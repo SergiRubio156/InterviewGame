@@ -5,12 +5,11 @@ using UnityEngine.SceneManagement;
 
 public class sceneManager : MonoBehaviour
 {
-    [SerializeField]
-    private LevelManager levelManager;
+    LevelManager levelManager;
     // Start is called before the first frame update
     void Start()
     {
-        levelManager = GameObject.FindObjectOfType<LevelManager>();
+        
     }
 
 
@@ -35,10 +34,7 @@ public class sceneManager : MonoBehaviour
                     break;
                 case "Play":
                     SceneManager.LoadScene(_name);
-                    break;
 
-                case "Laser":
-                    levelManager.ChooseLevel();
                     break;
 
             }
@@ -53,5 +49,6 @@ public class sceneManager : MonoBehaviour
     public string GetLevelName()
     {
         return levelManager.GetNameLevel();
+
     }
 }

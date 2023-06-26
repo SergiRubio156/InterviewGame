@@ -96,6 +96,7 @@ namespace StarterAssets
 
 		void Awake()
 		{
+			GameManager.OnGameStateChanged += GameManager_OnGameStateChanged;   //Esto es el evento del script GameManager
 			// get a reference to our main camera
 			if (_mainCamera == null)
 			{
@@ -125,18 +126,12 @@ namespace StarterAssets
 
 		}
 
-		void OnEnable()
-		{
-			GameManager.OnGameStateChanged += HandleGameStateChanged;  
-		}
-
 		private void OnDestroy()
 		{
-			GameManager.OnGameStateChanged -= HandleGameStateChanged;   
-		}     
-		private void HandleGameStateChanged(GameState newState)        
+			GameManager.OnGameStateChanged -= GameManager_OnGameStateChanged;   //La funcion "OnDestroy" se activa cuando destruimos el objeto, una vez destruido se activa el evento,
+		}
+		void GameManager_OnGameStateChanged(GameState newState)        //Esta funcion depende del Awake del evento, Como he explicado antes nso permite comparar entre Script y GameObjects
 		{
-
 			switch (newState)
 			{
 				case GameState.Lasers:
@@ -171,14 +166,12 @@ namespace StarterAssets
 
 		void Update()
 		{
-
-				if (!isPlaying && cinemachineVirtualCameraBase == cinemachineBrain.ActiveVirtualCamera)
-				{
-					JumpAndGravity();
-					GroundedCheck();
-					Move();
-				}
-			
+			if (!isPlaying && cinemachineVirtualCameraBase == cinemachineBrain.ActiveVirtualCamera)
+			{
+				JumpAndGravity();
+				GroundedCheck();
+				Move();
+			}		
 		}
 
 		private void LateUpdate()
