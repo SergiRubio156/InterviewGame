@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using System.Collections.Generic;
 
 public class RandomImageGenerator : MonoBehaviour
 {
@@ -8,49 +9,47 @@ public class RandomImageGenerator : MonoBehaviour
     public RawImage rawImage; // Referencia al componente RawImage para mostrar las imágenes
     public Texture2D[] pinturas; // Array que contiene las pinturas que quieres mostrar
     public RawImage pinturaImage; // Referencia al componente RawImage para mostrar las pinturas
-    public Texture2D[] cpu; // Array que contiene las imágenes de CPU que quieres mostrar
+    public List<TextMeshProUGUI> cpuText;
     public TextMeshProUGUI countText; // Referencia al componente de TextMeshProUGUI para el contador
-    //public Button fetButton; // Referencia al botón
-    private string randomNumTextTag = "text"; // Tag del objeto de texto para el número aleatorio
+    public EvaluateManager evaluateManager;
 
-    private int count;
-    private int previousCPUIndex = -1; // Índice de la imagen de CPU anterior
+    //pasarAl evaluateManager
 
+    [SerializeField]
+    private int idCard;
+    public float numDown, numUp;
+
+    private void Awake()
+    {
+        evaluateManager.RecivedRobotsCards();
+    }
     private void Start()
     {
-        //fetButton.onClick.AddListener(OnClickFetButton);
-        GenerateRandomImage();
-        GenerateRandomPintura();
-        count = 0;
+        GenerateNewRobot();
     }
 
-    private void Update()
+    public int GetIdCard()
     {
-        //if (Input.GetKeyDown(KeyCode.A))
-        {
-            //GenerateNewRobot();
-        }
+        return idCard;
+    }
+    public void SetIdCard(int _num)
+    {
+        idCard = _num;
     }
     public void GenerateNewRobot()
     {
         IncrementCount();
         GenerateRandomImage();
         GenerateRandomPintura();
-        GenerateRandomCPU();
-        GenerateRandomNumberWithTag();
+        GenerateRandomNumberCPU1();
+        GenerateRandomNumberCPU2();
     }
-    private void OnClickFetButton()
-    {
-        IncrementCount();
-        GenerateRandomImage();
-        GenerateRandomPintura();
-        GenerateRandomCPU();
-        GenerateRandomNumberWithTag();
-    }
+
 
     public void GenerateRandomImage()
     {
         int randomIndex = Random.Range(0, images.Length);
+        //randomImage = randomIndex;
         rawImage.texture = images[randomIndex];
     }
 
@@ -60,53 +59,25 @@ public class RandomImageGenerator : MonoBehaviour
         pinturaImage.texture = pinturas[randomIndex];
     }
 
-    public void GenerateRandomCPU()
-    {
-        GameObject[] textObjects = GameObject.FindGameObjectsWithTag(randomNumTextTag);
-
-        foreach (GameObject textObject in textObjects)
-        {
-            RawImage cpuRawImage = textObject.GetComponent<RawImage>();
-
-            if (cpuRawImage != null)
-            {
-                int randomIndex = GetUniqueRandomCPUIndex();
-                cpuRawImage.texture = cpu[randomIndex];
-            }
-        }
-    }
-
-    private int GetUniqueRandomCPUIndex()
-    {
-        int randomIndex = Random.Range(0, cpu.Length);
-
-        while (randomIndex == previousCPUIndex)
-        {
-            randomIndex = Random.Range(0, cpu.Length);
-        }
-
-        previousCPUIndex = randomIndex;
-        return randomIndex;
-    }
 
     public void IncrementCount()
     {
-        count++;
-        countText.text = count.ToString("D2");
+        countText.text = idCard.ToString();
     }
 
-    public void GenerateRandomNumberWithTag()
+    public void GenerateRandomNumberCPU1()
     {
-        TextMeshProUGUI[] randomNumTexts = GameObject.FindObjectsOfType<TextMeshProUGUI>();
-
-        foreach (TextMeshProUGUI text in randomNumTexts)
-        {
-            if (text.CompareTag(randomNumTextTag))
-            {
-                float randomNumber = Random.Range(1f, 5f);
-                randomNumber = Mathf.Round(randomNumber * 2f) / 2f; // Redondea al número más cercano con incremento de 0.5 o 1
-                text.text = randomNumber.ToString("F1");
-            }
-        }
+        float randomNumber = Random.Range(0f, 2f);
+        randomNumber = Mathf.Round(randomNumber * 2f) / 2f; // Redondea al número más cercano con incremento de 0.5 o 1
+        numUp = randomNumber;
+        cpuText[0].SetText(randomNumber.ToString());
+        
+    }
+    public void GenerateRandomNumberCPU2()
+    {
+        float randomNumber = Random.Range(0f, 2f);
+        randomNumber = Mathf.Round(randomNumber * 2f) / 2f; // Redondea al número más cercano con incremento de 0.5 o 1
+        numDown = randomNumber;
+        cpuText[1].SetText(randomNumber.ToString());
     }
 }

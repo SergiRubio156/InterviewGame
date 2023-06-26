@@ -11,29 +11,41 @@ public enum ObjectState
     Taked,
     Toppings,
     Cables,
-    Color
+    Color,
+    Null
 };
 
 public class ObjectManager : MonoBehaviour
 {
-    [SerializeField] private static List<Objects> objectList = new List<Objects>();
+    [SerializeField] 
+    private static List<Objects> objectList = new List<Objects>();
+
+    private int totalId = 1;
 
     ObjectState State = ObjectState.NoTaked;
 
     // Start is called before the first frame update
     void Start()
     {
-        objectList = UnityEngine.Object.FindObjectsOfType<Objects>().ToList();
-        name = this.gameObject.name;
+        RecivedRobotsList();
+    }
+    public void RecivedRobotsList()
+    {
+        Objects[] components = FindObjectsOfType<Objects>();
 
-        for (int i = 0; i < objectList.Count; i++)
+        for (int i = 0; i < components.Length; i++)
         {
-            objectList[i].state = State;
-            objectList[i].id = i;
+            // Verificar si ya existe un componente con el mismo nombre en el array RobotCards
+            if (!objectList.Any(card => card.name == components[i].name))
+            {
+                // Si no existe, agrega el componente al array RobotCards
+                objectList.Add(components[i]);
+                objectList[totalId - 1].id = totalId;
+                totalId++;
+            }
         }
     }
 
-    
     public int GetObjectPositionInList(GameObject _obj)
     {
         if (_obj.GetComponent<Objects>() != null)
@@ -47,16 +59,30 @@ public class ObjectManager : MonoBehaviour
         return -1;
     }
 
-    public ObjectState GetObjectStateInList(GameObject _obj)
+    public ObjectState GetObjectStateInList(int _id)
     {
-        _obj = _obj.GetComponent<Objects>().name;
-        for (int i = 0; i < objectList.Count; i++)
-        {
-                return objectList[i].state;
-        }
-        return objectList[0].state;
+
+        return objectList[_id].state;
     }
 
+    public Objects FindStateOfObject(ObjectState _state)
+    {
+        foreach(Objects _obj in objectList)
+        {
+            if (_obj.state == _state)
+                return _obj;
+        }
+        return null;
+    }
+    public bool FindBoolStateOfObject(ObjectState _state)
+    {
+        foreach (Objects _obj in objectList)
+        {
+            if (_obj.state == _state)
+                return true;
+        }
+        return false;
+    }
     public bool GetObjectBoolInList(int i , string _name)
     {
         switch (_name)
@@ -68,7 +94,6 @@ public class ObjectManager : MonoBehaviour
                 return objectList[i].toppingCheck;
 
             case "Wire":
-                Debug.Log("!");
                 return objectList[i].cablesCheck;
 
             default:
@@ -130,9 +155,8 @@ public class ObjectManager : MonoBehaviour
         
     }
 
-    void ObjectToppings()
+    public virtual void ObjectToppings()
     {
-        Debug.Log(gameObject.name + " toppings");
     }
 
     public virtual void ObjectCables()

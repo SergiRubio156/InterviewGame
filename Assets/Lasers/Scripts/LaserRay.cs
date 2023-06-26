@@ -10,6 +10,8 @@ public class LaserRay : MonoBehaviour
     
     public LineRenderer inputLine;
 
+    bool isPlaying;
+
     RaycastHit hit;
 
     //GameObjects
@@ -37,7 +39,7 @@ public class LaserRay : MonoBehaviour
         GameManager.OnGameStateChanged += HandleGameStateChanged;
         positionLaser = LaserObject.transform.position;
         inputLine = LaserObject.GetComponentInChildren<LineRenderer>();
-
+        raycastLine = GameObject.FindGameObjectWithTag("RaycastLine").GetComponent<RaycastLine>();
     }
 
     private void OnDisable()
@@ -50,8 +52,10 @@ public class LaserRay : MonoBehaviour
         switch (newState)
         {
             case GameState.Playing:
+                isPlaying = false;
                 break;
             case GameState.Lasers:
+                isPlaying = true;
                 isRotation = true;
                 break;
             case GameState.Settings:
@@ -75,13 +79,15 @@ public class LaserRay : MonoBehaviour
         LayerStart = 1 << 10;
         LayerFinal = 1 << 11;
         positionLaser = LaserObject.transform.position;
-        LaserDraw();
-        ObjectRotate();
-        if (Input.GetKeyDown(KeyCode.Space)) //Cuando le damos click al Escape entra a esta funcion
+        if (isPlaying)
         {
-            isRotation = !isRotation;// = true ? isRotation : !isRotation;
+            LaserDraw();
+            ObjectRotate();
+            if (Input.GetKeyDown(KeyCode.Space)) //Cuando le damos click al Escape entra a esta funcion
+            {
+                isRotation = !isRotation;// = true ? isRotation : !isRotation;
+            }
         }
-
     }
 
     void ObjectRotate()

@@ -6,8 +6,20 @@ using UnityEngine.UI;
 public class MenuManager : MonoBehaviour
 {
 
-    public GameObject settingsMenu;
+    public GameObject settingsMenuPlay;
+    public GameObject settingsMenuLasers;
+    public GameObject tutorialLasers;
+    public GameObject panelVictory;
+    public GameObject toppingPanel;
+    public GameObject panelRobot;
+    public GameObject panelColor;
+
     public GameObject WireMenu;
+
+    GameState state;
+    public bool sceneSettings = false;
+    bool boolRobotPanel = true;
+
     private void OnEnable()
     {
         GameManager.OnGameStateChanged += HandleGameStateChanged;
@@ -23,27 +35,56 @@ public class MenuManager : MonoBehaviour
         switch (newState)
         {
             case GameState.Playing:
-                settingsMenu.SetActive(false);
-                WireMenu = GameObject.FindGameObjectWithTag("WirePanel");
-                if (WireMenu != null)
-                    WireMenu.SetActive(false);
+                sceneSettings = false;
+                state = newState;
+                tutorialLasers.SetActive(false);
+                settingsMenuPlay.SetActive(false);
+                panelVictory.SetActive(false);
+                toppingPanel.SetActive(false);
+                WireMenu.SetActive(false);
+                panelColor.SetActive(false);
                 break;
             case GameState.Lasers:
-                settingsMenu.SetActive(false);
-                Cursor.visible = true;
-                Cursor.lockState = CursorLockMode.None;
+                sceneSettings = false;
+                state = newState;
+                tutorialLasers.SetActive(true);
+                settingsMenuLasers.SetActive(false);
                 break;
             case GameState.Settings:
-                settingsMenu.SetActive(true);
+                panelRobot.SetActive(false);
+                if (state == GameState.Playing)
+                    settingsMenuPlay.SetActive(true);
+                else if (state == GameState.Lasers)
+                    settingsMenuLasers.SetActive(true);
+                sceneSettings = true;
                 Cursor.visible = true;
                 Cursor.lockState = CursorLockMode.None;
                 break;
             case GameState.Menu:
                 Cursor.visible = true;
                 Cursor.lockState = CursorLockMode.None;
+                state = newState;
                 break;
             case GameState.Wire:
+                panelRobot.SetActive(false);
                 WireMenu.SetActive(true);
+                sceneSettings = false;
+                state = newState;
+                Cursor.visible = true;
+                Cursor.lockState = CursorLockMode.None;
+                break;
+            case GameState.Topping:
+                panelRobot.SetActive(false);
+                toppingPanel.SetActive(true);
+                sceneSettings = false;
+                state = newState;
+                Cursor.visible = true;
+                Cursor.lockState = CursorLockMode.None;
+                break;
+            case GameState.Color:
+                panelColor.SetActive(true);
+                sceneSettings = false;
+                state = newState;
                 Cursor.visible = true;
                 Cursor.lockState = CursorLockMode.None;
                 break;
@@ -53,7 +94,54 @@ public class MenuManager : MonoBehaviour
         }
     }
 
-
+    private void Update()
+    {
+        switch(state)
+        {
+            case GameState.Menu:
+                break;
+            case GameState.Playing:
+                if (Input.GetKeyDown(KeyCode.Escape))
+                {
+                    if (sceneSettings) GameManager.Instance.State = GameState.Playing;
+                    else GameManager.Instance.State = GameState.Settings;
+                }
+                if (Input.GetKeyDown(KeyCode.P))
+                {
+                    if (boolRobotPanel) { panelRobot.SetActive(true); boolRobotPanel = false; }
+                    else { panelRobot.SetActive(false); boolRobotPanel = true; }
+                }
+                break;
+            case GameState.Lasers:
+                if (Input.GetKeyDown(KeyCode.Escape)) 
+                {
+                    if (sceneSettings) GameManager.Instance.State = GameState.Lasers;
+                    else GameManager.Instance.State = GameState.Settings;
+                }
+                break;
+            case GameState.Wire:
+                if (Input.GetKeyDown(KeyCode.Escape)) 
+                {
+                    if (sceneSettings) GameManager.Instance.State = GameState.Wire;
+                    else GameManager.Instance.State = GameState.Playing;
+                }
+                break;
+            case GameState.Topping:
+                if (Input.GetKeyDown(KeyCode.Escape)) 
+                {
+                    if (sceneSettings) GameManager.Instance.State = GameState.Topping;
+                    else GameManager.Instance.State = GameState.Playing;
+                }
+                break;
+            case GameState.Color:
+                if (Input.GetKeyDown(KeyCode.Escape)) 
+                {
+                    if (sceneSettings) GameManager.Instance.State = GameState.Color;
+                    else GameManager.Instance.State = GameState.Playing;
+                }
+                break;
+        }
+    }
     public void StartGame() //Esta funcion se llama cuando le damos click al botton del Menu
     {
         GameManager.Instance.State = GameState.Playing;

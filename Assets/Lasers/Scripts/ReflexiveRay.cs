@@ -205,10 +205,8 @@ public class ReflexiveRay : MonoBehaviour
             objectRecvied = _gameObject;
             point = _point;
             checkBool = _bool;
-            Debug.Log(_mat);
-            if (inputLine.material == _mat)
+            if (inputLine.material != _mat)
             {
-                Debug.Log("!");
                 inputLine.material = _mat;
             }
             LaserDraw();

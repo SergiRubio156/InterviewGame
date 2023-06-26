@@ -6,7 +6,7 @@ using UnityEngine;
 public class LaserManager : MonoBehaviour
 {
     //private StarterAssetsInputs controls;
-    public Camera mainCamera;
+    public Camera mainCamera = null;
     public GameObject ObjectMove;
     public Transform objectSun;
 
@@ -27,14 +27,12 @@ public class LaserManager : MonoBehaviour
         
     //Rigidbody
     Rigidbody rb = null;
-    public bool isPlaying = true;
+    bool isPlaying;
     float positionIntial = 0f;
 
     void OnEnable()
     {
-        GameManager.OnGameStateChanged += HandleGameStateChanged;   //Esto es el evento del script GameManager
-        mainCamera = Camera.main;
-                //controls = new StarterAssetsInputs();
+        GameManager.OnGameStateChanged += HandleGameStateChanged;   //Esto es el evento del script GameManager                //controls = new StarterAssetsInputs();
     }
 
     private void OnDestroy()
@@ -52,18 +50,17 @@ public class LaserManager : MonoBehaviour
         switch (newState)
         {
             case GameState.Playing:
+                isPlaying = false;
                 break;
             case GameState.Lasers:
-                sceneSettings = false;
+                objectSelect = false;
+                ObjectMove = null;
+                mainCamera = GameObject.FindGameObjectWithTag("CameraLvL").gameObject.GetComponent<Camera>();
                 isPlaying = true;
                 Cursor.visible = true;
                 Cursor.lockState = CursorLockMode.None;
                 break;
             case GameState.Settings:
-                sceneSettings = true;
-                isPlaying = false;
-                Cursor.visible = true;
-                Cursor.lockState = CursorLockMode.None;
                 break;
             case GameState.Menu:
                 break;
@@ -81,11 +78,6 @@ public class LaserManager : MonoBehaviour
     {
         LayerPlane = 1 << 13;
 
-        if (Input.GetKeyDown(KeyCode.Escape)) //Cuando le damos click al Escape entra a esta funcion
-        {
-            if (sceneSettings) GameManager.Instance.State = GameState.Lasers;
-            else GameManager.Instance.State = GameState.Settings;
-        }
         if (isPlaying)
         {
             CheckGround();

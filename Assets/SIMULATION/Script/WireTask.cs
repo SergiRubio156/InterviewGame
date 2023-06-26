@@ -18,9 +18,12 @@ public class WireTask : MonoBehaviour
     private List<int> _availableLeftWireIndex;
     private List<int> _availableRightWireIndex;
 
+    ObjectManager objectManager;
 
     private void Start()
     {
+        objectManager = FindObjectOfType<ObjectManager>();
+
         _availableColor = new List<Color>(_wireColor);
         _availableLeftWireIndex = new List<int>();
         _availableRightWireIndex = new List<int>();
@@ -53,7 +56,6 @@ public class WireTask : MonoBehaviour
         //StartCoroutine(CheckTaskCompleted());
     }
 
-
     public void CheckTaskCompleted()
     {
             int successfulWires = 0;
@@ -63,6 +65,10 @@ public class WireTask : MonoBehaviour
             }
             if (successfulWires >= _rightWire.Count)
             {
+            Objects obj = objectManager.FindStateOfObject(ObjectState.Cables);
+
+            obj.cablesCheck = true;
+
             GameManager.Instance.State = GameState.Playing;
             }
             else

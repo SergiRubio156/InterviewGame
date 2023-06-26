@@ -10,6 +10,7 @@ public class TransitionCamera : MonoBehaviour
 {
     public CinemachineVirtualCamera cam1;
     public CinemachineVirtualCamera cam2;
+
     public float transitionTimeDoor = 0.5f;
 
     public bool lvlComplete = false;
@@ -23,9 +24,27 @@ public class TransitionCamera : MonoBehaviour
         nameDoor = transform.parent.gameObject.name;
         CheckDoor();
     }
-    private void GameManager_OnGameStateChanged(GameState state)
+    private void GameManager_OnGameStateChanged(GameState newState)
     {
-
+        switch (newState)
+        {
+            case GameState.Lasers:
+                
+                break;
+            case GameState.Playing:
+                CheckDoor();
+                break;
+            case GameState.Settings:
+                
+                break;
+            case GameState.Menu:
+                break;
+            case GameState.Wire:
+                break;
+            case GameState.Exit:
+                // Acciones a realizar cuando el estado de juego es "Exit"
+                break;
+        }
     }
 
     // Start is called before the first frame update
@@ -46,23 +65,32 @@ public class TransitionCamera : MonoBehaviour
     {
         if (!lvlComplete)
         {
-            cam1.enabled = false;
-            cam2.enabled = true;
-
-
             if (_name == "Door")
             {
-                FinalCheck();
-                StartCoroutine(WaitDoor());
+                StartCoroutine(TransicionDeCamara());
             }
         }
 
     }
-    IEnumerator WaitDoor()
+    private System.Collections.IEnumerator TransicionDeCamara()
     {
-        yield return new WaitForSeconds(transitionTimeDoor);
+        // Activa la cámara 1
+        cam2.enabled = true;
+
+        yield return new WaitUntil(() => !CinemachineCore.Instance.IsLive(cam1));
+        FinalCheck();
+        CheckDoor();
+
         GameManager.Instance.State = GameState.Lasers;
+
+        RevertTransitionScene();
     }
 
+
+    public void RevertTransitionScene()
+    {
+        cam1.enabled = true;
+        cam2.enabled = false;
+    }
 
 }

@@ -24,7 +24,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4516899403869491629}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -45,7 +45,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   mainCamera: {fileID: 0}
-  objectMove: {fileID: 0}
-  objectSelected: {fileID: 0}
-  velocity: 5
+  objectManager: {fileID: 0}
+  objectSelect: 0
   objectHand: {fileID: 0}
+  objectButtonDoor: {fileID: 0}
+  poisitionHand: {fileID: 0}
+  positionMachine: {fileID: 0}
+  outline: {fileID: 2100000, guid: b679e44ff42d8d74485d14bef8fad8b6, type: 2}
+  objectOutline: {fileID: 0}
+  oneTime: 0
