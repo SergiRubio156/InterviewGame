@@ -10,7 +10,8 @@ public class CerrarPantalla : MonoBehaviour
     public Button abrirControl;
     private bool pantallaVisible;
 
-
+    // contador veces preguntar
+    public int questionCont = 0;
     void Start()
     {
         if (GetCurrentSceneName() == "NIVEL 1")
@@ -46,5 +47,9 @@ public class CerrarPantalla : MonoBehaviour
     {
         Scene currentScene = SceneManager.GetActiveScene();
         return currentScene.name;
+    }
+    public void IncreaseQuestionCont()
+    {
+        questionCont++;
     }
 }
