@@ -12,7 +12,7 @@ public enum ObjectState
     Toppings,
     Cables,
     Color,
-    Null
+    Cinta
 };
 
 public class ObjectManager : MonoBehaviour
@@ -134,16 +134,15 @@ public class ObjectManager : MonoBehaviour
                 case ObjectState.Color:
                     ObjectColors();
                     break;
+                case ObjectState.Cinta:
+                    ObjectCinta();
+                    break;
                 default:
                     Debug.Log("Error");
                     break;
                    
             }
         }
-        //OnGameStateChanged?.Invoke(newState);//Esta linia comprueba si el estado ha cambiado y si es true entonces va a todos los scripts y cambia el estado.
-                                             //Debug.Log("State " + State);
-                                             //Debug.Log("Newstate " + newState);
-
     }
 
     public virtual void ObjectNoTaked()
@@ -164,6 +163,10 @@ public class ObjectManager : MonoBehaviour
        
     }
     public virtual void ObjectColors()
+    {
+    }
+
+    public virtual void ObjectCinta()
     {
     }
 }

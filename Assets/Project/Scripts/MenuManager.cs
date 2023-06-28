@@ -9,6 +9,7 @@ public class MenuManager : MonoBehaviour
     public GameObject settingsMenuPlay;
     public GameObject settingsMenuLasers;
     public GameObject tutorialLasers;
+    public GameObject tutorialTaller;
     public GameObject panelVictory;
     public GameObject toppingPanel;
     public GameObject panelRobot;
