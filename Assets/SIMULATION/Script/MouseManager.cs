@@ -238,7 +238,7 @@ public class MouseManager : MonoBehaviour
                         {
                             positionMachine = _object;
                             objectSelect = false;
-                            objectManager.ObjectGameState(w, ObjectState.NoTaked);
+                            objectManager.ObjectGameState(w, ObjectState.Cinta);
                         }
                     }
                 }

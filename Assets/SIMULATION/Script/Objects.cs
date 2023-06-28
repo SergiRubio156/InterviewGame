@@ -9,7 +9,7 @@ public class Objects : ObjectManager
 {
 
     public int id;
-    public GameObject name;
+    public GameObject obj;
     public ObjectState state;
     public float numUp;
     public float numDown;
@@ -40,7 +40,7 @@ public class Objects : ObjectManager
 
     private void Start()
     {
-        name = this.gameObject;
+        obj = this.gameObject;
         boxColliderUp = GetComponent<BoxCollider>();
         rend = GetComponentsInChildren<Renderer>();
         parts = transform.GetChild(1).gameObject;
@@ -126,6 +126,13 @@ public class Objects : ObjectManager
         boxColliderUp.enabled = true;
         StartCoroutine(WaitColor());
     }
+    public override void ObjectCinta()
+    {
+        boxColliderUp.enabled = true;
+        if (parts.activeSelf)
+            boxColliderDown.enabled = false;
+    }
+
     IEnumerator WaitToppings()
     {
         yield return new WaitForSeconds(0.2f);
