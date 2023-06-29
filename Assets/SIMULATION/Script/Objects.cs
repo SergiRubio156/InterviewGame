@@ -123,6 +123,7 @@ public class Objects : ObjectManager
 
     public override void ObjectColors()
     {
+        transform.rotation = Quaternion.Euler(0f, 75.624f, 0f);
         boxColliderUp.enabled = true;
         StartCoroutine(WaitColor());
     }

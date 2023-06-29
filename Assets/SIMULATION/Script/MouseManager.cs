@@ -20,7 +20,7 @@ public class MouseManager : MonoBehaviour
     public Material outline;
     public GameObject objectOutline;
     public bool oneTime = false;
-    float positionIntial;
+
     float distanceMax;
 
 
@@ -159,7 +159,6 @@ public class MouseManager : MonoBehaviour
         {
             _tag = hit.collider.tag;
             _object = hit.collider.gameObject;
-            positionIntial = hit.collider.gameObject.transform.position.y;
 
             return Tuple.Create(_object, _tag);
         }
@@ -209,6 +208,7 @@ public class MouseManager : MonoBehaviour
                     else if (_object.name == "Color")
                     {
                         int w = objectManager.GetObjectPositionInList(objectHand);
+                        Debug.Log("!");
                         if (w != -1)
                         {
                             if (!objectManager.GetObjectBoolInList(w, "Color"))
@@ -249,6 +249,18 @@ public class MouseManager : MonoBehaviour
                     {
                         GameManager.Instance.State = GameState.RobotPanel;
                     }
+                    else if (_object.name == "Horno")
+                    {
+                        Objects _obj = objectManager.FindStateOfObject(ObjectState.Color);
+                        int w = objectManager.GetObjectPositionInList(_obj.gameObject);
+
+                        if (_obj != null)
+                        {
+                            objectManager.ObjectGameState(w, ObjectState.Taked);
+                            objectHand = _obj.gameObject;
+                            objectSelect = true;
+                        }
+                    }
                 }
                 break;
                
@@ -263,11 +275,9 @@ public class MouseManager : MonoBehaviour
 
                     if (d != -1)
                     {
-                        Debug.Log(d);
                         if (objectManager.GetObjectStateInList(d) == ObjectState.Taked)
                         {
                             objectManager.ObjectGameState(d, ObjectState.NoTaked);
-                            objectHand.transform.position = new Vector3(objectHand.transform.position.x, positionIntial, objectHand.transform.position.z);
                             objectSelect = false;
                             objectHand = null;
                         }
