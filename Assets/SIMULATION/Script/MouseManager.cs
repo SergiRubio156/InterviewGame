@@ -159,6 +159,7 @@ public class MouseManager : MonoBehaviour
         {
             _tag = hit.collider.tag;
             _object = hit.collider.gameObject;
+            positionIntial = hit.collider.gameObject.transform.position.y;
 
             return Tuple.Create(_object, _tag);
         }
@@ -240,6 +241,13 @@ public class MouseManager : MonoBehaviour
                             objectSelect = false;
                             objectManager.ObjectGameState(w, ObjectState.Cinta);
                         }
+                    }
+                }
+                else
+                {
+                    if (_object.name == "Plancha")
+                    {
+                        GameManager.Instance.State = GameState.RobotPanel;
                     }
                 }
                 break;

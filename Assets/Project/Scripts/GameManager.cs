@@ -18,6 +18,7 @@ public enum GameState
     Wire,
     Topping,
     Color,
+    RobotPanel,
     Exit
 
 
@@ -70,7 +71,7 @@ public class GameManager : MonoBehaviour
 
     void Awake()
     {
-        state = GameState.Playing;
+        state = GameState.Menu;
 
         DontDestroyOnLoad(this.gameObject);
 
@@ -158,6 +159,11 @@ public class GameManager : MonoBehaviour
                         state = value;
                         Debug.Log("State " + state);
                         break;
+                    case GameState.RobotPanel:
+                        HandleSettings();
+                        state = value;
+                        Debug.Log("State " + state);
+                        break;
                     default: //se entrara aqui si el valor "newState" no coincide con ningun valor anterior
                         throw new ArgumentOutOfRangeException(nameof(value), value, null);//pone el valor "newState" a null para que no pete el programa.
                 }
@@ -194,7 +200,6 @@ public class GameManager : MonoBehaviour
 
     void DoorFind()
     {
-        Debug.Log("!");
 
         GameObject[] gameObjects = GameObject.FindGameObjectsWithTag("FinalDoor");
 
