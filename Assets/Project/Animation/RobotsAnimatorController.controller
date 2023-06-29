@@ -1,13 +1,50 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1102 &-7520098544693645277
+--- !u!1107 &-7383099192563026462
+AnimatorStateMachine:
+  serializedVersion: 6
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: Base Layer
+  m_ChildStates:
+  - serializedVersion: 1
+    m_State: {fileID: 6902866880713248657}
+    m_Position: {x: 403.41644, y: 83.665955, z: 0}
+  - serializedVersion: 1
+    m_State: {fileID: 8635463655586713411}
+    m_Position: {x: 438.41644, y: 148.66595, z: 0}
+  - serializedVersion: 1
+    m_State: {fileID: -6508469728095227885}
+    m_Position: {x: 473.41644, y: 213.66595, z: 0}
+  - serializedVersion: 1
+    m_State: {fileID: 7275773876869901319}
+    m_Position: {x: 508.41644, y: 278.66595, z: 0}
+  - serializedVersion: 1
+    m_State: {fileID: 5586492541018682123}
+    m_Position: {x: 543.41644, y: 343.66595, z: 0}
+  - serializedVersion: 1
+    m_State: {fileID: 364581519382314209}
+    m_Position: {x: 578.41644, y: 408.66595, z: 0}
+  m_ChildStateMachines: []
+  m_AnyStateTransitions: []
+  m_EntryTransitions: []
+  m_StateMachineTransitions: {}
+  m_StateMachineBehaviours: []
+  m_AnyStatePosition: {x: 50, y: 20, z: 0}
+  m_EntryPosition: {x: 50, y: 120, z: 0}
+  m_ExitPosition: {x: 800, y: 120, z: 0}
+  m_ParentStateMachinePosition: {x: 800, y: 20, z: 0}
+  m_DefaultState: {fileID: 6902866880713248657}
+--- !u!1102 &-6508469728095227885
 AnimatorState:
   serializedVersion: 6
   m_ObjectHideFlags: 1
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: robot_percha_taller 0
+  m_Name: robot percha-3
   m_Speed: 1
   m_CycleOffset: 0
   m_Transitions: []
@@ -20,7 +57,7 @@ AnimatorState:
   m_MirrorParameterActive: 0
   m_CycleOffsetParameterActive: 0
   m_TimeParameterActive: 0
-  m_Motion: {fileID: 7400000, guid: 3ce56fdfec75a32438dda899c1115eda, type: 2}
+  m_Motion: {fileID: 7400000, guid: 579ff25efdcfcab498134daada0d2bca, type: 2}
   m_Tag: 
   m_SpeedParameter: 
   m_MirrorParameter: 
@@ -32,13 +69,13 @@ AnimatorController:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: robot percha
+  m_Name: RobotsAnimatorController
   serializedVersion: 5
   m_AnimatorParameters: []
   m_AnimatorLayers:
   - serializedVersion: 5
     m_Name: Base Layer
-    m_StateMachine: {fileID: 7419461602796473474}
+    m_StateMachine: {fileID: -7383099192563026462}
     m_Mask: {fileID: 0}
     m_Motions: []
     m_Behaviours: []
@@ -48,14 +85,14 @@ AnimatorController:
     m_IKPass: 0
     m_SyncedLayerAffectsTiming: 0
     m_Controller: {fileID: 9100000}
---- !u!1102 &4337489625136057356
+--- !u!1102 &364581519382314209
 AnimatorState:
   serializedVersion: 6
   m_ObjectHideFlags: 1
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: New State 0
+  m_Name: 3_2
   m_Speed: 1
   m_CycleOffset: 0
   m_Transitions: []
@@ -68,13 +105,39 @@ AnimatorState:
   m_MirrorParameterActive: 0
   m_CycleOffsetParameterActive: 0
   m_TimeParameterActive: 0
-  m_Motion: {fileID: 0}
+  m_Motion: {fileID: 7400000, guid: 3a9aa4729357eff4dba23390362b2912, type: 2}
   m_Tag: 
   m_SpeedParameter: 
   m_MirrorParameter: 
   m_CycleOffsetParameter: 
   m_TimeParameter: 
---- !u!1102 &5213112226144525640
+--- !u!1102 &5586492541018682123
+AnimatorState:
+  serializedVersion: 6
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: 3_1
+  m_Speed: 1
+  m_CycleOffset: 0
+  m_Transitions: []
+  m_StateMachineBehaviours: []
+  m_Position: {x: 50, y: 50, z: 0}
+  m_IKOnFeet: 0
+  m_WriteDefaultValues: 1
+  m_Mirror: 0
+  m_SpeedParameterActive: 0
+  m_MirrorParameterActive: 0
+  m_CycleOffsetParameterActive: 0
+  m_TimeParameterActive: 0
+  m_Motion: {fileID: 7400000, guid: 4f0a0b410c5aa5c4eb81f157e915ba63, type: 2}
+  m_Tag: 
+  m_SpeedParameter: 
+  m_MirrorParameter: 
+  m_CycleOffsetParameter: 
+  m_TimeParameter: 
+--- !u!1102 &6902866880713248657
 AnimatorState:
   serializedVersion: 6
   m_ObjectHideFlags: 1
@@ -100,45 +163,14 @@ AnimatorState:
   m_MirrorParameter: 
   m_CycleOffsetParameter: 
   m_TimeParameter: 
---- !u!1107 &7419461602796473474
-AnimatorStateMachine:
-  serializedVersion: 6
-  m_ObjectHideFlags: 1
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_Name: Base Layer
-  m_ChildStates:
-  - serializedVersion: 1
-    m_State: {fileID: 5213112226144525640}
-    m_Position: {x: 200, y: 0, z: 0}
-  - serializedVersion: 1
-    m_State: {fileID: 8277597242718680287}
-    m_Position: {x: 483.53076, y: 260.16827, z: 0}
-  - serializedVersion: 1
-    m_State: {fileID: 4337489625136057356}
-    m_Position: {x: -1375.6664, y: 1364.0237, z: 0}
-  - serializedVersion: 1
-    m_State: {fileID: -7520098544693645277}
-    m_Position: {x: -1443.7788, y: 1198.182, z: 0}
-  m_ChildStateMachines: []
-  m_AnyStateTransitions: []
-  m_EntryTransitions: []
-  m_StateMachineTransitions: {}
-  m_StateMachineBehaviours: []
-  m_AnyStatePosition: {x: 50, y: 20, z: 0}
-  m_EntryPosition: {x: 50, y: 120, z: 0}
-  m_ExitPosition: {x: 800, y: 120, z: 0}
-  m_ParentStateMachinePosition: {x: 800, y: 20, z: 0}
-  m_DefaultState: {fileID: 5213112226144525640}
---- !u!1102 &8277597242718680287
+--- !u!1102 &7275773876869901319
 AnimatorState:
   serializedVersion: 6
   m_ObjectHideFlags: 1
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: New State
+  m_Name: robot percha-4
   m_Speed: 1
   m_CycleOffset: 0
   m_Transitions: []
@@ -151,20 +183,20 @@ AnimatorState:
   m_MirrorParameterActive: 0
   m_CycleOffsetParameterActive: 0
   m_TimeParameterActive: 0
-  m_Motion: {fileID: 0}
+  m_Motion: {fileID: 7400000, guid: 876b46676916fa542924f724ba19906b, type: 2}
   m_Tag: 
   m_SpeedParameter: 
   m_MirrorParameter: 
   m_CycleOffsetParameter: 
   m_TimeParameter: 
---- !u!1102 &8846012218730662592
+--- !u!1102 &8635463655586713411
 AnimatorState:
   serializedVersion: 6
   m_ObjectHideFlags: 1
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: robot_percha_taller_3
+  m_Name: robot_percha_taller_brazos2
   m_Speed: 1
   m_CycleOffset: 0
   m_Transitions: []
@@ -177,7 +209,7 @@ AnimatorState:
   m_MirrorParameterActive: 0
   m_CycleOffsetParameterActive: 0
   m_TimeParameterActive: 0
-  m_Motion: {fileID: 7400000, guid: c1c2f2fa3c73bdd4eb3dd6348ecc1c8b, type: 2}
+  m_Motion: {fileID: 7400000, guid: 6340c01b7c2af854d9b3974489ba1159, type: 2}
   m_Tag: 
   m_SpeedParameter: 
   m_MirrorParameter: 

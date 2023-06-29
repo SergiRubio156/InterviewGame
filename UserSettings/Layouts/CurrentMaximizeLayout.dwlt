@@ -24,7 +24,7 @@ MonoBehaviour:
   m_MinSize: {x: 300, y: 200}
   m_MaxSize: {x: 24288, y: 16192}
   vertical: 0
-  controlID: 34559
+  controlID: 19
 --- !u!114 &2
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -144,7 +144,7 @@ MonoBehaviour:
   m_MinSize: {x: 200, y: 200}
   m_MaxSize: {x: 16192, y: 16192}
   vertical: 1
-  controlID: 34560
+  controlID: 20
 --- !u!114 &4
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -169,7 +169,7 @@ MonoBehaviour:
   m_MinSize: {x: 200, y: 100}
   m_MaxSize: {x: 16192, y: 8096}
   vertical: 0
-  controlID: 34561
+  controlID: 21
 --- !u!114 &5
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -189,8 +189,8 @@ MonoBehaviour:
     y: 0
     width: 361
     height: 560
-  m_MinSize: {x: 200, y: 200}
-  m_MaxSize: {x: 4000, y: 4000}
+  m_MinSize: {x: 201, y: 221}
+  m_MaxSize: {x: 4001, y: 4021}
   m_ActualView: {fileID: 6}
   m_Panes:
   - {fileID: 6}
@@ -227,21 +227,21 @@ MonoBehaviour:
     m_SaveData: []
   m_SceneHierarchy:
     m_TreeViewState:
-      scrollPos: {x: 0, y: 0}
-      m_SelectedIDs: 8e78faff
-      m_LastClickedID: -362354
-      m_ExpandedIDs: 8a07faff9010faffe846faff8878faff6c7cfaffb280faff52abfaffc6cdfbffdacdfbffe65bfcff065ffcffda5ffcffb863fcff0c97fcffaeddfcff663cfdff783cfdffcc99fdfffe9dfdffdea2fdffc23cfefffe75feffcc96feffa6a0feffbca4feffc4a5fefffea6feff24d2feff2ed2feff94d5feffa2d5feffaed5fefffed5feff06d6feffd0dbfeffd2dbfeffaa0effffb20fffffec10ffff2a4fffffda5bffff4e6effff566fffff9070ffff4081ffff5099ffff0ca6ffff2aa7ffff02b4ffffdabafffff4ffffff40cd000018ec00005e130100b41301001e14010044a6010010b30100f8cb01008ecd01004afa0100c4fb010076ff0100caff01006e00020076000200f0000200
+      scrollPos: {x: 0, y: 218}
+      m_SelectedIDs: 7e7d0000
+      m_LastClickedID: 32126
+      m_ExpandedIDs: ae8effffb2adffffb6adffffbcadffffb6f9ffffc67b0000d07b00001c7c0000547c0000c87c0000d07c00003c7d00006a7d0000
       m_RenameOverlay:
         m_UserAcceptedRename: 0
-        m_Name: TImeManager
-        m_OriginalName: TImeManager
+        m_Name: MEDIA DE TIEMPO
+        m_OriginalName: MEDIA DE TIEMPO
         m_EditFieldRect:
           serializedVersion: 2
           x: 0
           y: 0
           width: 0
           height: 0
-        m_UserData: -362352
+        m_UserData: -21070
         m_IsWaitingForDelay: 0
         m_IsRenaming: 0
         m_OriginalEventType: 0
@@ -596,9 +596,9 @@ MonoBehaviour:
   m_PlayAudio: 0
   m_AudioPlay: 0
   m_Position:
-    m_Target: {x: 464.1824, y: 287.80063, z: -22.766876}
+    m_Target: {x: 462.8943, y: 244.99266, z: -15.260193}
     speed: 2
-    m_Value: {x: 464.1824, y: 287.80063, z: -22.766876}
+    m_Value: {x: 462.8943, y: 244.99266, z: -15.260193}
   m_RenderMode: 0
   m_CameraMode:
     drawMode: 0
@@ -645,13 +645,13 @@ MonoBehaviour:
     m_GridAxis: 1
     m_gridOpacity: 0.5
   m_Rotation:
-    m_Target: {x: -0.04678522, y: 0.018577605, z: -0.0008820566, w: -0.998779}
+    m_Target: {x: -0.010807492, y: -0.015900644, z: 0.00016104055, w: -0.99986374}
     speed: 2
-    m_Value: {x: -0.04678302, y: 0.01857673, z: -0.00088201504, w: -0.998732}
+    m_Value: {x: -0.0108069675, y: -0.015899872, z: 0.00016103273, w: -0.9998152}
   m_Size:
-    m_Target: 134.8617
+    m_Target: 146.19495
     speed: 2
-    m_Value: 134.8617
+    m_Value: 146.19495
   m_Ortho:
     m_Target: 0
     speed: 2
@@ -726,14 +726,14 @@ MonoBehaviour:
       e31: 0
       e32: 0
       e33: 1
-    - e00: 0.72
+    - e00: 1.2592844
       e01: 0
       e02: 0
-      e03: -21
+      e03: -201.21968
       e10: 0
-      e11: 0.72
+      e11: 1.2592844
       e12: 0
-      e13: 188.8
+      e13: 145.54231
       e20: 0
       e21: 0
       e22: 1
@@ -818,7 +818,7 @@ MonoBehaviour:
     m_LastAppliedPresetName: Default
     m_SaveData: []
   m_SearchFilter:
-    m_NameFilter: 
+    m_NameFilter: tiemp
     m_ClassNames: []
     m_AssetLabels: []
     m_AssetBundleNames: []
@@ -832,7 +832,7 @@ MonoBehaviour:
     m_Folders:
     - Assets/Project/Scripts/2nd minijuego
     m_Globs: []
-    m_OriginalText: 
+    m_OriginalText: tiemp
   m_ViewMode: 1
   m_StartGridSize: 64
   m_LastFolders:
@@ -843,9 +843,9 @@ MonoBehaviour:
     m_IsLocked: 0
   m_FolderTreeState:
     scrollPos: {x: 0, y: 840}
-    m_SelectedIDs: 40cc0000
-    m_LastClickedID: 52288
-    m_ExpandedIDs: 0000000028cc00002acc00002ccc00002ecc000030cc000032cc000034cc000036cc000038cc00003acc00003ccc00003ecc000040cc000042cc000044cc000046cc000054cc00005ccc0000c4cc0000b2b401003eb8010000ca9a3b
+    m_SelectedIDs: a8a20000
+    m_LastClickedID: 41640
+    m_ExpandedIDs: 0000000090a2000092a2000094a2000096a2000098a200009aa200009ca200009ea20000a0a20000a2a20000a4a20000a6a20000a8a20000aaa20000aca20000aea20000b0a20000b2a20000b4a20000b6a20000b8a2000000ca9a3b
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 
@@ -873,7 +873,7 @@ MonoBehaviour:
     scrollPos: {x: 0, y: 0}
     m_SelectedIDs: 
     m_LastClickedID: 0
-    m_ExpandedIDs: 0000000028cc00002acc00002ccc00002ecc000030cc000032cc000034cc000036cc000038cc00003acc00003ccc00003ecc000040cc000042cc000044cc000046cc0000c4cc0000b2b401003eb8010000ca9a3b
+    m_ExpandedIDs: 0000000090a2000092a2000094a2000096a2000098a200009aa200009ca200009ea20000a0a20000a2a20000a4a20000a6a20000a8a20000aaa20000aca20000aea20000b0a20000b2a20000b4a20000b6a20000b8a20000
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 
@@ -898,8 +898,8 @@ MonoBehaviour:
       m_Icon: {fileID: 0}
       m_ResourceFile: 
   m_ListAreaState:
-    m_SelectedInstanceIDs: 8e78faff
-    m_LastClickedInstanceID: -362354
+    m_SelectedInstanceIDs: 7e7d0000
+    m_LastClickedInstanceID: 32126
     m_HadKeyboardFocusLastEvent: 1
     m_ExpandedInstanceIDs: c62300000ab5010058400100
     m_RenameOverlay:
@@ -989,7 +989,7 @@ MonoBehaviour:
     m_SaveData: []
   m_LockTracker:
     m_IsLocked: 0
-  m_LastSelectedObjectID: -362356
+  m_LastSelectedObjectID: 31828
 --- !u!114 &14
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -1053,7 +1053,7 @@ MonoBehaviour:
     m_ControlHash: -371814159
     m_PrefName: Preview_InspectorPreview
   m_LastInspectedObjectInstanceID: -1
-  m_LastVerticalScrollValue: 0
+  m_LastVerticalScrollValue: 214
   m_GlobalObjectId: 
   m_InspectorMode: 0
   m_LockTracker:
