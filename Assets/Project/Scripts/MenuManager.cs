@@ -9,10 +9,13 @@ public class MenuManager : MonoBehaviour
     public GameObject settingsMenuPlay;
     public GameObject settingsMenuLasers;
     public GameObject tutorialLasers;
+    public GameObject tutorialTaller;
     public GameObject panelVictory;
     public GameObject toppingPanel;
-    public GameObject panelRobot;
+    public GameObject comandaRobot;
+    public GameObject robotPanel;
     public GameObject panelColor;
+    public GameObject armPanel;
 
     public GameObject WireMenu;
 
@@ -36,13 +39,15 @@ public class MenuManager : MonoBehaviour
         {
             case GameState.Playing:
                 sceneSettings = false;
-                state = newState;
+                robotPanel.SetActive(false);
                 tutorialLasers.SetActive(false);
                 settingsMenuPlay.SetActive(false);
                 panelVictory.SetActive(false);
                 toppingPanel.SetActive(false);
                 WireMenu.SetActive(false);
                 panelColor.SetActive(false);
+                armPanel.SetActive(false);
+                    state = newState;
                 break;
             case GameState.Lasers:
                 sceneSettings = false;
@@ -51,7 +56,7 @@ public class MenuManager : MonoBehaviour
                 settingsMenuLasers.SetActive(false);
                 break;
             case GameState.Settings:
-                panelRobot.SetActive(false);
+                comandaRobot.SetActive(false);
                 if (state == GameState.Playing)
                     settingsMenuPlay.SetActive(true);
                 else if (state == GameState.Lasers)
@@ -66,7 +71,7 @@ public class MenuManager : MonoBehaviour
                 state = newState;
                 break;
             case GameState.Wire:
-                panelRobot.SetActive(false);
+                comandaRobot.SetActive(false);
                 WireMenu.SetActive(true);
                 sceneSettings = false;
                 state = newState;
@@ -74,7 +79,7 @@ public class MenuManager : MonoBehaviour
                 Cursor.lockState = CursorLockMode.None;
                 break;
             case GameState.Topping:
-                panelRobot.SetActive(false);
+                comandaRobot.SetActive(false);
                 toppingPanel.SetActive(true);
                 sceneSettings = false;
                 state = newState;
@@ -83,6 +88,23 @@ public class MenuManager : MonoBehaviour
                 break;
             case GameState.Color:
                 panelColor.SetActive(true);
+                comandaRobot.SetActive(false);
+                sceneSettings = false;
+                state = newState;
+                Cursor.visible = true;
+                Cursor.lockState = CursorLockMode.None;
+                break;
+            case GameState.RobotPanel:
+                robotPanel.SetActive(true);
+                comandaRobot.SetActive(false);
+                sceneSettings = false;
+                state = newState;
+                Cursor.visible = true;
+                Cursor.lockState = CursorLockMode.None;
+                break;
+            case GameState.ArmPanel:
+                armPanel.SetActive(true);
+                comandaRobot.SetActive(false);
                 sceneSettings = false;
                 state = newState;
                 Cursor.visible = true;
@@ -108,8 +130,8 @@ public class MenuManager : MonoBehaviour
                 }
                 if (Input.GetKeyDown(KeyCode.P))
                 {
-                    if (boolRobotPanel) { panelRobot.SetActive(true); boolRobotPanel = false; }
-                    else { panelRobot.SetActive(false); boolRobotPanel = true; }
+                    if (boolRobotPanel) { comandaRobot.SetActive(true); boolRobotPanel = false; }
+                    else { comandaRobot.SetActive(false); boolRobotPanel = true; }
                 }
                 break;
             case GameState.Lasers:
@@ -140,6 +162,13 @@ public class MenuManager : MonoBehaviour
                     else GameManager.Instance.State = GameState.Playing;
                 }
                 break;
+            case GameState.RobotPanel:
+                if (Input.GetKeyDown(KeyCode.Escape))
+                {
+                    if (sceneSettings) GameManager.Instance.State = GameState.RobotPanel;
+                    else GameManager.Instance.State = GameState.Playing;
+                }
+                break;
         }
     }
     public void StartGame() //Esta funcion se llama cuando le damos click al botton del Menu
@@ -163,4 +192,5 @@ public class MenuManager : MonoBehaviour
     {
         GameManager.Instance.State = GameState.Playing;
     }
+
 }                                                                                                                                                                                                                                                                                    

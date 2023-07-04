@@ -4,26 +4,48 @@ using UnityEngine;
 
 public class Cintamovement : MonoBehaviour
 {
-    public Rigidbody rb;
-    public float velocidad;
 
+    public float velocidad;
+    public Transform cintaFinalPos;
+    public Transform cintaPos;
+
+    ObjectManager objectManager;
+    Objects obj;
+    bool moveBool;
     // Start is called before the first frame update
     void Start()
     {
+        objectManager = FindObjectOfType<ObjectManager>();
+
     }
 
     // Update is called once per frame
-    void Update()
+    void FixedUpdate()
     {
-
-    }
-    private void OnTriggerEnter(Collider collision)
-    {
-        if (collision.gameObject.CompareTag("Interactable"))
+        if(moveBool)
         {
-            rb = collision.gameObject.GetComponent<Rigidbody>();
-            rb.velocity = transform.forward * velocidad;
+     
+            if (obj != null)
+            {
+                Vector3 posicionActual = obj.obj.transform.position;
+                Vector3 posicionObjetivo = cintaFinalPos.position;
+
+                Vector3 nuevaPosicion = Vector3.MoveTowards(posicionActual, posicionObjetivo, velocidad * Time.deltaTime);
+
+                // Asignar la nueva posición al objeto a controlar
+                obj.transform.position = nuevaPosicion;
+            }
+            else
+            {
+                moveBool = false;
+            }
         }
     }
- 
+    
+    public void BoolCinta()
+    {
+        moveBool = true;
+        obj = objectManager.FindStateOfObject(ObjectState.Cinta);
+    }
+
 }
