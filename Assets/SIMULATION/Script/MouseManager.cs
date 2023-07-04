@@ -124,9 +124,18 @@ public class MouseManager : MonoBehaviour
             else if (positionMachine != null)
             {
 
-                Vector3 newPosition2 = positionMachine.transform.position - objectHand.transform.position;
-                objectHand.transform.position += newPosition2;//  * Time.deltaTime;
-
+                if (positionMachine.name != "Cinta" && positionMachine.name != "Toppings" && positionMachine.name != "Wire")
+                {
+                    Vector3 newPosition2 = positionMachine.transform.position - objectHand.transform.position;
+                    objectHand.transform.position += newPosition2;//  * Time.deltaTime;
+                }
+                else
+                {
+                    Debug.Log("!");
+                    Vector3 newPosition = positionMachine.transform.GetChild(0).transform.position;
+                    Vector3 newPosition2 = newPosition - objectHand.transform.position;
+                    objectHand.transform.position += newPosition2;//  * Time.deltaTime;
+                }
                 StartCoroutine(Wait());
             }
 
@@ -141,8 +150,7 @@ public class MouseManager : MonoBehaviour
 
     IEnumerator Wait()
     {
-        yield return new WaitForSeconds(1f);
-        objectSelect = false;
+        yield return new WaitForSeconds(0.5f);
         positionMachine = null;
         objectHand = null;
     }
@@ -155,7 +163,7 @@ public class MouseManager : MonoBehaviour
         string _tag = "";
         GameObject _object = null;
 
-        if (Physics.Raycast(ray, out hit, Mathf.Infinity))
+        if (Physics.Raycast(ray, out hit, 5))
         {
             _tag = hit.collider.tag;
             _object = hit.collider.gameObject;
@@ -240,6 +248,7 @@ public class MouseManager : MonoBehaviour
                             positionMachine = _object;
                             objectSelect = false;
                             objectManager.ObjectGameState(w, ObjectState.Cinta);
+                            _object.GetComponent<Cintamovement>().BoolCinta();
                         }
                     }
                 }

@@ -6,10 +6,11 @@ public class Cintamovement : MonoBehaviour
 {
 
     public float velocidad;
+    public Transform cintaFinalPos;
     public Transform cintaPos;
 
     ObjectManager objectManager;
-
+    Objects obj;
     bool moveBool;
     // Start is called before the first frame update
     void Start()
@@ -21,14 +22,13 @@ public class Cintamovement : MonoBehaviour
     // Update is called once per frame
     void FixedUpdate()
     {
-        if(objectManager.FindBoolStateOfObject(ObjectState.Cinta))
+        if(moveBool)
         {
-            Objects obj = objectManager.FindStateOfObject(ObjectState.Cinta);
-
+     
             if (obj != null)
             {
                 Vector3 posicionActual = obj.obj.transform.position;
-                Vector3 posicionObjetivo = cintaPos.position;
+                Vector3 posicionObjetivo = cintaFinalPos.position;
 
                 Vector3 nuevaPosicion = Vector3.MoveTowards(posicionActual, posicionObjetivo, velocidad * Time.deltaTime);
 
@@ -41,5 +41,11 @@ public class Cintamovement : MonoBehaviour
             }
         }
     }
-     
+    
+    public void BoolCinta()
+    {
+        moveBool = true;
+        obj = objectManager.FindStateOfObject(ObjectState.Cinta);
+    }
+
 }

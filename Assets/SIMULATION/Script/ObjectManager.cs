@@ -12,6 +12,7 @@ public enum ObjectState
     Toppings,
     Cables,
     Color,
+    Arm,
     Cinta
 };
 
@@ -137,6 +138,9 @@ public class ObjectManager : MonoBehaviour
                 case ObjectState.Cinta:
                     ObjectCinta();
                     break;
+                case ObjectState.Arm:
+                    ObjectCables();
+                    break;
                 default:
                     Debug.Log("Error");
                     break;
@@ -169,4 +173,6 @@ public class ObjectManager : MonoBehaviour
     public virtual void ObjectCinta()
     {
     }
+
+
 }

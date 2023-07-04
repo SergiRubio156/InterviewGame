@@ -19,6 +19,7 @@ public enum GameState
     Topping,
     Color,
     RobotPanel,
+    ArmPanel,
     Exit
 
 
@@ -71,7 +72,7 @@ public class GameManager : MonoBehaviour
 
     void Awake()
     {
-        state = GameState.Menu;
+        state = GameState.Playing;
 
         DontDestroyOnLoad(this.gameObject);
 
@@ -160,6 +161,11 @@ public class GameManager : MonoBehaviour
                         Debug.Log("State " + state);
                         break;
                     case GameState.RobotPanel:
+                        HandleSettings();
+                        state = value;
+                        Debug.Log("State " + state);
+                        break;
+                    case GameState.ArmPanel:
                         HandleSettings();
                         state = value;
                         Debug.Log("State " + state);

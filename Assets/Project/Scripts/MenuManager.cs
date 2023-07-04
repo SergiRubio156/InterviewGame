@@ -15,6 +15,7 @@ public class MenuManager : MonoBehaviour
     public GameObject comandaRobot;
     public GameObject robotPanel;
     public GameObject panelColor;
+    public GameObject armPanel;
 
     public GameObject WireMenu;
 
@@ -45,6 +46,7 @@ public class MenuManager : MonoBehaviour
                 toppingPanel.SetActive(false);
                 WireMenu.SetActive(false);
                 panelColor.SetActive(false);
+                armPanel.SetActive(false);
                     state = newState;
                 break;
             case GameState.Lasers:
@@ -94,6 +96,14 @@ public class MenuManager : MonoBehaviour
                 break;
             case GameState.RobotPanel:
                 robotPanel.SetActive(true);
+                comandaRobot.SetActive(false);
+                sceneSettings = false;
+                state = newState;
+                Cursor.visible = true;
+                Cursor.lockState = CursorLockMode.None;
+                break;
+            case GameState.ArmPanel:
+                armPanel.SetActive(true);
                 comandaRobot.SetActive(false);
                 sceneSettings = false;
                 state = newState;
@@ -182,4 +192,5 @@ public class MenuManager : MonoBehaviour
     {
         GameManager.Instance.State = GameState.Playing;
     }
+
 }                                                                                                                                                                                                                                                                                    
