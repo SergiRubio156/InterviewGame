@@ -9,7 +9,7 @@ public class Objects : ObjectManager
 {
 
     public int id;
-    public GameObject name;
+    public GameObject obj;
     public ObjectState state;
     public float numUp;
     public float numDown;
@@ -21,6 +21,7 @@ public class Objects : ObjectManager
     public bool cablesCheck = false;
     public bool toppingCheck = false;
     public bool canMove = false;
+    public bool finishMove = false;
     public bool colorChoose = false;
     bool isPlaying;
     //COLOR
@@ -36,11 +37,11 @@ public class Objects : ObjectManager
     [SerializeField]
     private Color currentColor;
     public Material outline;
-
+    MenuManager menuManager;
 
     private void Start()
     {
-        name = this.gameObject;
+        obj = this.gameObject;
         boxColliderUp = GetComponent<BoxCollider>();
         rend = GetComponentsInChildren<Renderer>();
         parts = transform.GetChild(1).gameObject;
@@ -49,6 +50,7 @@ public class Objects : ObjectManager
         rb = GetComponent<Rigidbody>();
         rb.constraints = RigidbodyConstraints.None | RigidbodyConstraints.None;
         parts.SetActive(false);
+        menuManager = FindObjectOfType<MenuManager>();
 
     }
     private void OnEnable()
@@ -109,6 +111,7 @@ public class Objects : ObjectManager
     {
         if (!cablesCheck)
         {
+            GameManager.Instance.State = GameState.ArmPanel;
             StartCoroutine(WaitWire());
         }
     }
@@ -123,9 +126,17 @@ public class Objects : ObjectManager
 
     public override void ObjectColors()
     {
+        transform.rotation = Quaternion.Euler(0f, 75.624f, 0f);
         boxColliderUp.enabled = true;
         StartCoroutine(WaitColor());
     }
+    public override void ObjectCinta()
+    {
+        boxColliderUp.enabled = true;
+        if (parts.activeSelf)
+            boxColliderDown.enabled = false;
+    }
+
     IEnumerator WaitToppings()
     {
         yield return new WaitForSeconds(0.2f);
@@ -135,7 +146,7 @@ public class Objects : ObjectManager
     }
     IEnumerator WaitWire()
     {
-        yield return new WaitUntil(() => canMove);
+        yield return new WaitUntil(() => finishMove);
         parts.SetActive(true);
         boxColliderUp.enabled = true;
         GameManager.Instance.State = GameState.Wire;

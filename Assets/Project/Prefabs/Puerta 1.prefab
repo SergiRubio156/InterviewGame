@@ -735,12 +735,24 @@ PrefabInstance:
     m_TransformParent: {fileID: 7347091716155185116}
     m_Modifications:
     - target: {fileID: 1069326409, guid: 06780a10b4cd4de4194915f45ab09a49, type: 3}
+      propertyPath: nameDoor
+      value: Puerta 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1069326409, guid: 06780a10b4cd4de4194915f45ab09a49, type: 3}
       propertyPath: lvlComplete
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1998373927, guid: 06780a10b4cd4de4194915f45ab09a49, type: 3}
       propertyPath: m_Name
       value: Cam1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1998373929, guid: 06780a10b4cd4de4194915f45ab09a49, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1998373929, guid: 06780a10b4cd4de4194915f45ab09a49, type: 3}
+      propertyPath: m_Priority
+      value: 11
       objectReference: {fileID: 0}
     - target: {fileID: 6502700664271489100, guid: 06780a10b4cd4de4194915f45ab09a49,
         type: 3}
