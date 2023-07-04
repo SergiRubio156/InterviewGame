@@ -44,12 +44,9 @@ public class Objects : ObjectManager
         obj = this.gameObject;
         boxColliderUp = GetComponent<BoxCollider>();
         rend = GetComponentsInChildren<Renderer>();
-        parts = transform.GetChild(1).gameObject;
-        boxColliderDown = parts.GetComponent<BoxCollider>();
         outline = GetComponentInChildren<MeshRenderer>().material;
         rb = GetComponent<Rigidbody>();
         rb.constraints = RigidbodyConstraints.None | RigidbodyConstraints.None;
-        parts.SetActive(false);
         menuManager = FindObjectOfType<MenuManager>();
 
     }
@@ -92,7 +89,7 @@ public class Objects : ObjectManager
     public override void ObjectNoTaked()
     {
         boxColliderUp.enabled = true;
-        if (parts.activeSelf)
+        if (parts != null)
             boxColliderDown.enabled = true;
         rb.constraints = RigidbodyConstraints.None | RigidbodyConstraints.None;
         outline.SetFloat("_Outline_Thickness", 0.01f);
@@ -101,7 +98,7 @@ public class Objects : ObjectManager
     public override void ObjectTaked()
     {
         boxColliderUp.enabled = false;
-        if (parts.activeSelf)
+        if (parts != null)
             boxColliderDown.enabled = false;
         transform.rotation = Quaternion.Euler(0, 0, 0);
         rb.constraints = RigidbodyConstraints.FreezeAll;
@@ -111,6 +108,7 @@ public class Objects : ObjectManager
     {
         if (!cablesCheck)
         {
+            transform.rotation = Quaternion.Euler(0f, -103f, 0f);
             GameManager.Instance.State = GameState.ArmPanel;
             StartCoroutine(WaitWire());
         }
@@ -146,8 +144,11 @@ public class Objects : ObjectManager
     }
     IEnumerator WaitWire()
     {
-        yield return new WaitUntil(() => finishMove);
+        yield return new WaitUntil(() => canMove);
+        parts = transform.GetChild(1).gameObject;
         parts.SetActive(true);
+        boxColliderDown = parts.GetComponent<BoxCollider>();
+        rend = GetComponentsInChildren<Renderer>();
         boxColliderUp.enabled = true;
         GameManager.Instance.State = GameState.Wire;
 
