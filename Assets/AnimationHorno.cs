@@ -7,8 +7,7 @@ public class AnimationHorno : MonoBehaviour
     public Animator animator;
     public Objects obj;
     ObjectManager objectManager;
-    bool isPlaying, robotIn;
-    public GameObject pos;
+    bool isPlaying;
 
     private void OnEnable()
     {
@@ -45,8 +44,6 @@ public class AnimationHorno : MonoBehaviour
             case GameState.Color:
                 isPlaying = true;
                 obj = objectManager.FindStateOfObject(ObjectState.Color);
-                robotIn = true;
-                pos.SetActive(false);
                 break;
             case GameState.RobotPanel:
                 break;
@@ -59,17 +56,13 @@ public class AnimationHorno : MonoBehaviour
         {
             if (obj.colorCheck)
             {
-                robotIn = true;
                 animator.SetBool("Horno", true);
             }
-            else if(robotIn && obj.state != ObjectState.Color)
+            else if(obj.colorCheck == false)
             {
-                pos.SetActive(true);
                 animator.SetBool("Horno", false);
                 isPlaying = false;
-                robotIn = false;
             }
-            
         }
     }
 }

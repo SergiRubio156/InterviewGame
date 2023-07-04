@@ -163,9 +163,6 @@ namespace StarterAssets
 				case GameState.Color:
 					isPlaying = true;
 					break;
-				case GameState.RobotPanel:
-					isPlaying = true;
-					break;
 				case GameState.Exit:
 					// Acciones a realizar cuando el estado de juego es "Exit"
 					break;

@@ -69,12 +69,6 @@ public class Clock : MonoBehaviour
                 else
                 {
                     pointerMinutes.transform.localEulerAngles = new Vector3(0.0f, 0.0f, 0.0f);
-                    if (minutes != 0)
-                    {
-                        isPlaying = false;
-                        robotIn = false;
-                        minutes = 0;
-                    }
                 }
             }
         }
