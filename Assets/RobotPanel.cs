@@ -29,7 +29,9 @@ public class RobotPanel : MonoBehaviour, IPointerClickHandler
         {
             if (clickedButton.name == "Image1")
             {
-                GameObject newImage = Instantiate(prefabs[0], positionCube);
+                GameObject newImage = Instantiate(prefabs[0], parentObject.transform);
+                newImage.transform.position = positionCube.transform.position;
+                newImage.transform.rotation = Quaternion.Euler(0f, 0f, 0f);
 
                 int existingImagesCount = parentObject.transform.childCount - 1; // Restar uno para excluir el propio objeto padre
                 int newImageIndex = Mathf.Clamp(existingImagesCount + 1, 0, existingImagesCount);

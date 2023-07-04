@@ -30,44 +30,56 @@ public class ArmPanel : MonoBehaviour, IPointerClickHandler
         {
             if (clickedButton.name == "Image1")
             {
-                GameObject newImage = Instantiate(prefabs[0], positionCube);
+                obj = objectManager.FindStateOfObject(ObjectState.Cables);
+
+                parentObject = obj.obj;
+
+                GameObject newImage = Instantiate(prefabs[0], parentObject.transform);
+
 
                 int existingImagesCount = parentObject.transform.childCount - 1; // Restar uno para excluir el propio objeto padre
                 int newImageIndex = Mathf.Clamp(existingImagesCount + 1, 0, existingImagesCount);
                 newImage.transform.SetSiblingIndex(newImageIndex);
 
-                obj = objectManager.FindStateOfObject(ObjectState.Arm);
 
                 obj.canMove = true;
+
                 GameManager.Instance.State = GameState.Playing;
+
             }
             else if (clickedButton.name == "Image2")
             {
+                obj = objectManager.FindStateOfObject(ObjectState.Cables);
+
+                parentObject = obj.obj;
+
                 GameObject newImage = Instantiate(prefabs[1], parentObject.transform);
-                newImage.transform.position = positionCube.transform.position;
-                newImage.transform.rotation = Quaternion.Euler(0f, 81.29f, 0f);
+
 
                 int existingImagesCount = parentObject.transform.childCount - 1; // Restar uno para excluir el propio objeto padre
                 int newImageIndex = Mathf.Clamp(existingImagesCount + 1, 0, existingImagesCount);
                 newImage.transform.SetSiblingIndex(newImageIndex);
 
-                objectManager.RecivedRobotsList();
+                newImage.transform.rotation = Quaternion.Euler(0f, 257f, 0f);
+
+                obj.canMove = true;
 
                 GameManager.Instance.State = GameState.Playing;
 
             }
             else if (clickedButton.name == "Image3")
             {
-                GameObject newImage = Instantiate(prefabs[2], parentObject.transform);
-                newImage.transform.position = positionCube.transform.position;
-                newImage.transform.rotation = Quaternion.Euler(0f, 81.29f, 0f);
+                GameObject newImage = Instantiate(prefabs[2], Vector3.zero, Quaternion.identity);
 
-                int existingImagesCount = parentObject.transform.childCount - 1; // Restar uno para excluir el propio objeto padre
+                obj = objectManager.FindStateOfObject(ObjectState.Arm);
+
+                int existingImagesCount = obj.obj.transform.childCount - 1; // Restar uno para excluir el propio objeto padre
                 int newImageIndex = Mathf.Clamp(existingImagesCount + 1, 0, existingImagesCount);
                 newImage.transform.SetSiblingIndex(newImageIndex);
 
-                objectManager.RecivedRobotsList();
+                obj = objectManager.FindStateOfObject(ObjectState.Arm);
 
+                obj.canMove = true;
                 GameManager.Instance.State = GameState.Playing;
 
             }

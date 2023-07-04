@@ -166,6 +166,9 @@ namespace StarterAssets
 				case GameState.RobotPanel:
 					isPlaying = true;
 					break;
+				case GameState.ArmPanel:
+					isPlaying = true;
+					break;
 				case GameState.Exit:
 					// Acciones a realizar cuando el estado de juego es "Exit"
 					break;
