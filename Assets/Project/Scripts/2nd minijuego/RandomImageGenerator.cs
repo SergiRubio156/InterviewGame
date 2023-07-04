@@ -5,6 +5,8 @@ using System.Collections.Generic;
 
 public class RandomImageGenerator : MonoBehaviour
 {
+    public static RandomImageGenerator instance;
+
     public Texture2D[] images; // Array que contiene las imágenes que quieres mostrar
     public RawImage rawImage; // Referencia al componente RawImage para mostrar las imágenes
     public Texture2D[] pinturas; // Array que contiene las pinturas que quieres mostrar
@@ -22,6 +24,10 @@ public class RandomImageGenerator : MonoBehaviour
     private void Awake()
     {
         evaluateManager.RecivedRobotsCards();
+        if (instance== null )
+        {
+            instance= this;
+        }
     }
     private void Start()
     {
@@ -62,6 +68,7 @@ public class RandomImageGenerator : MonoBehaviour
 
     public void IncrementCount()
     {
+        idCard++;
         countText.text = idCard.ToString();
     }
 

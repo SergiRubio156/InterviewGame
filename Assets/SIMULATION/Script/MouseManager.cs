@@ -142,7 +142,10 @@ public class MouseManager : MonoBehaviour
             if (Input.GetMouseButtonDown(0))
             {
                 Tuple<GameObject, string> objects = HitGameObject();
-                SwitchList(objects.Item1, objects.Item2);
+                if (objects != null)
+                {
+                    SwitchList(objects.Item1, objects.Item2);
+                }
             }
         }
     }

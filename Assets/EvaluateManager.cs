@@ -14,6 +14,7 @@ public class EvaluateManager : MonoBehaviour
     float numUp, numDown;
     int idRobot;
 
+
     public void RecivedRobotsCards()
     {
         RandomImageGenerator[] components = FindObjectsOfType<RandomImageGenerator>();
@@ -71,6 +72,7 @@ public class EvaluateManager : MonoBehaviour
             numUp = obj.gameObject.GetComponent<Objects>().numUp;
             numDown = obj.gameObject.GetComponent<Objects>().numDown;
             FindId();
+            RandomImageGenerator.instance.GenerateNewRobot();
 
             Destroy(obj.gameObject);
         }
