@@ -9,17 +9,17 @@ public class FinalCheck : MonoBehaviour
     public bool[] CheckBool;
 
     public GameObject panelVictory;
-    private MenuManager menuManager;
+    private sceneManager sceneManager;
 
     bool victoryBool;
     // Start is called before the first frame update
     void Awake()
     {
         FinalLaser = GameObject.FindGameObjectsWithTag("LaserFinal");
+        panelVictory = GameObject.Find("PanelVictory");
         CheckBool = new bool[FinalLaser.Length];
         GameManager.OnGameStateChanged += GameManager_OnGameStateChanged;   //Esto es el evento del script GameManager
-        menuManager = GameObject.FindObjectOfType<MenuManager>();
-        panelVictory = menuManager.panelVictory;
+        sceneManager = GameObject.FindObjectOfType<sceneManager>();
 
     }
 

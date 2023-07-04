@@ -9,7 +9,7 @@ public class ColorTask : MonoBehaviour, IPointerClickHandler
     ObjectManager objectManager;
     [SerializeField]
     public Gradient[] gradientPresets = new Gradient[4];
-    public Color Yellow;
+
     private void OnEnable()
     {
         objectManager = FindObjectOfType<ObjectManager>();
@@ -22,7 +22,6 @@ public class ColorTask : MonoBehaviour, IPointerClickHandler
 
         if (clickedButton != null)
         {
-            Debug.Log(Color.yellow);
             if (clickedButton.color == Color.red)
             {
                 Objects obj = objectManager.FindStateOfObject(ObjectState.Color);
@@ -33,7 +32,7 @@ public class ColorTask : MonoBehaviour, IPointerClickHandler
 
                 GameManager.Instance.State = GameState.Playing;
             }
-            else if (clickedButton.color == Yellow)
+            else if (clickedButton.color == Color.blue)
             {
                 Objects obj = objectManager.FindStateOfObject(ObjectState.Color);
 
@@ -44,7 +43,7 @@ public class ColorTask : MonoBehaviour, IPointerClickHandler
                 GameManager.Instance.State = GameState.Playing;
 
             }
-            else if (clickedButton.color == Color.green)
+            else if (clickedButton.color == Color.yellow)
             {
                 Objects obj = objectManager.FindStateOfObject(ObjectState.Color);
 
@@ -54,7 +53,7 @@ public class ColorTask : MonoBehaviour, IPointerClickHandler
 
                 GameManager.Instance.State = GameState.Playing;
             }
-            else if (clickedButton.color == Color.blue)
+            else if (clickedButton.color == Color.green)
             {
                 Objects obj = objectManager.FindStateOfObject(ObjectState.Color);
 
