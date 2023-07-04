@@ -13,7 +13,8 @@ public class Objects : ObjectManager
     public ObjectState state;
     public float numUp;
     public float numDown;
-
+    public int robotUp;
+    public int robotDown;
 
     public BoxCollider boxColliderUp;
     public Rigidbody rb;
