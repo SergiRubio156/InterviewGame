@@ -6,13 +6,71 @@ public class LevelManager : MonoBehaviour
 {
     public List<GameObject> levelPrefabs;
 
+    bool isPlaying;
+    private void OnEnable()
+    {
+        GameManager.OnGameStateChanged += HandleGameStateChanged;
+    }
+
+    private void OnDisable()
+    {
+        GameManager.OnGameStateChanged -= HandleGameStateChanged;
+    }
+
+    private void HandleGameStateChanged(GameState newState)
+    {
+        switch (newState)
+        {
+            case GameState.Playing:
+                if (isPlaying)
+                    RemoveLevel(GetNameLevel());
+                break;
+            case GameState.Lasers:
+
+                break;
+            case GameState.Settings:
+                break;
+            case GameState.Menu:
+
+                break;
+            case GameState.Wire:
+
+                break;
+            case GameState.Topping:
+
+                break;
+            case GameState.Color:
+
+                break;
+            case GameState.RobotPanel:
+                break;
+            case GameState.ArmPanel:
+
+                break;
+        }
+    }
+
     public void ChooseLevel()
     {
-      
         GameObject objectHijo = Instantiate(levelPrefabs[0], gameObject.transform, true);
+
+        isPlaying = true;
     }
 
     public void RemoveLevel(string _name)
+    {
+
+        GameObject child = gameObject.transform.GetChild(0).gameObject;
+
+        if (child != null)
+        {
+            Destroy(child);
+        }
+
+        isPlaying = false;
+    }
+
+    public void RemoveLvlList(string _name)
     {
         foreach (GameObject elemento in levelPrefabs)
         {
@@ -23,12 +81,7 @@ public class LevelManager : MonoBehaviour
             }
         }
 
-        GameObject child = gameObject.transform.GetChild(0).gameObject;
-
-        if (child != null)
-        {
-            Destroy(child);
-        }
+        RemoveLevel(_name);
     }
 
     public string GetNameLevel()

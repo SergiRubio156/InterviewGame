@@ -57,10 +57,6 @@ public class TransitionCamera : MonoBehaviour
     {
         lvlComplete = GameManager.Instance.OpenDoor(nameDoor);
     }
-    void FinalCheck()
-    {
-        GameManager.Instance.DoorDelete(nameDoor);
-    }
     public void transitionScene(string _name)
     {
         if (!lvlComplete)
@@ -78,7 +74,7 @@ public class TransitionCamera : MonoBehaviour
         cam2.enabled = true;
 
         yield return new WaitUntil(() => !CinemachineCore.Instance.IsLive(cam1));
-        FinalCheck();
+        GameManager.Instance.nameDoors(nameDoor);
         CheckDoor();
 
         GameManager.Instance.State = GameState.Lasers;

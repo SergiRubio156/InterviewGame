@@ -9,12 +9,17 @@ public class EvaluateManager : MonoBehaviour
     public List<RandomImageGenerator> RobotCards;
     public static int totalId = 1;
 
+    ObjectManager objectManager;
 
     //Robot que le llega
     float numUp, numDown;
     int idRobot;
 
+    private void OnEnable()
+    {
+        objectManager = FindObjectOfType<ObjectManager>();
 
+    }
     public void RecivedRobotsCards()
     {
         RandomImageGenerator[] components = FindObjectsOfType<RandomImageGenerator>();
@@ -68,16 +73,18 @@ public class EvaluateManager : MonoBehaviour
     {
         if (obj.gameObject.CompareTag("Interactable"))
         {
-            idRobot = obj.gameObject.GetComponent<Objects>().id;
+            /*idRobot = obj.gameObject.GetComponent<Objects>().id;
             numUp = obj.gameObject.GetComponent<Objects>().numUp;
             numDown = obj.gameObject.GetComponent<Objects>().numDown;
             FindId();
-            RandomImageGenerator.instance.GenerateNewRobot();
+            RandomImageGenerator.instance.GenerateNewRobot();*/
 
+            Objects _obj = obj.gameObject.GetComponent<Objects>();
+            objectManager.RemoveRobotsList(_obj);
             Destroy(obj.gameObject);
+            
         }
 
     }
-
 
 }

@@ -7,6 +7,7 @@ public class MenuManager : MonoBehaviour
 {
 
     public GameObject settingsMenuPlay;
+    public GameObject settingsMenu;
     public GameObject settingsMenuLasers;
     public GameObject tutorialLasers;
     public GameObject tutorialTaller;
@@ -19,10 +20,14 @@ public class MenuManager : MonoBehaviour
 
     public GameObject WireMenu;
 
-    GameState state;
+    private GameState state;
     public bool sceneSettings = false;
     bool boolRobotPanel = true;
 
+    private void Awake()
+    {
+        state = GameManager.Instance.State;
+    }
     private void OnEnable()
     {
         GameManager.OnGameStateChanged += HandleGameStateChanged;
@@ -39,33 +44,47 @@ public class MenuManager : MonoBehaviour
         {
             case GameState.Playing:
                 sceneSettings = false;
-                robotPanel.SetActive(false);
-                tutorialLasers.SetActive(false);
-                settingsMenuPlay.SetActive(false);
-                panelVictory.SetActive(false);
-                toppingPanel.SetActive(false);
-                WireMenu.SetActive(false);
-                panelColor.SetActive(false);
-                armPanel.SetActive(false);
-                    state = newState;
+
+                if (state != GameState.Menu)
+                {
+                    if (settingsMenuLasers.activeSelf)
+                        settingsMenuLasers.SetActive(false);
+                    tutorialLasers.SetActive(false);
+                    settingsMenuPlay.SetActive(false);
+                    panelVictory.SetActive(false);
+                    toppingPanel.SetActive(false);
+                    WireMenu.SetActive(false);
+                    panelColor.SetActive(false);
+                    armPanel.SetActive(false);
+                    robotPanel.SetActive(false);
+                }
+                state = newState;
                 break;
             case GameState.Lasers:
                 sceneSettings = false;
-                state = newState;
                 tutorialLasers.SetActive(true);
                 settingsMenuLasers.SetActive(false);
+                state = newState;
                 break;
             case GameState.Settings:
-                comandaRobot.SetActive(false);
+                if(comandaRobot != null)
+                    comandaRobot.SetActive(false);
                 if (state == GameState.Playing)
                     settingsMenuPlay.SetActive(true);
                 else if (state == GameState.Lasers)
+                {
                     settingsMenuLasers.SetActive(true);
+                }
+                else if(state == GameState.Menu)
+                {
+                    settingsMenu.SetActive(true);
+                }
                 sceneSettings = true;
                 Cursor.visible = true;
                 Cursor.lockState = CursorLockMode.None;
                 break;
             case GameState.Menu:
+                settingsMenu.SetActive(false);
                 Cursor.visible = true;
                 Cursor.lockState = CursorLockMode.None;
                 state = newState;

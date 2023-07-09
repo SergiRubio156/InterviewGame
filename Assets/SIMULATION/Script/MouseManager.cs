@@ -23,6 +23,7 @@ public class MouseManager : MonoBehaviour
 
     float distanceMax;
 
+    public AnimationArm animationArm;
 
     bool isPlaying;
     //int layerSpawn;
@@ -124,14 +125,14 @@ public class MouseManager : MonoBehaviour
             else if (positionMachine != null)
             {
 
-                if (positionMachine.name != "Cinta" && positionMachine.name != "Toppings" && positionMachine.name != "Wire")
+                if (positionMachine.name != "Cinta" && positionMachine.name != "Toppings")
                 {
                     Vector3 newPosition2 = positionMachine.transform.position - objectHand.transform.position;
                     objectHand.transform.position += newPosition2;//  * Time.deltaTime;
+
                 }
                 else
                 {
-                    Debug.Log("!");
                     Vector3 newPosition = positionMachine.transform.GetChild(0).transform.position;
                     Vector3 newPosition2 = newPosition - objectHand.transform.position;
                     objectHand.transform.position += newPosition2;//  * Time.deltaTime;
@@ -205,28 +206,36 @@ public class MouseManager : MonoBehaviour
 
                     if (_object.name == "Wire")
                     {
+                        Objects _obj = objectManager.FindStateOfObject(ObjectState.Taked);
+
                         int w = objectManager.GetObjectPositionInList(objectHand);
                         if (w != -1)
                         {
+
                             if (!objectManager.GetObjectBoolInList(w, "Wire"))
                             {
-                                positionMachine = _object;
+                                positionMachine = animationArm.GetRobotPosition(_obj.robotUp);
                                 objectSelect = false;
-                                objectManager.ObjectGameState(w, ObjectState.Cables);
+                                objectManager.ObjectGameState(w, ObjectState.Arm);
+                            
                             }
                         }
                     }
                     else if (_object.name == "Color")
                     {
+                        Objects _obj = objectManager.FindStateOfObject(ObjectState.Taked);
+
                         int w = objectManager.GetObjectPositionInList(objectHand);
-                        Debug.Log("!");
                         if (w != -1)
                         {
-                            if (!objectManager.GetObjectBoolInList(w, "Color"))
+                            if (_obj.cablesCheck)
                             {
-                                positionMachine = _object;
-                                objectSelect = false;
-                                objectManager.ObjectGameState(w, ObjectState.Color);
+                                if (!objectManager.GetObjectBoolInList(w, "Color"))
+                                {
+                                    positionMachine = _object;
+                                    objectSelect = false;
+                                    objectManager.ObjectGameState(w, ObjectState.Color);
+                                }
                             }
                         }
                     }
@@ -269,6 +278,38 @@ public class MouseManager : MonoBehaviour
                         if (_obj != null)
                         {
                             objectManager.ObjectGameState(w, ObjectState.Taked);
+                            objectHand = _obj.obj;
+                            objectSelect = true;
+                        }
+                    }
+                    else if (_object.name == "Wire")
+                    {
+                        if (animationArm.finishAnimation)
+                        {
+                            Objects _obj = objectManager.FindStateOfObject(ObjectState.Arm);
+                            int w = objectManager.GetObjectPositionInList(_obj.gameObject);
+
+                            if (!_obj.cablesCheck)
+                            {
+                                objectManager.ObjectGameState(w, ObjectState.Cables);
+                            }
+                            else
+                            {
+                                objectManager.ObjectGameState(w, ObjectState.Taked);
+                                objectHand = _obj.obj;
+                                objectSelect = true;
+                            }
+                        }
+                    }
+                    else if (_object.name == "Toppings")
+                    {
+                        Objects _obj = objectManager.FindStateOfObject(ObjectState.Toppings);
+
+                        int w = objectManager.GetObjectPositionInList(_obj.gameObject);
+
+                        if (_obj.toppingCheck)
+                        {
+                            objectManager.ObjectGameState(w, ObjectState.Taked);
                             objectHand = _obj.gameObject;
                             objectSelect = true;
                         }
@@ -283,11 +324,13 @@ public class MouseManager : MonoBehaviour
             default:
                 if(objectSelect)
                 {
+                    Objects _obj = objectManager.FindStateOfObject(ObjectState.Taked);
+
                     int d = objectManager.GetObjectPositionInList(objectHand);
 
                     if (d != -1)
                     {
-                        if (objectManager.GetObjectStateInList(d) == ObjectState.Taked)
+                        if (_obj.state == ObjectState.Taked)
                         {
                             objectManager.ObjectGameState(d, ObjectState.NoTaked);
                             objectSelect = false;

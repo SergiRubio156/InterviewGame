@@ -21,7 +21,7 @@ public class ObjectManager : MonoBehaviour
     [SerializeField] 
     private static List<Objects> objectList = new List<Objects>();
 
-    private int totalId = 1;
+    public static int totalId = 1;
 
     ObjectState State = ObjectState.NoTaked;
 
@@ -36,13 +36,26 @@ public class ObjectManager : MonoBehaviour
 
         for (int i = 0; i < components.Length; i++)
         {
+            Debug.Log(components[i].name);
             // Verificar si ya existe un componente con el mismo nombre en el array RobotCards
             if (!objectList.Any(card => card.name == components[i].name))
             {
                 // Si no existe, agrega el componente al array RobotCards
                 objectList.Add(components[i]);
-                objectList[totalId - 1].id = totalId;
+                objectList[i].id = totalId;
                 totalId++;
+            }
+        }
+    }
+
+    public void RemoveRobotsList(Objects _obj)
+    {
+        foreach(Objects obj in objectList)
+        {
+            if(obj == _obj)
+            {
+                objectList.Remove(obj);
+                break;
             }
         }
     }
@@ -134,12 +147,15 @@ public class ObjectManager : MonoBehaviour
 
                 case ObjectState.Color:
                     ObjectColors();
+                    State = newState;
                     break;
                 case ObjectState.Cinta:
                     ObjectCinta();
+                    State = newState;
                     break;
                 case ObjectState.Arm:
-                    ObjectCables();
+                    ObjectArm();
+                    State = newState;
                     break;
                 default:
                     Debug.Log("Error");
@@ -165,6 +181,10 @@ public class ObjectManager : MonoBehaviour
     public virtual void ObjectCables()
     {
        
+    }
+    public virtual void ObjectArm()
+    {
+
     }
     public virtual void ObjectColors()
     {

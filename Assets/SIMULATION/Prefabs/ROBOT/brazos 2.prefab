@@ -65,11 +65,12 @@ MonoBehaviour:
   state: 0
   numUp: 0
   numDown: 0
+  robotUp: 0
+  robotDown: 0
   boxColliderUp: {fileID: 0}
   rb: {fileID: 0}
   cablesCheck: 0
   toppingCheck: 0
-  canMove: 0
   finishMove: 0
   colorChoose: 0
   colorCheck: 0
@@ -105,7 +106,8 @@ MonoBehaviour:
   rend:
   - {fileID: 0}
   parts: {fileID: 0}
-  boxColliderDown: {fileID: 0}
+  boxColliderDown:
+  - {fileID: 0}
   currentColor: {r: 1, g: 1, b: 1, a: 1}
   outline: {fileID: 0}
 --- !u!54 &8086638931865529522
@@ -185,8 +187,8 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: b679e44ff42d8d74485d14bef8fad8b6, type: 2}
   - {fileID: 2100000, guid: 3a7df4c30c55ec748a304fd1cdd00e06, type: 2}
+  - {fileID: 2100000, guid: b679e44ff42d8d74485d14bef8fad8b6, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0

@@ -46,6 +46,8 @@ public class GameManager : MonoBehaviour
 
     private GameState state;
 
+    string nameDoor;
+
     public bool doorFind;
     public static GameManager Instance
     {
@@ -72,7 +74,7 @@ public class GameManager : MonoBehaviour
 
     void Awake()
     {
-        state = GameState.Playing;
+        state = GameState.Menu;
 
         DontDestroyOnLoad(this.gameObject);
 
@@ -123,7 +125,6 @@ public class GameManager : MonoBehaviour
                         if(state == GameState.Menu)
                             HandlePlaying();
                         state = value;
-                        Debug.Log("State " + state);
                         break;
 
                     case GameState.Lasers:
@@ -132,13 +133,11 @@ public class GameManager : MonoBehaviour
                             HandlePlayerLasers();
                         }
                         state = value;
-                        Debug.Log("State " + state);
                         break;
 
                     case GameState.Settings:
                         HandleSettings();
                         state = value;
-                        Debug.Log("State " + state);
                         break;
 
                     case GameState.Exit:
@@ -148,27 +147,22 @@ public class GameManager : MonoBehaviour
                     case GameState.Wire:
                         HandleSettings();
                         state = value;
-                        Debug.Log("State " + state);
                         break;
                     case GameState.Topping:
                         HandleSettings();
                         state = value;
-                        Debug.Log("State " + state);
                         break;
                     case GameState.Color:
                         HandleSettings();
                         state = value;
-                        Debug.Log("State " + state);
                         break;
                     case GameState.RobotPanel:
                         HandleSettings();
                         state = value;
-                        Debug.Log("State " + state);
                         break;
                     case GameState.ArmPanel:
                         HandleSettings();
                         state = value;
-                        Debug.Log("State " + state);
                         break;
                     default: //se entrara aqui si el valor "newState" no coincide con ningun valor anterior
                         throw new ArgumentOutOfRangeException(nameof(value), value, null);//pone el valor "newState" a null para que no pete el programa.
@@ -204,6 +198,11 @@ public class GameManager : MonoBehaviour
         sceneManager.ChangeScene("Play");
     }
 
+    public void nameDoors(string _name )
+    {
+        nameDoor = _name;
+    }
+
     void DoorFind()
     {
 
@@ -230,14 +229,14 @@ public class GameManager : MonoBehaviour
     public void LvlCompleted()
     {
         string _name = sceneManager.GetLevelName();
-        Debug.Log(_name);
-
+        DoorDelete(nameDoor);
         foreach (string elemento in levelLaser)
         {
             if (elemento == _name)
             {
                 levelLaser.Remove(_name);
                 sceneManager.RemoveLevel(_name);
+
                 break;
             }
         }

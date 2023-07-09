@@ -21,7 +21,6 @@ public class Objects : ObjectManager
 
     public bool cablesCheck = false;
     public bool toppingCheck = false;
-    public bool canMove = false;
     public bool finishMove = false;
     public bool colorChoose = false;
     bool isPlaying;
@@ -33,7 +32,7 @@ public class Objects : ObjectManager
     float time = 0f;
     public Renderer[] rend = new Renderer[1];
     public GameObject parts;
-    public BoxCollider boxColliderDown;
+    public BoxCollider[] boxColliderDown;
 
     [SerializeField]
     private Color currentColor;
@@ -91,7 +90,7 @@ public class Objects : ObjectManager
     {
         boxColliderUp.enabled = true;
         if (parts != null)
-            boxColliderDown.enabled = true;
+            ForBoxCollider(true);
         rb.constraints = RigidbodyConstraints.None | RigidbodyConstraints.None;
         outline.SetFloat("_Outline_Thickness", 0.01f);
     }
@@ -100,18 +99,21 @@ public class Objects : ObjectManager
     {
         boxColliderUp.enabled = false;
         if (parts != null)
-            boxColliderDown.enabled = false;
-        transform.rotation = Quaternion.Euler(0, 0, 0);
+            ForBoxCollider(false);
         rb.constraints = RigidbodyConstraints.FreezeAll;
+        LerpRotation(robotUp);
         colorCheck = false;
     }
     public override void ObjectCables()
     {
-        if (!cablesCheck)
-        {
-            transform.rotation = Quaternion.Euler(0f, -103f, 0f);
-            GameManager.Instance.State = GameState.ArmPanel;
             StartCoroutine(WaitWire());
+    }
+    public override void ObjectArm()
+    {
+        if (robotDown == 0)
+        {
+            //transform.rotation = Quaternion.Euler(0f, -103f, 0f);
+            GameManager.Instance.State = GameState.ArmPanel;
         }
     }
     public override void ObjectToppings()
@@ -132,10 +134,17 @@ public class Objects : ObjectManager
     public override void ObjectCinta()
     {
         boxColliderUp.enabled = true;
-        if (parts.activeSelf)
-            boxColliderDown.enabled = false;
+        if (parts != null)
+            ForBoxCollider(true);
     }
 
+    void ForBoxCollider(bool _bool)
+    {
+        for(int i = 0; i < boxColliderDown.Length; i++)
+        {
+            boxColliderDown[i].enabled = _bool;
+        }
+    }
     IEnumerator WaitToppings()
     {
         yield return new WaitForSeconds(0.2f);
@@ -145,10 +154,10 @@ public class Objects : ObjectManager
     }
     IEnumerator WaitWire()
     {
-        yield return new WaitUntil(() => canMove);
+        yield return new WaitForSeconds(0.2f);
         parts = transform.GetChild(1).gameObject;
         parts.SetActive(true);
-        boxColliderDown = parts.GetComponent<BoxCollider>();
+        boxColliderDown = parts.GetComponentsInChildren<BoxCollider>();
         rend = GetComponentsInChildren<Renderer>();
         boxColliderUp.enabled = true;
         GameManager.Instance.State = GameState.Wire;
@@ -177,8 +186,28 @@ public class Objects : ObjectManager
 
 
         // Combinar el color del gradiente y el color de la textura
-        rend[0].materials[1].color = currentColor;
-        rend[1].materials[1].color = currentColor;
+        ForRenderer(currentColor);
     }
-
+    void ForRenderer(Color currentColor)
+    {
+        for (int i = 0; i < rend.Length; i++)
+        {
+            rend[i].materials[0].color = currentColor;
+        }
+    }
+    public void LerpRotation(int _int)
+    {
+        switch(_int)
+        {
+            case 1:
+                transform.rotation = Quaternion.Euler(0, -12.312f, 0);
+                break;
+            case 2:
+                transform.rotation = Quaternion.Euler(0, -102.39f, 0);
+                break;
+            case 3:
+                transform.rotation = Quaternion.Euler(-89.59F, -105.97f, 4.25F);
+                break;
+        }
+    }
 }

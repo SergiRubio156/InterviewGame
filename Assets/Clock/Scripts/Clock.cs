@@ -33,6 +33,7 @@ public class Clock : MonoBehaviour
         switch (newState)
         {
             case GameState.Playing:
+                isPlaying = true;
                 break;
             case GameState.Lasers:
                 break;

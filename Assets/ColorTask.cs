@@ -22,7 +22,6 @@ public class ColorTask : MonoBehaviour, IPointerClickHandler
 
         if (clickedButton != null)
         {
-            Debug.Log(Color.yellow);
             if (clickedButton.color == Color.red)
             {
                 Objects obj = objectManager.FindStateOfObject(ObjectState.Color);

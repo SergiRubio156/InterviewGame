@@ -39,6 +39,11 @@ public class RobotPanel : MonoBehaviour, IPointerClickHandler
 
                 objectManager.RecivedRobotsList();
 
+                Objects obj = newImage.GetComponent<Objects>();
+
+                obj.robotUp = 1;
+                newImage.name = "Robot " + ObjectManager.totalId;
+
                 GameManager.Instance.State = GameState.Playing;
             }
             else if (clickedButton.name == "Image2")
@@ -52,6 +57,11 @@ public class RobotPanel : MonoBehaviour, IPointerClickHandler
                 newImage.transform.SetSiblingIndex(newImageIndex);
 
                 objectManager.RecivedRobotsList();
+
+                Objects obj = newImage.GetComponent<Objects>();
+
+                obj.robotUp = 2;
+                newImage.name = "Robot " + ObjectManager.totalId;
 
                 GameManager.Instance.State = GameState.Playing;
 
@@ -67,6 +77,11 @@ public class RobotPanel : MonoBehaviour, IPointerClickHandler
                 newImage.transform.SetSiblingIndex(newImageIndex);
 
                 objectManager.RecivedRobotsList();
+
+                Objects obj = newImage.GetComponent<Objects>();
+
+                obj.robotUp = 3;
+                newImage.name = "Robot " + ObjectManager.totalId;
 
                 GameManager.Instance.State = GameState.Playing;
 

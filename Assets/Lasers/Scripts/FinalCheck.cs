@@ -23,20 +23,6 @@ public class FinalCheck : MonoBehaviour
 
     }
 
-    private void Start()
-    {
-        var allObjects = Resources.FindObjectsOfTypeAll<GameObject>();
-        var taggedObjects = new List<GameObject>();
-
-        for (int i = 0; i < allObjects.Length; i++)
-        {
-            var obj = allObjects[i];
-            if (obj.CompareTag("PanelVictory"))
-            {
-                panelVictory = obj;
-            }
-        }
-    }
     // Update is called once per frame
     void Update()
     {

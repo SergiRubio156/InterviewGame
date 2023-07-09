@@ -8,18 +8,18 @@ public class ArmPanel : MonoBehaviour, IPointerClickHandler
 {
     ObjectManager objectManager;
     Objects obj;
+    public AnimationArm animationArm;
     public Transform positionCube;
     [SerializeField]
     public GameObject[] prefabs = new GameObject[3];
     public GameObject parentObject; // GameObject padre que contiene el componente Horizontal Layout Group
-
+    int brazoRobot;
 
     private void OnEnable()
     {
         objectManager = FindObjectOfType<ObjectManager>();
 
     }
-
     public void OnPointerClick(PointerEventData eventData)
     {
         GameObject clickedObject = eventData.pointerCurrentRaycast.gameObject;
@@ -30,57 +30,31 @@ public class ArmPanel : MonoBehaviour, IPointerClickHandler
         {
             if (clickedButton.name == "Image1")
             {
-                obj = objectManager.FindStateOfObject(ObjectState.Cables);
-
-                parentObject = obj.obj;
-
-                GameObject newImage = Instantiate(prefabs[0], parentObject.transform);
-
-
-                int existingImagesCount = parentObject.transform.childCount - 1; // Restar uno para excluir el propio objeto padre
-                int newImageIndex = Mathf.Clamp(existingImagesCount + 1, 0, existingImagesCount);
-                newImage.transform.SetSiblingIndex(newImageIndex);
-
-
-                obj.canMove = true;
+                brazoRobot = 1;
+                animationArm.AnimationRun(brazoRobot);
 
                 GameManager.Instance.State = GameState.Playing;
 
             }
             else if (clickedButton.name == "Image2")
             {
-                obj = objectManager.FindStateOfObject(ObjectState.Cables);
 
-                parentObject = obj.obj;
-
-                GameObject newImage = Instantiate(prefabs[1], parentObject.transform);
-
-
-                int existingImagesCount = parentObject.transform.childCount - 1; // Restar uno para excluir el propio objeto padre
-                int newImageIndex = Mathf.Clamp(existingImagesCount + 1, 0, existingImagesCount);
-                newImage.transform.SetSiblingIndex(newImageIndex);
-
-                newImage.transform.rotation = Quaternion.Euler(0f, 257f, 0f);
-
-                obj.canMove = true;
+                brazoRobot = 2;
+                animationArm.AnimationRun(brazoRobot);
 
                 GameManager.Instance.State = GameState.Playing;
+
 
             }
             else if (clickedButton.name == "Image3")
             {
-                GameObject newImage = Instantiate(prefabs[2], Vector3.zero, Quaternion.identity);
 
-                obj = objectManager.FindStateOfObject(ObjectState.Arm);
+                brazoRobot = 3;
 
-                int existingImagesCount = obj.obj.transform.childCount - 1; // Restar uno para excluir el propio objeto padre
-                int newImageIndex = Mathf.Clamp(existingImagesCount + 1, 0, existingImagesCount);
-                newImage.transform.SetSiblingIndex(newImageIndex);
+                animationArm.AnimationRun(brazoRobot);
 
-                obj = objectManager.FindStateOfObject(ObjectState.Arm);
-
-                obj.canMove = true;
                 GameManager.Instance.State = GameState.Playing;
+
 
             }
         }

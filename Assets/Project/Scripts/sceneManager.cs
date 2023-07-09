@@ -47,7 +47,7 @@ public class sceneManager : MonoBehaviour
 
     public void RemoveLevel(string _name)
     {
-        levelManager.RemoveLevel(_name);
+        levelManager.RemoveLvlList(_name);
     }
 
     public string GetLevelName()

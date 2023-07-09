@@ -59,17 +59,24 @@ public class WireTask : MonoBehaviour
     public void CheckTaskCompleted()
     {
             int successfulWires = 0;
+
             for (int i = 0; i < _rightWire.Count; i++)
             {
                 if (_rightWire[i].isSucces) { successfulWires++; }
             }
+
             if (successfulWires >= _rightWire.Count)
             {
-            Objects obj = objectManager.FindStateOfObject(ObjectState.Cables);
+                Objects obj = objectManager.FindStateOfObject(ObjectState.Cables);
 
-            obj.cablesCheck = true;
+                obj.cablesCheck = true;
+                for (int i = 0; i < _rightWire.Count; i++)
+                {
+                    _rightWire[i].isSucces = false;
+                }
+                GameManager.Instance.State = GameState.Playing;
 
-            GameManager.Instance.State = GameState.Playing;
+
             }
             else
             {
