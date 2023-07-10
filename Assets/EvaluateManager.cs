@@ -13,6 +13,7 @@ public class EvaluateManager : MonoBehaviour
 
     //Robot que le llega
     float numUp, numDown;
+    float robotParts;
     int idRobot;
 
     private void OnEnable()
@@ -31,7 +32,7 @@ public class EvaluateManager : MonoBehaviour
             {
                 // Si no existe, agrega el componente al array RobotCards
                 RobotCards.Add(components[i]);
-                RobotCards[totalId - 1].SetIdCard(totalId);
+                RobotCards[totalId - 1].SetIdCard(totalId - 1);
                 totalId++;
             }
         }
@@ -46,11 +47,18 @@ public class EvaluateManager : MonoBehaviour
             {
                 CompareNumUp(component.numUp);
                 CompareNumDown(component.numDown);
-
+                RobotParts(component.RobotId());
             }
         }
     }
-
+    void RobotParts(float _num)
+    {
+        if (robotParts == _num)
+        {
+            Debug.Log("Robot Correcto");
+        }
+        else { Debug.Log("Robot Incorrecta"); }
+    }
     void CompareNumUp(float _num)
     {
         if(numUp == _num)
@@ -73,11 +81,14 @@ public class EvaluateManager : MonoBehaviour
     {
         if (obj.gameObject.CompareTag("Interactable"))
         {
-            /*idRobot = obj.gameObject.GetComponent<Objects>().id;
+            idRobot = obj.gameObject.GetComponent<Objects>().id;
             numUp = obj.gameObject.GetComponent<Objects>().numUp;
             numDown = obj.gameObject.GetComponent<Objects>().numDown;
+            float robotUp = obj.gameObject.GetComponent<Objects>().robotUp;
+            float robotDown = obj.gameObject.GetComponent<Objects>().robotDown;
+            robotParts = robotUp + robotDown;
             FindId();
-            RandomImageGenerator.instance.GenerateNewRobot();*/
+            RandomImageGenerator.instance.GenerateNewRobot();
 
             Objects _obj = obj.gameObject.GetComponent<Objects>();
             objectManager.RemoveRobotsList(_obj);

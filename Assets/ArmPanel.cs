@@ -11,7 +11,6 @@ public class ArmPanel : MonoBehaviour, IPointerClickHandler
     public AnimationArm animationArm;
     public Transform positionCube;
     [SerializeField]
-    public GameObject[] prefabs = new GameObject[3];
     public GameObject parentObject; // GameObject padre que contiene el componente Horizontal Layout Group
     int brazoRobot;
 

@@ -74,6 +74,7 @@ public class Clock : MonoBehaviour
                     {
                         isPlaying = false;
                         robotIn = false;
+                        obj.timeColor = minutes;
                         minutes = 0;
                     }
                 }

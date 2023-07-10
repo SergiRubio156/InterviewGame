@@ -30,6 +30,8 @@ public class ColorTask : MonoBehaviour, IPointerClickHandler
 
                 obj.colorCheck = true;
 
+                obj.FinalColor = Color.red;
+
                 GameManager.Instance.State = GameState.Playing;
             }
             else if (clickedButton.color == Yellow)
@@ -39,6 +41,8 @@ public class ColorTask : MonoBehaviour, IPointerClickHandler
                 obj.gradient = gradientPresets[1];
 
                 obj.colorCheck = true;
+
+                obj.FinalColor = Color.yellow;
 
                 GameManager.Instance.State = GameState.Playing;
 
@@ -51,6 +55,8 @@ public class ColorTask : MonoBehaviour, IPointerClickHandler
 
                 obj.colorCheck = true;
 
+                obj.FinalColor = Color.green;
+
                 GameManager.Instance.State = GameState.Playing;
             }
             else if (clickedButton.color == Color.blue)
@@ -60,6 +66,8 @@ public class ColorTask : MonoBehaviour, IPointerClickHandler
                 obj.gradient = gradientPresets[3];
 
                 obj.colorCheck = true;
+
+                obj.FinalColor = Color.blue;
 
                 GameManager.Instance.State = GameState.Playing;
             }

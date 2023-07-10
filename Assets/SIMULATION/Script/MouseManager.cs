@@ -286,6 +286,8 @@ public class MouseManager : MonoBehaviour
                     {
                         if (animationArm.finishAnimation)
                         {
+                            Debug.Log("!");
+
                             Objects _obj = objectManager.FindStateOfObject(ObjectState.Arm);
                             int w = objectManager.GetObjectPositionInList(_obj.gameObject);
 

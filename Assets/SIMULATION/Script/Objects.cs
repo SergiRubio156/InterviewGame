@@ -13,8 +13,8 @@ public class Objects : ObjectManager
     public ObjectState state;
     public float numUp;
     public float numDown;
-    public int robotUp;
-    public int robotDown;
+    public float robotUp;
+    public float robotDown;
 
     public BoxCollider boxColliderUp;
     public Rigidbody rb;
@@ -36,6 +36,8 @@ public class Objects : ObjectManager
 
     [SerializeField]
     private Color currentColor;
+    public Color FinalColor;
+    public int timeColor;
     public Material outline;
     MenuManager menuManager;
 
@@ -195,7 +197,7 @@ public class Objects : ObjectManager
             rend[i].materials[0].color = currentColor;
         }
     }
-    public void LerpRotation(int _int)
+    public void LerpRotation(float _int)
     {
         switch(_int)
         {

@@ -16,7 +16,7 @@ public class AnimationArm : MonoBehaviour
     public List<GameObject> arms = new List<GameObject>();
     public List<AnimationClip> animationClips = new List<AnimationClip>();
 
-    int cuerpoRobot,brazoRobot;
+    float cuerpoRobot,brazoRobot;
     Transform child;
     Vector3 position;
     Quaternion rotation;
@@ -37,7 +37,7 @@ public class AnimationArm : MonoBehaviour
         GameManager.OnGameStateChanged -= HandleGameStateChanged;
     }
 
-    public GameObject GetRobotPosition(int _num)
+    public GameObject GetRobotPosition(float _num)
     {
         switch(_num)
         {
@@ -128,7 +128,7 @@ public class AnimationArm : MonoBehaviour
                     position = arms[0].transform.position;
                     rotation = arms[0].transform.rotation;
 
-                    brazoRobot = 1;
+                    brazoRobot = 0.1f;
 
                     obj.robotDown = brazoRobot;
 
@@ -143,7 +143,7 @@ public class AnimationArm : MonoBehaviour
                 }
                 else if(_numDown == 2)
                 {
-                    brazoRobot = 2;
+                    brazoRobot = 0.2f;
                     position = arms[1].transform.position;
                     rotation = arms[1].transform.rotation;
                     obj.robotDown = brazoRobot;
@@ -158,7 +158,7 @@ public class AnimationArm : MonoBehaviour
                 }
                 else if(_numDown == 3)
                 {
-                    brazoRobot = 3;
+                    brazoRobot = 0.3f;
                     position = arms[2].transform.position;
                     rotation = arms[2].transform.rotation;
 
@@ -179,7 +179,7 @@ public class AnimationArm : MonoBehaviour
                     position = arms[0].transform.position;
                     rotation = arms[0].transform.rotation;
 
-                    brazoRobot = 1;
+                    brazoRobot = 0.1f;
 
                     obj.robotDown = brazoRobot;
 
@@ -193,7 +193,7 @@ public class AnimationArm : MonoBehaviour
                 }
                 else if (_numDown == 2)
                 {
-                    brazoRobot = 2;
+                    brazoRobot = 0.2f;
                     position = arms[1].transform.position;
                     rotation = arms[1].transform.rotation;
                     obj.robotDown = brazoRobot;
@@ -208,7 +208,7 @@ public class AnimationArm : MonoBehaviour
                 }
                 else if (_numDown == 3)
                 {
-                    brazoRobot = 3;
+                    brazoRobot = 0.3f;
                     position = arms[2].transform.position;
                     rotation = arms[2].transform.rotation;
 
@@ -229,7 +229,7 @@ public class AnimationArm : MonoBehaviour
                     position = arms[0].transform.position;
                     rotation = arms[0].transform.rotation;
 
-                    brazoRobot = 1;
+                    brazoRobot = 0.1f;
 
                     obj.robotDown = brazoRobot;
 
@@ -243,7 +243,7 @@ public class AnimationArm : MonoBehaviour
                 }
                 else if (_numDown == 2)
                 {
-                    brazoRobot = 2;
+                    brazoRobot = 0.2f;
                     position = arms[1].transform.position;
                     rotation = arms[1].transform.rotation;
                     obj.robotDown = brazoRobot;
@@ -258,7 +258,7 @@ public class AnimationArm : MonoBehaviour
                 }
                 else if (_numDown == 3)
                 {
-                    brazoRobot = 3;
+                    brazoRobot = 0.3f;
                     position = arms[2].transform.position;
                     rotation = arms[2].transform.rotation;
 
@@ -280,7 +280,7 @@ public class AnimationArm : MonoBehaviour
     {
         switch(brazoRobot)
         {
-            case 1:
+            case 0.1f:
                 InstantiateObj(1);
 
                 _obj.transform.SetParent(obj.obj.transform);
@@ -288,7 +288,7 @@ public class AnimationArm : MonoBehaviour
 
                 finishAnimation = true;
                 break;
-            case 2:
+            case 0.2f:
                 InstantiateObj(2);
 
                 child = arms[1].transform;
@@ -300,7 +300,7 @@ public class AnimationArm : MonoBehaviour
                 finishAnimation = true;
 
                 break;
-            case 3:
+            case 0.3f:
                 InstantiateObj(3);
 
                 child = arms[2].transform;
