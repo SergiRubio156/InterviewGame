@@ -7,7 +7,7 @@ public class EvaluateManager : MonoBehaviour
 {
     //RobotEspeficicaciones
     public List<RandomImageGenerator> RobotCards;
-    public static int totalId = 1;
+    public static int totalId = 0;
 
     ObjectManager objectManager;
 
@@ -15,7 +15,8 @@ public class EvaluateManager : MonoBehaviour
     float numUp, numDown;
     float robotParts;
     int idRobot;
-
+    Color colorRobot;
+    int minutesRobot;
     private void OnEnable()
     {
         objectManager = FindObjectOfType<ObjectManager>();
@@ -30,10 +31,9 @@ public class EvaluateManager : MonoBehaviour
             // Verificar si ya existe un componente con el mismo nombre en el array RobotCards
             if (!RobotCards.Any(card => card.name == components[i].name))
             {
-                // Si no existe, agrega el componente al array RobotCards
+                totalId++;
                 RobotCards.Add(components[i]);
                 RobotCards[totalId - 1].SetIdCard(totalId - 1);
-                totalId++;
             }
         }
     }
@@ -42,15 +42,25 @@ public class EvaluateManager : MonoBehaviour
     {
         foreach (RandomImageGenerator component in RobotCards)
         {
-
             if (idRobot == component.GetIdCard())
             {
                 CompareNumUp(component.numUp);
                 CompareNumDown(component.numDown);
                 RobotParts(component.RobotId());
+                ColorRobot(component.ColorId());
+                MinutesRobot(component.numberClock);
             }
         }
     }
+    void MinutesRobot(int _num)
+    {
+        if (minutesRobot == _num)
+        {
+            Debug.Log("Time Correct");
+        }
+        else { Debug.Log("Time Incorrect"); }
+    }
+
     void RobotParts(float _num)
     {
         if (robotParts == _num)
@@ -58,6 +68,14 @@ public class EvaluateManager : MonoBehaviour
             Debug.Log("Robot Correcto");
         }
         else { Debug.Log("Robot Incorrecta"); }
+    }
+    void ColorRobot(Color _color)
+    {
+        if (colorRobot == _color)
+        {
+            Debug.Log("Color Correcto");
+        }
+        else { Debug.Log("Color Incorrecta"); }
     }
     void CompareNumUp(float _num)
     {
@@ -81,16 +99,18 @@ public class EvaluateManager : MonoBehaviour
     {
         if (obj.gameObject.CompareTag("Interactable"))
         {
-            idRobot = obj.gameObject.GetComponent<Objects>().id;
-            numUp = obj.gameObject.GetComponent<Objects>().numUp;
-            numDown = obj.gameObject.GetComponent<Objects>().numDown;
-            float robotUp = obj.gameObject.GetComponent<Objects>().robotUp;
-            float robotDown = obj.gameObject.GetComponent<Objects>().robotDown;
+            Objects _obj = obj.gameObject.GetComponent<Objects>();
+            idRobot = _obj.id;
+            numUp = _obj.numUp;
+            numDown = _obj.numDown;
+            float robotUp = _obj.robotUp;
+            float robotDown = _obj.robotDown;
+            minutesRobot = _obj.timeColor;
+            colorRobot = _obj.FinalColor;
             robotParts = robotUp + robotDown;
             FindId();
             RandomImageGenerator.instance.GenerateNewRobot();
 
-            Objects _obj = obj.gameObject.GetComponent<Objects>();
             objectManager.RemoveRobotsList(_obj);
             Destroy(obj.gameObject);
             

@@ -21,8 +21,9 @@ public class RandomImageGenerator : MonoBehaviour
     private int idCard;
     public float numDown, numUp;
     float robotUp, robotDown;
-    int randomIndex;
-
+    int randomIndexRobot;
+    int randomIndexColor;
+    public int numberClock;
     private void Awake()
     {
         evaluateManager.RecivedRobotsCards();
@@ -56,20 +57,20 @@ public class RandomImageGenerator : MonoBehaviour
 
     public void GenerateRandomImage()
     {
-        randomIndex = Random.Range(0, images.Count);
-        rawImage.texture = images[randomIndex];
+        randomIndexRobot = Random.Range(0, images.Count);
+        rawImage.texture = images[randomIndexRobot];
     }
 
     public void GenerateRandomPintura()
     {
-        int randomIndex = Random.Range(0, pinturas.Length);
-        pinturaImage.texture = pinturas[randomIndex];
+        randomIndexColor = Random.Range(0, pinturas.Length);
+        pinturaImage.texture = pinturas[randomIndexColor];
     }
 
 
     public void IncrementCount()
     {
-        idCard++;
+        idCard = EvaluateManager.totalId;
         countText.text = idCard.ToString();
     }
 
@@ -91,7 +92,7 @@ public class RandomImageGenerator : MonoBehaviour
 
     public float RobotId()
     {
-        switch(randomIndex)
+        switch(randomIndexRobot)
         {
             case 0:
                 robotUp = 1;
@@ -131,5 +132,48 @@ public class RandomImageGenerator : MonoBehaviour
                 return robotUp + robotDown;
         }
         return 0.0f;
+    }
+    public Color ColorId()
+    {
+        switch (randomIndexColor)
+        {
+            case 0:
+                numberClock = 15;
+                return Color.yellow;
+            case 1:
+                numberClock = 30;
+                return Color.yellow;
+            case 2:
+                numberClock = 45;
+                return Color.yellow;
+            case 3:
+                numberClock = 15;
+                return Color.blue;
+            case 4:
+                numberClock = 30;
+                return Color.blue;
+            case 5:
+                numberClock = 45;
+                return Color.blue;
+            case 6:
+                numberClock = 15;
+                return Color.green;
+            case 7:
+                numberClock = 30;
+                return Color.green;
+            case 8:
+                numberClock = 45;
+                return Color.green;
+            case 9:
+                numberClock = 15;
+                return Color.red;
+            case 10:
+                numberClock = 30;
+                return Color.red;
+            case 11:
+                numberClock = 45;
+                return Color.red;
+        }
+        return Color.white;
     }
 }

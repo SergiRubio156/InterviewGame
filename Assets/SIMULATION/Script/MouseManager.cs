@@ -178,6 +178,18 @@ public class MouseManager : MonoBehaviour
         return Tuple.Create(_object, _tag);
     }
 
+    void positionHands(float num)
+    {
+        if(num == 2)
+        {
+            poisitionHand.transform.localPosition = new Vector3(0.309f, 0.76f, 1.185f);
+        }
+        else
+        {
+            poisitionHand.transform.localPosition = new Vector3(0.309f, 1.316f, 1.185f);
+        }
+    }
+
     void SwitchList(GameObject _object,string _tag)
     {
         switch(_tag)
@@ -194,6 +206,7 @@ public class MouseManager : MonoBehaviour
                             if (outline != null)
                                 outline.SetFloat("_Outline_Thickness", 0f);
                             objectManager.ObjectGameState(i, ObjectState.Taked);
+                            positionHands(_object.GetComponent<Objects>().robotUp);
                             objectHand = _object;
                             objectSelect = true;
                         }
@@ -286,8 +299,7 @@ public class MouseManager : MonoBehaviour
                     {
                         if (animationArm.finishAnimation)
                         {
-                            Debug.Log("!");
-
+                        
                             Objects _obj = objectManager.FindStateOfObject(ObjectState.Arm);
                             int w = objectManager.GetObjectPositionInList(_obj.gameObject);
 
