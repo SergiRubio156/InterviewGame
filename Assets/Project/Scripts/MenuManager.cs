@@ -17,12 +17,16 @@ public class MenuManager : MonoBehaviour
     public GameObject robotPanel;
     public GameObject panelColor;
     public GameObject armPanel;
+    public TimeManager timeManager;
+    public GameObject exam;
 
     public GameObject WireMenu;
 
     private GameState state;
     public bool sceneSettings = false;
     bool boolRobotPanel = true;
+    public int numPulsarM;
+
 
     private void Awake()
     {
@@ -129,6 +133,13 @@ public class MenuManager : MonoBehaviour
                 Cursor.visible = true;
                 Cursor.lockState = CursorLockMode.None;
                 break;
+            case GameState.Exam:
+                exam.SetActive(true);
+                sceneSettings = true;
+                state = newState;
+                Cursor.visible = true;
+                Cursor.lockState = CursorLockMode.None;
+                break;
             case GameState.Exit:
                 // Acciones a realizar cuando el estado de juego es "Exit"
                 break;
@@ -141,6 +152,12 @@ public class MenuManager : MonoBehaviour
         {
             case GameState.Menu:
                 break;
+            case GameState.Exam:
+                if (Input.GetKeyDown(KeyCode.Escape))
+                {
+                   GameManager.Instance.State = GameState.Menu;
+                }
+                break;
             case GameState.Playing:
                 if (Input.GetKeyDown(KeyCode.Escape))
                 {
@@ -149,8 +166,12 @@ public class MenuManager : MonoBehaviour
                 }
                 if (Input.GetKeyDown(KeyCode.P))
                 {
-                    if (boolRobotPanel) { comandaRobot.SetActive(true); boolRobotPanel = false; }
+                    if (boolRobotPanel) { comandaRobot.SetActive(true); boolRobotPanel = false; timeManager.totalHelpLvl2++; }
                     else { comandaRobot.SetActive(false); boolRobotPanel = true; }
+                }
+                if (Input.GetKeyDown(KeyCode.R))
+                {
+                    GameManager.Instance.State = GameState.Exam;
                 }
                 break;
             case GameState.Lasers:
@@ -209,6 +230,7 @@ public class MenuManager : MonoBehaviour
     }
     public void ExitToPlay()
     {
+        timeManager.vecesSalirLvl1++;
         GameManager.Instance.State = GameState.Playing;
     }
 

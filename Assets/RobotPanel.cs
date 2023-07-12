@@ -12,7 +12,7 @@ public class RobotPanel : MonoBehaviour, IPointerClickHandler
     public GameObject[] prefabs = new GameObject[3];
     public GameObject parentObject; // GameObject padre que contiene el componente Horizontal Layout Group
 
-
+    public TimeManager timeManager;
     private void OnEnable()
     {
         objectManager = FindObjectOfType<ObjectManager>();
@@ -21,6 +21,9 @@ public class RobotPanel : MonoBehaviour, IPointerClickHandler
 
     public void OnPointerClick(PointerEventData eventData)
     {
+        timeManager.durationLvl1 = false;
+        timeManager.durationLvl2 = true;
+        timeManager.durationBetweenRobots = true;
         GameObject clickedObject = eventData.pointerCurrentRaycast.gameObject;
 
         Image clickedButton = clickedObject.GetComponent<Image>();

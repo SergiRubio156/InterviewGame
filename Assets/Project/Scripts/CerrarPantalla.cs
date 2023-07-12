@@ -1,6 +1,5 @@
 using UnityEngine;
 using UnityEngine.UI;
-using UnityEngine.SceneManagement;
 
 public class CerrarPantalla : MonoBehaviour
 {
@@ -10,15 +9,19 @@ public class CerrarPantalla : MonoBehaviour
     public Button abrirControl;
     private bool pantallaVisible;
 
+    public TimeManager timeManager;
     // contador veces preguntar
     public int questionCont = 0;
+    bool oneTime;
     void Start()
     {
-        if (GetCurrentSceneName() == "NIVEL 1")
+        if (!oneTime)
         {
             pantalla.SetActive(true);
+            timeManager.totalHelpLvl1++;
+            oneTime = true;
         }
-        else
+        else if(oneTime)
         {
             pantalla.SetActive(false);
         }
@@ -31,10 +34,13 @@ public class CerrarPantalla : MonoBehaviour
 
     void interrogantePantalla()
     {
+        timeManager.totalHelpLvl1++;
         pantallaVisible = !pantallaVisible;
         pantalla.SetActive (true);
         abrirbotton.SetActive (false);
-    }    void CruzPantalla()
+    }    
+    
+    void CruzPantalla()
     {
         pantallaVisible = !pantallaVisible;
         abrirbotton.SetActive(true);
@@ -43,13 +49,4 @@ public class CerrarPantalla : MonoBehaviour
 
     }
 
-    public string GetCurrentSceneName()
-    {
-        Scene currentScene = SceneManager.GetActiveScene();
-        return currentScene.name;
-    }
-    public void IncreaseQuestionCont()
-    {
-        questionCont++;
-    }
 }

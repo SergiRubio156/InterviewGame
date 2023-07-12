@@ -6,7 +6,11 @@ public class LevelManager : MonoBehaviour
 {
     public List<GameObject> levelPrefabs;
 
+    public TimeManager timeManager;
+
     bool isPlaying;
+
+    bool oneTime;
     private void OnEnable()
     {
         GameManager.OnGameStateChanged += HandleGameStateChanged;
@@ -53,6 +57,16 @@ public class LevelManager : MonoBehaviour
     public void ChooseLevel()
     {
         GameObject objectHijo = Instantiate(levelPrefabs[0], gameObject.transform, true);
+
+        if(!oneTime)
+        {
+            timeManager.durationLvl1 = true;
+
+            oneTime = true;
+        }
+        timeManager.totalLvl++;
+        timeManager.durationBetweenLasers = true;
+
 
         isPlaying = true;
     }

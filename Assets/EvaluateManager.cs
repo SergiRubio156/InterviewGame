@@ -17,6 +17,8 @@ public class EvaluateManager : MonoBehaviour
     int idRobot;
     Color colorRobot;
     int minutesRobot;
+
+    public TimeManager timeManager;
     private void OnEnable()
     {
         objectManager = FindObjectOfType<ObjectManager>();
@@ -110,10 +112,10 @@ public class EvaluateManager : MonoBehaviour
             robotParts = robotUp + robotDown;
             FindId();
             RandomImageGenerator.instance.GenerateNewRobot();
-
+            totalId++;
+            timeManager.durationBetweenRobots = false;
             objectManager.RemoveRobotsList(_obj);
             Destroy(obj.gameObject);
-            
         }
 
     }
