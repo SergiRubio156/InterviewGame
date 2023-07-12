@@ -17,7 +17,8 @@ public class TimeManager : MonoBehaviour
     [SerializeField]
     List<float> timeDurationBetweenRobots;
     public float totalDurationRobots;
-    public int numTrueVictoryRobot;
+    public float numTrueVictoryRobot;
+    public float totalRobots;
 
     //BETWEEN LASERS
     public bool durationBetweenLasers;
@@ -85,7 +86,7 @@ public class TimeManager : MonoBehaviour
             case "Lvl2":
                 return timeDuration2;
             case "betweenRobots":
-                return totalDurationRobots / EvaluateManager.totalId;            
+                return totalDurationRobots / totalRobots;            
             case "betweenLasers":
                 float _int2 = totalLvl + 1;
                 return totalDurationLasers / _int2;
@@ -93,7 +94,9 @@ public class TimeManager : MonoBehaviour
                 float _int = totalLvl + 1;
                 return (numTrueVictory / _int) * 100;
             case "denominadorRobot":
-                return (numTrueVictoryRobot / EvaluateManager.totalId) * 100;
+                Debug.Log(numTrueVictoryRobot);
+                Debug.Log(totalRobots);
+                return (numTrueVictoryRobot / totalRobots) * 100;
         }
         return 0.0f;
     }

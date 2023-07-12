@@ -39,8 +39,8 @@ public class ResultatsManager : MonoBehaviour
         timeManager.durationBetweenLasers = false;
         timeManager.posLasers = false;
 
-        int total = EvaluateManager.totalId - 1;
-        robotsTotal.text = total.ToString();
+
+        robotsTotal.text = timeManager.totalRobots.ToString();
         durationLvL1.text = timeManager.time("Lvl1").ToString();
         durationLvL2.text = timeManager.time("Lvl2").ToString();
         durationBetweenRobots.text = timeManager.time("betweenRobots").ToString();
