@@ -17,6 +17,8 @@ public class EvaluateManager : MonoBehaviour
     int idRobot;
     Color colorRobot;
     int minutesRobot;
+
+    public TimeManager timeManager;
     private void OnEnable()
     {
         objectManager = FindObjectOfType<ObjectManager>();
@@ -44,54 +46,54 @@ public class EvaluateManager : MonoBehaviour
         {
             if (idRobot == component.GetIdCard())
             {
-                CompareNumUp(component.numUp);
-                CompareNumDown(component.numDown);
-                RobotParts(component.RobotId());
-                ColorRobot(component.ColorId());
-                MinutesRobot(component.numberClock);
+                if(CompareNumUp(component.numUp) && CompareNumDown(component.numDown) && RobotParts(component.RobotId()) && ColorRobot(component.ColorId()) && MinutesRobot(component.numberClock))
+                {
+                    timeManager.numTrueVictoryRobot++;
+                }
             }
         }
     }
-    void MinutesRobot(int _num)
+
+    bool MinutesRobot(int _num)
     {
         if (minutesRobot == _num)
         {
-            Debug.Log("Time Correct");
+            return true;
         }
-        else { Debug.Log("Time Incorrect"); }
+        return false;
     }
 
-    void RobotParts(float _num)
+    bool RobotParts(float _num)
     {
         if (robotParts == _num)
         {
-            Debug.Log("Robot Correcto");
+            return true;
         }
-        else { Debug.Log("Robot Incorrecta"); }
+        return false;
     }
-    void ColorRobot(Color _color)
+    bool ColorRobot(Color _color)
     {
         if (colorRobot == _color)
         {
-            Debug.Log("Color Correcto");
+            return true;
         }
-        else { Debug.Log("Color Incorrecta"); }
+        return false;
     }
-    void CompareNumUp(float _num)
+    bool CompareNumUp(float _num)
     {
         if(numUp == _num)
         {
-            Debug.Log("CPU Correcta");
+            return true;
         }
-        else { Debug.Log("CPU Incorrecta"); }
+        return false;
     }
-    void CompareNumDown(float _num)
+    bool CompareNumDown(float _num)
     {
         if (numDown == _num)
         {
-            Debug.Log("Memoria Correcta");
+            return true;
         }
-        else { Debug.Log("Memoria Incorrecta"); }
+        return false;
     }
 
 
@@ -110,10 +112,11 @@ public class EvaluateManager : MonoBehaviour
             robotParts = robotUp + robotDown;
             FindId();
             RandomImageGenerator.instance.GenerateNewRobot();
-
+            totalId++;
+            timeManager.totalRobots++;
+            timeManager.durationBetweenRobots = false;
             objectManager.RemoveRobotsList(_obj);
             Destroy(obj.gameObject);
-            
         }
 
     }

@@ -10,8 +10,9 @@ public class FinalCheck : MonoBehaviour
 
     public GameObject panelVictory;
     private MenuManager menuManager;
-
+    TimeManager timeManager;
     bool victoryBool;
+    
     // Start is called before the first frame update
     void Awake()
     {
@@ -19,6 +20,7 @@ public class FinalCheck : MonoBehaviour
         CheckBool = new bool[FinalLaser.Length];
         GameManager.OnGameStateChanged += GameManager_OnGameStateChanged;   //Esto es el evento del script GameManager
         menuManager = GameObject.FindObjectOfType<MenuManager>();
+        timeManager = GameObject.FindObjectOfType<TimeManager>();
         panelVictory = menuManager.panelVictory;
 
     }
@@ -27,8 +29,10 @@ public class FinalCheck : MonoBehaviour
     void Update()
     {
         if (Input.GetKeyDown(KeyCode.M))
+        {
+            menuManager.numPulsarM++;
             Victory();
-
+        }
     }
     void GameManager_OnGameStateChanged(GameState state)        //Esta funcion depende del Awake del evento, Como he explicado antes nso permite comparar entre Script y GameObjects
     {
@@ -44,8 +48,11 @@ public class FinalCheck : MonoBehaviour
                 CheckBool[i] = _bool;
                 if (CheckBools())
                 {
-                    if(!victoryBool)
+                    if (!victoryBool)
+                    {
+                        timeManager.numTrueVictory++;
                         Victory();
+                    }
                 }
 
             }
@@ -65,6 +72,7 @@ public class FinalCheck : MonoBehaviour
 
     void Victory()
     {
+        timeManager.durationBetweenLasers = false;
         victoryBool = true;
         panelVictory.SetActive(true);
         StartCoroutine(Wait());

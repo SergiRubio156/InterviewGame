@@ -20,6 +20,7 @@ public enum GameState
     Color,
     RobotPanel,
     ArmPanel,
+    Exam,
     Exit
 
 
@@ -161,6 +162,10 @@ public class GameManager : MonoBehaviour
                         state = value;
                         break;
                     case GameState.ArmPanel:
+                        HandleSettings();
+                        state = value;
+                        break;
+                    case GameState.Exam:
                         HandleSettings();
                         state = value;
                         break;
